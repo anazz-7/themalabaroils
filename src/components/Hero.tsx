@@ -76,34 +76,52 @@ export const Hero: React.FC = () => {
           className="grid grid-cols-3 gap-2 sm:gap-6 max-w-xs sm:max-w-md mx-auto mb-8 sm:mb-12 select-none"
         >
           {/* Badge 1: No Adulteration */}
-          <div className="flex flex-col items-center">
-            <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs">
+          <motion.div
+            whileHover={{ y: -3, scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            animate={{ y: [0, -3.5, 0] }}
+            transition={{ y: { repeat: Infinity, duration: 3.8, ease: 'easeInOut' } }}
+            className="flex flex-col items-center cursor-pointer"
+          >
+            <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs hover:shadow-md transition-shadow">
               <Leaf className="w-6 h-6 sm:w-8 sm:h-8 text-[#2C241D] stroke-[1.5]" />
             </div>
             <span className="mt-2 text-[11px] sm:text-xs font-semibold tracking-wide text-[#2C241D] text-center leading-tight">
               No <br /> Adulteration
             </span>
-          </div>
+          </motion.div>
 
           {/* Badge 2: No Preservatives */}
-          <div className="flex flex-col items-center">
-            <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs">
+          <motion.div
+            whileHover={{ y: -3, scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            animate={{ y: [0, -3.5, 0] }}
+            transition={{ y: { repeat: Infinity, duration: 4.2, delay: 0.4, ease: 'easeInOut' } }}
+            className="flex flex-col items-center cursor-pointer"
+          >
+            <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs hover:shadow-md transition-shadow">
               <FlaskConical className="w-6 h-6 sm:w-8 sm:h-8 text-[#2C241D] stroke-[1.5]" />
             </div>
             <span className="mt-2 text-[11px] sm:text-xs font-semibold tracking-wide text-[#2C241D] text-center leading-tight">
               No <br /> Preservatives
             </span>
-          </div>
+          </motion.div>
 
           {/* Badge 3: No Chemicals */}
-          <div className="flex flex-col items-center">
-            <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs">
+          <motion.div
+            whileHover={{ y: -3, scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            animate={{ y: [0, -3.5, 0] }}
+            transition={{ y: { repeat: Infinity, duration: 4.0, delay: 0.8, ease: 'easeInOut' } }}
+            className="flex flex-col items-center cursor-pointer"
+          >
+            <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs hover:shadow-md transition-shadow">
               <Droplet className="w-6 h-6 sm:w-8 sm:h-8 text-[#2C241D] stroke-[1.5]" />
             </div>
             <span className="mt-2 text-[11px] sm:text-xs font-semibold tracking-wide text-[#2C241D] text-center leading-tight">
               No <br /> Chemicals
             </span>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Hero Visual Container */}
