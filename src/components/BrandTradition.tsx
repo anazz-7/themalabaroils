@@ -2,8 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, Award, MapPin, CheckCircle2, MessageCircle } from 'lucide-react';
 import { SpotlightCard } from './SpotlightCard';
+import { useCatalog } from '../store/catalogStore';
 
 export const BrandTradition: React.FC = () => {
+  const { whatsappNumber } = useCatalog();
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order.`;
+
   return (
     <section id="tradition" className="py-14 sm:py-20 bg-white border-t border-[#E8DFD3] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -41,7 +45,7 @@ export const BrandTradition: React.FC = () => {
               </div>
 
               <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FBF9F5] border border-[#E8E0D4]">
-                <ShieldCheck className="w-5 h-5 text-[#2D5A27] mb-1.5" />
+                <ShieldCheck className="w-5 h-5 text-[#D4AF37] mb-1.5" />
                 <h4 className="font-serif-display text-sm sm:text-base font-bold text-[#2C241D]">
                   Zero Chemicals
                 </h4>
@@ -64,7 +68,7 @@ export const BrandTradition: React.FC = () => {
               spotlightColor="rgba(212, 175, 55, 0.12)"
               className="bg-[#1C1814] text-white p-6 sm:p-8 shadow-xl relative"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#2D5A27] text-[#D4AF37] flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-xl bg-[#2C241D] border border-[#D4AF37]/40 text-[#D4AF37] flex items-center justify-center mb-4">
                 <MapPin className="w-5 h-5" />
               </div>
 
@@ -82,22 +86,22 @@ export const BrandTradition: React.FC = () => {
 
               <div className="space-y-2 pt-3 border-t border-white/10 text-xs text-[#EDE5DB] mb-4">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#2D5A27] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
                   <span>Fresh weekly batch pressing</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#2D5A27] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0" />
                   <span>Retail, wholesale & bulk supply</span>
                 </div>
               </div>
 
               <a
-                href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order."
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full min-h-[44px] bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.98] text-white py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-[transform,background-color] duration-150 cursor-pointer select-none"
+                className="w-full min-h-[44px] bg-[#2C241D] hover:bg-[#15120F] border border-[#D4AF37]/40 active:scale-[0.98] text-white py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-[transform,background-color] duration-150 cursor-pointer select-none group"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 text-[#D4AF37] group-hover:scale-110 transition-transform" />
                 <span>Chat with Barakkath Marketing</span>
               </a>
             </SpotlightCard>

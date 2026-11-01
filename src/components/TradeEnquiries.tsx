@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MessageCircle, Building2, Store, Truck, Send, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { SpotlightCard } from './SpotlightCard';
+import { useCatalog } from '../store/catalogStore';
 
 export const TradeEnquiries: React.FC = () => {
+  const { whatsappNumber } = useCatalog();
   const [businessName, setBusinessName] = useState('');
   const [contactPerson, setContactPerson] = useState('');
   const [phone, setPhone] = useState('');
@@ -19,7 +21,7 @@ export const TradeEnquiries: React.FC = () => {
     if (name) msg += `• Business/Name: ${name}\n`;
     if (cityVal) msg += `• Location: ${cityVal}\n`;
     msg += `\nPlease share your wholesale price list, minimum order quantity (MOQ), and dealership terms.`;
-    return `https://wa.me/916374848947?text=${encodeURIComponent(msg)}`;
+    return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`;
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -44,8 +46,8 @@ export const TradeEnquiries: React.FC = () => {
             transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
             className="lg:col-span-6 space-y-4 sm:space-y-6"
           >
-            <div className="inline-flex items-center gap-2 text-xs font-cinzel tracking-[0.25em] uppercase text-[#2D5A27] font-bold">
-              <Building2 className="w-4 h-4" />
+            <div className="inline-flex items-center gap-2 text-xs font-cinzel tracking-[0.25em] uppercase text-[#736555] font-bold">
+              <Building2 className="w-4 h-4 text-[#D4AF37]" />
               <span>B2B & Distribution</span>
             </div>
 
@@ -59,7 +61,7 @@ export const TradeEnquiries: React.FC = () => {
 
             <div className="space-y-3 pt-1">
               <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/80 border border-[#DDD3C5]">
-                <Store className="w-5 h-5 text-[#2D5A27] shrink-0 mt-0.5" />
+                <Store className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-[#2C241D] uppercase tracking-wide">
                     Retailers & Supermarkets
@@ -71,7 +73,7 @@ export const TradeEnquiries: React.FC = () => {
               </div>
 
               <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/80 border border-[#DDD3C5]">
-                <Truck className="w-5 h-5 text-[#2D5A27] shrink-0 mt-0.5" />
+                <Truck className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-[#2C241D] uppercase tracking-wide">
                     HoReCa & Bulk Food Service
@@ -83,7 +85,7 @@ export const TradeEnquiries: React.FC = () => {
               </div>
 
               <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-white/80 border border-[#DDD3C5]">
-                <ShieldCheck className="w-5 h-5 text-[#2D5A27] shrink-0 mt-0.5" />
+                <ShieldCheck className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-[#2C241D] uppercase tracking-wide">
                     Contract Packaging & Marketing
@@ -101,9 +103,9 @@ export const TradeEnquiries: React.FC = () => {
                 href={whatsappTradeLink('wholesale')}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.98] text-white px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-[transform,background-color] duration-150 shadow-xs cursor-pointer select-none"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 min-h-[48px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white border border-[#D4AF37]/40 px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-[transform,background-color] duration-150 shadow-xs cursor-pointer select-none group"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4 text-[#D4AF37] group-hover:scale-110 transition-transform" />
                 <span>Chat on WhatsApp for Trade Rates</span>
               </a>
             </div>
@@ -118,7 +120,7 @@ export const TradeEnquiries: React.FC = () => {
             className="lg:col-span-6"
           >
             <SpotlightCard
-              spotlightColor="rgba(45, 90, 39, 0.08)"
+              spotlightColor="rgba(212, 175, 55, 0.08)"
               className="bg-white rounded-3xl p-5 sm:p-8 border border-[#DDD3C5] shadow-lg"
             >
               <h3 className="font-serif-display text-xl sm:text-2xl font-bold text-[#2C241D] mb-1">
@@ -130,8 +132,8 @@ export const TradeEnquiries: React.FC = () => {
 
               {submitted ? (
                 <div className="text-center py-10">
-                  <div className="w-12 h-12 rounded-full bg-[#DCFCE7] text-[#16A34A] flex items-center justify-center mx-auto mb-3">
-                    <CheckCircle2 className="w-6 h-6" />
+                  <div className="w-12 h-12 rounded-full bg-[#F5ECE1] border border-[#D4AF37]/40 text-[#2C241D] flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle2 className="w-6 h-6 text-[#D4AF37]" />
                   </div>
                   <h4 className="font-serif-display text-lg font-bold text-[#2C241D]">
                     Redirecting to WhatsApp...
@@ -152,7 +154,7 @@ export const TradeEnquiries: React.FC = () => {
                       placeholder="e.g. Malabar Organics / Fresh Mart"
                       value={businessName}
                       onChange={(e) => setBusinessName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2D5A27]"
+                      className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2C241D]"
                     />
                   </div>
 
@@ -167,7 +169,7 @@ export const TradeEnquiries: React.FC = () => {
                         placeholder="Your Name"
                         value={contactPerson}
                         onChange={(e) => setContactPerson(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2D5A27]"
+                        className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2C241D]"
                       />
                     </div>
                     <div>
@@ -180,7 +182,7 @@ export const TradeEnquiries: React.FC = () => {
                         placeholder="e.g. Madurai, Tamil Nadu"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2D5A27]"
+                        className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2C241D]"
                       />
                     </div>
                   </div>
@@ -196,7 +198,7 @@ export const TradeEnquiries: React.FC = () => {
                         placeholder="+91 98765 43210"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2D5A27]"
+                        className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2C241D]"
                       />
                     </div>
                     <div>
@@ -206,7 +208,7 @@ export const TradeEnquiries: React.FC = () => {
                       <select
                         value={enquiryType}
                         onChange={(e) => setEnquiryType(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2D5A27]"
+                        className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-[#DDD3C5] bg-[#FDFCF9] focus:outline-none focus:border-[#2C241D]"
                       >
                         <option value="retail-stockist">Retail Stockist / Store</option>
                         <option value="distributor">Regional Dealership / Distributor</option>
@@ -218,9 +220,9 @@ export const TradeEnquiries: React.FC = () => {
 
                   <button
                     type="submit"
-                    className="w-full min-h-[48px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-[transform,background-color] duration-150 shadow-xs flex items-center justify-center gap-2 cursor-pointer mt-2 select-none"
+                    className="w-full min-h-[48px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-[transform,background-color] duration-150 shadow-xs flex items-center justify-center gap-2 cursor-pointer mt-2 select-none border border-[#D4AF37]/30"
                   >
-                    <Send className="w-3.5 h-3.5" />
+                    <Send className="w-3.5 h-3.5 text-[#D4AF37]" />
                     <span>Send Query via WhatsApp</span>
                   </button>
 

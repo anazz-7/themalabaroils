@@ -1,15 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Leaf, FlaskConical, Droplet, MessageCircle, Building2, ShieldCheck, Award } from 'lucide-react';
+import { Leaf, FlaskConical, Droplet, MessageCircle, Building2, ShieldCheck, Award, Sparkles } from 'lucide-react';
+import { useCatalog } from '../store/catalogStore';
 
 export const Hero: React.FC = () => {
+  const { whatsappNumber } = useCatalog();
+
   return (
     <section className="relative overflow-hidden pt-6 pb-10 sm:pt-12 sm:pb-16 lg:py-20 bg-gradient-to-b from-[#FBF9F5] via-[#F6F1EA] to-[#FBF9F5]">
       {/* Decorative ambient gradient blooms */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] sm:w-[600px] h-[250px] bg-gradient-to-r from-[#D4AF37]/15 via-[#2D5A27]/10 to-[#D4AF37]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] sm:w-[600px] h-[250px] bg-gradient-to-r from-[#D4AF37]/15 via-[#8C6D3B]/10 to-[#D4AF37]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        {/* Top Brand Tag */}
+        {/* Top Brand Tag with Kinetic Reveal */}
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -28,23 +31,25 @@ export const Hero: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Hero Title & Subtitle */}
+        {/* Hero Title & Subtitle with Kinetic Motion Graphics */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.05, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.5, delay: 0.05, ease: [0.32, 0.72, 0, 1] }}
           className="max-w-3xl mx-auto mb-6 sm:mb-8 px-2"
         >
           <h1 className="font-serif-display text-3xl sm:text-5xl lg:text-7xl font-bold text-[#2C241D] tracking-tight leading-[1.12] mb-3">
             Pure Oils, <br className="hidden sm:inline" />
-            <span className="italic font-serif">Healthier Families</span>
+            <span className="italic font-serif bg-gradient-to-r from-[#2C241D] via-[#634832] to-[#2C241D] bg-clip-text text-transparent">
+              Healthier Families
+            </span>
           </h1>
           <p className="font-serif-display text-base sm:text-2xl text-[#5F5345] italic font-normal tracking-wide">
             Traditional Cold Pressed Oils — Just as Nature Intended
           </p>
         </motion.div>
 
-        {/* 3 Circular Guarantee Badges */}
+        {/* 3 Circular Guarantee Badges with Fluid Sinusoidal Floating */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -100,7 +105,7 @@ export const Hero: React.FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Action CTAs */}
+        {/* Action CTAs in Dark Brown Luxury Palette */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -108,19 +113,20 @@ export const Hero: React.FC = () => {
           className="flex flex-col sm:flex-row items-center justify-center gap-3 select-none"
         >
           <a
-            href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order%20cold-pressed%20oils."
+            href={`https://wa.me/${whatsappNumber}?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order%20cold-pressed%20oils.`}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative overflow-hidden w-full sm:w-auto min-h-[46px] sm:min-h-[50px] bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.98] text-white px-7 py-3 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer group/btn"
+            className="relative overflow-hidden w-full sm:w-auto min-h-[46px] sm:min-h-[50px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white px-7 py-3 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-[transform,background-color] duration-150 cursor-pointer group/btn border border-[#D4AF37]/35"
           >
-            <MessageCircle className="w-4 h-4" />
+            <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
             <span>Order via WhatsApp</span>
-            <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+            {/* Sweeping Champagne Light Glint */}
+            <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-[#D4AF37]/25 to-transparent pointer-events-none" />
           </a>
 
           <a
             href="#trade"
-            className="w-full sm:w-auto min-h-[46px] sm:min-h-[50px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white px-7 py-3 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer"
+            className="w-full sm:w-auto min-h-[46px] sm:min-h-[50px] bg-[#FAF7F2] hover:bg-[#F2ECE3] active:scale-[0.98] text-[#2C241D] border border-[#DDD3C5] px-7 py-3 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer"
           >
             <Building2 className="w-4 h-4 text-[#D4AF37]" />
             <span>Trade & Dealership Enquiries</span>
@@ -134,14 +140,14 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.4, delay: 0.2 }}
           className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-[#7A6E61]"
         >
-          <span className="flex items-center gap-1 font-semibold text-[#2D5A27]">
-            <ShieldCheck className="w-3.5 h-3.5" />
+          <span className="flex items-center gap-1 font-semibold text-[#4A3B2C]">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
             AGMARK Grade-1 Certified
           </span>
           <span>•</span>
           <span>Barakkath Marketing, Periyakulam, Tamil Nadu</span>
           <span>•</span>
-          <span className="text-[#D4AF37] font-semibold">100% Traditional Cold-Pressed</span>
+          <span className="text-[#92400E] font-semibold">100% Traditional Cold-Pressed</span>
         </motion.div>
       </div>
     </section>

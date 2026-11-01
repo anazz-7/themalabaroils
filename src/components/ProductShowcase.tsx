@@ -2,25 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, Sparkles, ShieldCheck } from 'lucide-react';
 import { SpotlightCard } from './SpotlightCard';
-
-interface OilItem {
-  id: string;
-  name: string;
-  shortMobileName: string;
-  tamilName: string;
-  image: string;
-  capColor: 'red' | 'blue' | 'yellow' | 'green';
-  capLabel: string;
-  badgeBg: string;
-  badgeText: string;
-  glowColor: string;
-  sizes: {
-    label: string;
-    price: number;
-    originalPrice: number;
-  }[];
-  isCombo?: boolean;
-}
+import { useCatalog } from '../store/catalogStore';
 
 const formatSizeLabel = (label: string) => {
   return label
@@ -30,79 +12,9 @@ const formatSizeLabel = (label: string) => {
     .replace(' ml', 'ml');
 };
 
-const CORE_OILS: OilItem[] = [
-  {
-    id: 'gingelly',
-    name: 'Agmark Chekku Gingelly Oil',
-    shortMobileName: 'Chekku Gingelly Oil',
-    tamilName: 'அக்மார்க் செக்கு நல்லெண்ணெய்',
-    image: '/gingelly-oil.jpg',
-    capColor: 'yellow',
-    capLabel: 'Yellow Seal',
-    badgeBg: '#FEF3C7',
-    badgeText: '#92400E',
-    glowColor: 'rgba(217, 119, 6, 0.25)',
-    sizes: [
-      { label: '500 ml', price: 220, originalPrice: 250 },
-      { label: '1 Litre', price: 420, originalPrice: 470 },
-      { label: '5 Litres', price: 2050, originalPrice: 2350 }
-    ]
-  },
-  {
-    id: 'coconut',
-    name: 'Agmark Chekku Coconut Oil',
-    shortMobileName: 'Chekku Coconut Oil',
-    tamilName: 'அக்மார்க் செக்கு தேங்காய் எண்ணெய்',
-    image: '/coconut-oil.jpg',
-    capColor: 'blue',
-    capLabel: 'Blue Seal',
-    badgeBg: '#DBEAFE',
-    badgeText: '#1E40AF',
-    glowColor: 'rgba(37, 99, 235, 0.25)',
-    sizes: [
-      { label: '500 ml', price: 220, originalPrice: 250 },
-      { label: '1 Litre', price: 420, originalPrice: 475 },
-      { label: '5 Litres', price: 2000, originalPrice: 2250 }
-    ]
-  },
-  {
-    id: 'groundnut',
-    name: 'Agmark Chekku Groundnut Oil',
-    shortMobileName: 'Chekku Groundnut Oil',
-    tamilName: 'அக்மார்க் செக்கு கடலை எண்ணெய்',
-    image: '/groundnut-oil.jpg',
-    capColor: 'red',
-    capLabel: 'Red Seal',
-    badgeBg: '#FEE2E2',
-    badgeText: '#991B1B',
-    glowColor: 'rgba(220, 38, 38, 0.25)',
-    sizes: [
-      { label: '500 ml', price: 220, originalPrice: 250 },
-      { label: '1 Litre', price: 420, originalPrice: 460 },
-      { label: '5 Litres', price: 2000, originalPrice: 2200 }
-    ]
-  },
-  {
-    id: 'trio-bundle',
-    name: 'The Malabar Grand Trio Box',
-    shortMobileName: 'Grand Trio Box',
-    tamilName: 'செக்கு எண்ணெய் முக்கூட்டு பேக்',
-    image: '/hero-bottles.jpg',
-    capColor: 'green',
-    capLabel: 'Heritage Trio',
-    badgeBg: '#DCFCE7',
-    badgeText: '#166534',
-    glowColor: 'rgba(45, 90, 39, 0.25)',
-    sizes: [
-      { label: '3 x 500 ml', price: 625, originalPrice: 770 },
-      { label: '3 x 1 Litre', price: 1199, originalPrice: 1445 },
-      { label: '3 x 5 Litres', price: 5799, originalPrice: 6900 }
-    ],
-    isCombo: true
-  }
-];
-
 export const ProductShowcase: React.FC = () => {
+  const { catalog, whatsappNumber } = useCatalog();
+
   // Size selection states per card
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: number }>({
     gingelly: 1, // default 1 Litre
@@ -119,7 +31,7 @@ export const ProductShowcase: React.FC = () => {
     const text = encodeURIComponent(
       `Hello The Malabar Oils / Barakkath Marketing,\nI would like to order:\n• *${oilName}* (${sizeLabel}) - ₹${price}\nPlease confirm home delivery to my address.`
     );
-    return `https://wa.me/916374848947?text=${text}`;
+    return `https://wa.me/${whatsappNumber}?text=${text}`;
   };
 
   return (
@@ -133,7 +45,7 @@ export const ProductShowcase: React.FC = () => {
           transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
           className="text-center max-w-2xl mx-auto mb-8 sm:mb-14"
         >
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-cinzel tracking-[0.25em] uppercase text-[#736555] font-semibold mb-1 sm:mb-2">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-cinzel tracking-[0.25em] uppercase text-[#7A6E61] font-semibold mb-1 sm:mb-2">
             <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#D4AF37]" />
             <span>Pure Botanical Extraction</span>
           </div>
@@ -147,9 +59,9 @@ export const ProductShowcase: React.FC = () => {
 
         {/* EXACT 2x2 GRID ON BOTH MOBILE AND DESKTOP */}
         <div className="grid grid-cols-2 gap-2.5 sm:gap-6 lg:gap-8">
-          {CORE_OILS.map((oil, index) => {
+          {catalog.map((oil, index) => {
             const currentSizeIdx = selectedSizes[oil.id] ?? 1;
-            const currentSize = oil.sizes[currentSizeIdx] || oil.sizes[0];
+            const currentSize = oil.sizes[currentSizeIdx] || oil.sizes[0] || { label: '1L', price: 420, originalPrice: 480 };
 
             return (
               <motion.div
@@ -163,17 +75,17 @@ export const ProductShowcase: React.FC = () => {
                 className="h-full"
               >
                 <SpotlightCard
-                  spotlightColor={oil.glowColor}
+                  spotlightColor={oil.glowColor || 'rgba(212, 175, 55, 0.2)'}
                   className={`bg-white border transition-all duration-300 p-3 sm:p-7 flex flex-col justify-between h-full shadow-xs hover:shadow-xl relative group rounded-2xl sm:rounded-3xl ${
                     oil.isCombo
-                      ? 'border-[#2D5A27]/40 bg-gradient-to-br from-white via-[#F6FBF5] to-white'
+                      ? 'border-[#D4AF37]/50 bg-gradient-to-br from-white via-[#FAF6F0] to-white'
                       : 'border-[#E7DFD5] hover:border-[#C5B7A6]'
                   }`}
                 >
                   {/* Subtle Ambient Cap Light Bloom */}
                   <div 
                     className="absolute -top-10 -right-10 w-28 h-28 sm:w-36 sm:h-36 rounded-full blur-2xl pointer-events-none opacity-40 group-hover:opacity-75 transition-opacity duration-500"
-                    style={{ backgroundColor: oil.glowColor }}
+                    style={{ backgroundColor: oil.glowColor || 'rgba(212, 175, 55, 0.2)' }}
                   />
 
                   <div>
@@ -197,7 +109,7 @@ export const ProductShowcase: React.FC = () => {
                               backgroundColor: 
                                 oil.capColor === 'red' ? '#DC2626' :
                                 oil.capColor === 'blue' ? '#2563EB' :
-                                oil.capColor === 'yellow' ? '#D97706' : '#16A34A'
+                                oil.capColor === 'yellow' ? '#D97706' : '#4A3B2C'
                             }}
                           >
                             <span className="w-full h-full rounded-full animate-ping absolute opacity-60" style={{ backgroundColor: 'inherit' }} />
@@ -207,7 +119,7 @@ export const ProductShowcase: React.FC = () => {
                       </div>
 
                       {/* AGMARK Grade 1 overlay badge */}
-                      <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 z-10 bg-black/60 backdrop-blur-md text-white px-1.5 py-0.5 rounded-md text-[7.5px] sm:text-[9px] font-mono font-bold flex items-center gap-0.5">
+                      <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 z-10 bg-[#1C1814]/80 backdrop-blur-md text-white px-1.5 py-0.5 rounded-md text-[7.5px] sm:text-[9px] font-mono font-bold flex items-center gap-0.5 border border-white/10">
                         <ShieldCheck className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#D4AF37]" />
                         <span>AGMARK</span>
                       </div>
@@ -286,30 +198,30 @@ export const ProductShowcase: React.FC = () => {
                           initial={{ scale: 0.85 }}
                           animate={{ scale: [0.85, 1.1, 1] }}
                           transition={{ duration: 0.25 }}
-                          className="text-[8px] sm:text-[10px] font-bold text-[#2D5A27] mt-0.5 inline-block"
+                          className="text-[8px] sm:text-[10px] font-bold text-[#8C5E2D] mt-0.5 inline-block"
                         >
                           Save ₹{currentSize.originalPrice - currentSize.price}
                         </motion.div>
                       </div>
 
                       <div className="hidden sm:block text-right">
-                        <span className="text-[9px] uppercase font-bold text-[#2D5A27] bg-[#DCFCE7] px-2 py-0.5 rounded-full inline-block">
+                        <span className="text-[9px] uppercase font-bold text-[#4A3B2C] bg-[#F5ECE1] border border-[#DDD0BF] px-2 py-0.5 rounded-full inline-block">
                           {oil.isCombo ? 'Combo' : 'Grade 1'}
                         </span>
                       </div>
                     </div>
 
-                    {/* WhatsApp CTA with Shimmer & Spring */}
+                    {/* WhatsApp CTA in Dark Brown & Gold Theme */}
                     <a
                       href={getWhatsAppOrderUrl(oil.name, currentSize.label, currentSize.price)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="relative overflow-hidden w-full min-h-[40px] sm:min-h-[46px] bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.97] text-white py-2 sm:py-2.5 px-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-1 sm:gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer select-none group/btn"
+                      className="relative overflow-hidden w-full min-h-[40px] sm:min-h-[46px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.97] text-white py-2 sm:py-2.5 px-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-1 sm:gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer select-none group/btn border border-[#D4AF37]/30"
                     >
-                      <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+                      <MessageCircle className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
                       <span className="truncate">Order on WhatsApp</span>
-                      {/* Sweeping Light Glint */}
-                      <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+                      {/* Sweeping Champagne Light Glint */}
+                      <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-[#D4AF37]/25 to-transparent pointer-events-none" />
                     </a>
                   </div>
                 </SpotlightCard>

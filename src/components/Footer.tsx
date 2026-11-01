@@ -1,7 +1,20 @@
 import React from 'react';
-import { ShieldCheck, MapPin, MessageCircle, Clock, Award, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ShieldCheck, MapPin, MessageCircle, Clock, Award, CheckCircle2, ArrowRight, Lock } from 'lucide-react';
+import { useCatalog } from '../store/catalogStore';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onOpenAdmin?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onOpenAdmin }) => {
+  const { whatsappNumber } = useCatalog();
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order.`;
+
+  // Format display phone: e.g. 916379849947 -> +91 63798 49947
+  const displayPhone = whatsappNumber.startsWith('91') && whatsappNumber.length === 12
+    ? `+91 ${whatsappNumber.slice(2, 7)} ${whatsappNumber.slice(7)}`
+    : `+${whatsappNumber}`;
+
   return (
     <footer className="bg-[#14110E] text-[#D8CFBF] pt-14 pb-16 md:pb-12 border-t border-[#2A231C] relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +29,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-            <ShieldCheck className="w-5 h-5 text-[#2D5A27] shrink-0" />
+            <ShieldCheck className="w-5 h-5 text-[#D4AF37] shrink-0" />
             <div>
               <span className="font-bold text-white block">100% Cold-Pressed</span>
               <span className="text-[10px] sm:text-[11px] text-[#A39788]">Traditional Extraction</span>
@@ -24,7 +37,7 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-            <CheckCircle2 className="w-5 h-5 text-[#2D5A27] shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-[#D4AF37] shrink-0" />
             <div>
               <span className="font-bold text-white block">Zero Chemicals</span>
               <span className="text-[10px] sm:text-[11px] text-[#A39788]">0% Hexane Solvents</span>
@@ -45,7 +58,7 @@ export const Footer: React.FC = () => {
           {/* Column 1: Brand & Barakkath Marketing (5 cols) */}
           <div className="sm:col-span-2 lg:col-span-5 space-y-3.5">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full bg-[#2D5A27] flex items-center justify-center text-[#D4AF37] shadow-sm">
+              <div className="w-9 h-9 rounded-full bg-[#2C241D] border border-[#D4AF37]/50 flex items-center justify-center text-[#D4AF37] shadow-sm">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
                 </svg>
@@ -77,15 +90,15 @@ export const Footer: React.FC = () => {
               </p>
             </div>
 
-            <div className="pt-1">
+            <div className="pt-1 flex items-center gap-3">
               <a
-                href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order."
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] active:scale-95 text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 bg-[#2C241D] hover:bg-[#1E1914] active:scale-95 text-white border border-[#D4AF37]/40 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-xs group"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>WhatsApp Desk: +91 63748 48947</span>
+                <MessageCircle className="w-4 h-4 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+                <span>WhatsApp Desk: {displayPhone}</span>
               </a>
             </div>
           </div>
@@ -172,6 +185,19 @@ export const Footer: React.FC = () => {
             <span>100% Traditional Cold-Pressed</span>
             <span className="text-[#4A4036]">•</span>
             <span>FSSAI Compliant</span>
+
+            {onOpenAdmin && (
+              <>
+                <span className="text-[#4A4036]">•</span>
+                <button
+                  onClick={onOpenAdmin}
+                  className="inline-flex items-center gap-1 text-[#A39788] hover:text-[#D4AF37] transition-colors cursor-pointer"
+                >
+                  <Lock className="w-3 h-3" />
+                  <span>Admin Portal</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
