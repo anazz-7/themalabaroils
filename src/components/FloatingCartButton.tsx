@@ -53,3 +53,4 @@ export const FloatingCartButton: React.FC<FloatingCartButtonProps> = ({ onOpenCa
 };
 
 export default FloatingCartButton;
+

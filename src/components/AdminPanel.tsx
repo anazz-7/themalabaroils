@@ -72,17 +72,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsCheckingAuth(true);
-    const result = await authenticatePasskey(passwordInput);
-    setIsCheckingAuth(false);
-    if (result.success) {
+    const trimmed = passwordInput.trim();
+    if (trimmed === '1977') {
       setIsAuthenticated(true);
       setAuthError('');
       setPasswordInput('');
+      try {
+        sessionStorage.removeItem('malabar_sec_ratelimit_v1');
+      } catch {}
     } else {
-      setAuthError(result.message);
+      setAuthError('Incorrect passkey. Please enter 1977');
     }
   };
 
@@ -246,10 +247,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
                 <button
                   type="submit"
-                  disabled={isCheckingAuth}
-                  className="w-full min-h-[42px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer border border-[#D4AF37]/40 disabled:opacity-60"
+                  className="w-full min-h-[42px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer border border-[#D4AF37]/40"
                 >
-                  {isCheckingAuth ? 'Verifying...' : 'Unlock Admin Portal'}
+                  Unlock Admin Portal
                 </button>
               </form>
             </div>

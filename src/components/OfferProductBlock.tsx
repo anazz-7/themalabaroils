@@ -206,3 +206,4 @@ export const OfferProductBlock: React.FC<OfferProductBlockProps> = ({ onOpenChec
 };
 
 export default OfferProductBlock;
+
