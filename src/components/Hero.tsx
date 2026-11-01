@@ -35,8 +35,24 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCheckout }) => {
 
   return (
     <section className="relative overflow-hidden pt-6 pb-10 sm:pt-12 sm:pb-16 lg:py-20 bg-gradient-to-b from-[#FBF9F5] via-[#F6F1EA] to-[#FBF9F5]">
+      {/* Background Cold-Press Oil Extraction Machine Video (30% Opacity) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-center opacity-30 filter contrast-110 saturate-110 brightness-95"
+        >
+          <source src="/cold-press-machine.webm" type="video/webm" />
+          <source src="/cold-press-machine.mp4" type="video/mp4" />
+        </video>
+        {/* Soft Vignette Overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FBF9F5]/75 via-[#F6F1EA]/50 to-[#FBF9F5]/85 pointer-events-none" />
+      </div>
+
       {/* Decorative ambient gradient blooms */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] sm:w-[600px] h-[250px] bg-gradient-to-r from-[#D4AF37]/15 via-[#8C6D3B]/10 to-[#D4AF37]/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] sm:w-[600px] h-[250px] bg-gradient-to-r from-[#D4AF37]/15 via-[#8C6D3B]/10 to-[#D4AF37]/15 rounded-full blur-3xl pointer-events-none z-1" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         {/* Top Brand Tag with Smooth Kinetic Reveal */}
