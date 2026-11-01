@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Sparkles, ShieldCheck } from 'lucide-react';
+import { MessageCircle, Sparkles, ShieldCheck, ShoppingBag } from 'lucide-react';
 import { SpotlightCard } from './SpotlightCard';
 import { useCatalog } from '../store/catalogStore';
+import { CheckoutItemInitial } from './CheckoutModal';
+
+interface ProductShowcaseProps {
+  onOpenCheckout?: (item: CheckoutItemInitial) => void;
+}
 
 const formatSizeLabel = (label: string) => {
   return label
@@ -12,7 +17,7 @@ const formatSizeLabel = (label: string) => {
     .replace(' ml', 'ml');
 };
 
-export const ProductShowcase: React.FC = () => {
+export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout }) => {
   const { catalog, whatsappNumber } = useCatalog();
 
   // Size selection states per card
@@ -53,7 +58,7 @@ export const ProductShowcase: React.FC = () => {
             Our Cold-Pressed Oils
           </h2>
           <p className="text-[11px] sm:text-sm text-[#6C5F51] leading-relaxed">
-            Traditionally extracted using slow cold-press chekku methods. Select packaging size to order via WhatsApp.
+            Traditionally extracted using slow cold-press chekku methods. Select packaging size to order via Checkout or WhatsApp.
           </p>
         </motion.div>
 
@@ -89,13 +94,13 @@ export const ProductShowcase: React.FC = () => {
                   />
 
                   <div>
-                    {/* Real Product Bottle Image Showcase */}
-                    <div className="relative w-full aspect-square sm:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-[#F7F4EE] mb-2 sm:mb-3.5 border border-[#EBE4DA] group-hover:border-[#D4C8B8] transition-colors shadow-2xs">
+                    {/* Real Product Bottle Image Showcase with Transparent Cutout & Warm Card Match */}
+                    <div className="relative w-full aspect-square sm:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-b from-[#F7F3EC] to-[#EFE7DC] mb-2 sm:mb-3.5 border border-[#EBE4DA] group-hover:border-[#D4C8B8] transition-colors shadow-2xs flex items-center justify-center p-2 sm:p-3">
                       <img
                         src={oil.image}
                         alt={oil.name}
                         loading="lazy"
-                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                        className="w-full h-full object-contain filter drop-shadow-[0_10px_14px_rgba(0,0,0,0.18)] group-hover:scale-105 transition-transform duration-500 ease-out"
                       />
                       {/* Floating Cap Seal Badge on top of image */}
                       <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-10">
@@ -211,18 +216,28 @@ export const ProductShowcase: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* WhatsApp CTA in Dark Brown & Gold Theme */}
-                    <a
-                      href={getWhatsAppOrderUrl(oil.name, currentSize.label, currentSize.price)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="relative overflow-hidden w-full min-h-[40px] sm:min-h-[46px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.97] text-white py-2 sm:py-2.5 px-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-1 sm:gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer select-none group/btn border border-[#D4AF37]/30"
+                    {/* Direct Order / Checkout CTA in Dark Brown & Gold */}
+                    <button
+                      onClick={() => {
+                        if (onOpenCheckout) {
+                          onOpenCheckout({
+                            id: oil.id,
+                            name: oil.name,
+                            sizeLabel: currentSize.label,
+                            price: currentSize.price,
+                            image: oil.image
+                          });
+                        } else {
+                          window.open(getWhatsAppOrderUrl(oil.name, currentSize.label, currentSize.price), '_blank');
+                        }
+                      }}
+                      className="relative overflow-hidden w-full min-h-[40px] sm:min-h-[46px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.97] text-white py-2 sm:py-2.5 px-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-1.5 sm:gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer select-none group/btn border border-[#D4AF37]/30"
                     >
-                      <MessageCircle className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
-                      <span className="truncate">Order on WhatsApp</span>
+                      <ShoppingBag className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+                      <span className="truncate">Buy Now / Order</span>
                       {/* Sweeping Champagne Light Glint */}
                       <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-[#D4AF37]/25 to-transparent pointer-events-none" />
-                    </a>
+                    </button>
                   </div>
                 </SpotlightCard>
               </motion.div>

@@ -1,9 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Leaf, FlaskConical, Droplet, MessageCircle, Building2, ShieldCheck, Award, Sparkles } from 'lucide-react';
+import { Leaf, FlaskConical, Droplet, MessageCircle, Building2, ShieldCheck, Award, Sparkles, ShoppingBag } from 'lucide-react';
 import { useCatalog } from '../store/catalogStore';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  onOpenCheckout?: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ onOpenCheckout }) => {
   const { whatsappNumber } = useCatalog();
 
   return (
@@ -112,17 +116,29 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.45, delay: 0.15, ease: [0.32, 0.72, 0, 1] }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 select-none"
         >
-          <a
-            href={`https://wa.me/${whatsappNumber}?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order%20cold-pressed%20oils.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative overflow-hidden w-full sm:w-auto min-h-[46px] sm:min-h-[50px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white px-7 py-3 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-[transform,background-color] duration-150 cursor-pointer group/btn border border-[#D4AF37]/35"
-          >
-            <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
-            <span>Order via WhatsApp</span>
-            {/* Sweeping Champagne Light Glint */}
-            <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-[#D4AF37]/25 to-transparent pointer-events-none" />
-          </a>
+          {onOpenCheckout ? (
+            <button
+              onClick={onOpenCheckout}
+              className="relative overflow-hidden w-full sm:w-auto min-h-[46px] sm:min-h-[50px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white px-7 py-3 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-[transform,background-color] duration-150 cursor-pointer group/btn border border-[#D4AF37]/35"
+            >
+              <ShoppingBag className="w-4 h-4 text-[#D4AF37]" />
+              <span>Order & Checkout Now</span>
+              {/* Sweeping Champagne Light Glint */}
+              <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-[#D4AF37]/25 to-transparent pointer-events-none" />
+            </button>
+          ) : (
+            <a
+              href={`https://wa.me/${whatsappNumber}?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order%20cold-pressed%20oils.`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative overflow-hidden w-full sm:w-auto min-h-[46px] sm:min-h-[50px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white px-7 py-3 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-[transform,background-color] duration-150 cursor-pointer group/btn border border-[#D4AF37]/35"
+            >
+              <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
+              <span>Order via WhatsApp</span>
+              {/* Sweeping Champagne Light Glint */}
+              <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-[#D4AF37]/25 to-transparent pointer-events-none" />
+            </a>
+          )}
 
           <a
             href="#trade"

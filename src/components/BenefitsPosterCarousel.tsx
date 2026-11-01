@@ -25,10 +25,10 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
     title: 'Gingelly Oil',
     tamilTitle: 'நல்லெண்ணெய் நன்மைகள்',
     subtitle: 'NATIVE BLACK SESAME & PALM JAGGERY',
-    bgColor: '#E5A638',
+    bgColor: '#E5A536',
     textColor: '#241A12',
     accentColor: '#1A120B',
-    centerImage: '/gingelly-oil.jpg',
+    centerImage: '/gingelly-oil-nobg.png',
     benefits: [
       { text: 'rich in sesamol & calcium', position: 'top-left' },
       { text: 'natural body cooling', position: 'top-right' },
@@ -43,10 +43,10 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
     title: 'Coconut Oil',
     tamilTitle: 'தேங்காய் எண்ணெய் நன்மைகள்',
     subtitle: 'SUN-DRIED 100% SULFUR-FREE COPRA',
-    bgColor: '#E2B16B',
+    bgColor: '#E0B574',
     textColor: '#241A12',
     accentColor: '#1C150E',
-    centerImage: '/coconut-oil.jpg',
+    centerImage: '/coconut-oil-nobg.png',
     benefits: [
       { text: 'rich in lauric acid (MCFA)', position: 'top-left' },
       { text: 'natural metabolism booster', position: 'top-right' },
@@ -64,7 +64,7 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
     bgColor: '#DC9633',
     textColor: '#241A12',
     accentColor: '#1C150E',
-    centerImage: '/groundnut-oil.jpg',
+    centerImage: '/groundnut-oil-nobg.png',
     benefits: [
       { text: 'heart-friendly MUFA fats', position: 'top-left' },
       { text: 'high natural vitamin E', position: 'top-right' },
@@ -79,10 +79,10 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
     title: 'Chekku Press',
     tamilTitle: 'பாரம்பரிய செக்கு முறை',
     subtitle: 'HEAT STRICTLY BELOW 38°C',
-    bgColor: '#CCA452',
+    bgColor: '#CDA44C',
     textColor: '#241A12',
     accentColor: '#1C150E',
-    centerImage: '/hero-bottles.jpg',
+    centerImage: '/hero-bottles-nobg.png',
     benefits: [
       { text: 'zero petroleum solvents', position: 'top-left' },
       { text: 'preserves live micro-nutrients', position: 'top-right' },
@@ -212,16 +212,16 @@ export const BenefitsPosterCarousel: React.FC = () => {
                   {/* Pulsing Aura */}
                   <div className="absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-white/25 blur-xl pointer-events-none animate-pulse" />
 
-                  {/* Center Bottle Graphic */}
+                  {/* Center Bottle Graphic with Seamless Cutout & Natural Ambient Shadow */}
                   <motion.div
-                    animate={isCenter ? { y: [0, -5, 0] } : {}}
+                    animate={isCenter ? { y: [0, -6, 0] } : {}}
                     transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                    className="relative z-10 w-24 sm:w-32 h-36 sm:h-44 rounded-2xl overflow-hidden shadow-xl border-2 border-white/40 bg-white"
+                    className="relative z-10 w-36 sm:w-44 h-44 sm:h-52 flex items-center justify-center filter drop-shadow-[0_14px_18px_rgba(0,0,0,0.28)]"
                   >
                     <img
                       src={poster.centerImage}
                       alt={poster.title}
-                      className="w-full h-full object-cover object-center"
+                      className="w-full h-full object-contain pointer-events-none select-none"
                     />
                   </motion.div>
 
@@ -318,3 +318,4 @@ export const BenefitsPosterCarousel: React.FC = () => {
     </section>
   );
 };
+

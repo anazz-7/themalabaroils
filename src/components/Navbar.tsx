@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, Menu, X, Sparkles, Lock } from 'lucide-react';
+import { MessageCircle, Menu, X, Sparkles, Lock, ShoppingBag } from 'lucide-react';
 import { useCatalog } from '../store/catalogStore';
 
 interface NavbarProps {
   onOpenAdmin?: () => void;
+  onOpenCheckout?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout }) => {
   const { whatsappNumber } = useCatalog();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -97,15 +98,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
                 </button>
               )}
 
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-2 bg-[#2C241D] hover:bg-[#1A1512] active:scale-95 text-white border border-[#D4AF37]/30 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-[transform,background-color] duration-150 shadow-xs cursor-pointer select-none group"
-              >
-                <MessageCircle className="w-4 h-4 text-[#D4AF37] group-hover:scale-110 transition-transform" />
-                <span>Order on WhatsApp</span>
-              </a>
+              {onOpenCheckout ? (
+                <button
+                  onClick={onOpenCheckout}
+                  className="hidden sm:inline-flex items-center gap-2 bg-[#2C241D] hover:bg-[#1A1512] active:scale-95 text-white border border-[#D4AF37]/40 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-[transform,background-color] duration-150 shadow-xs cursor-pointer select-none group"
+                >
+                  <ShoppingBag className="w-4 h-4 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+                  <span>Order & Checkout</span>
+                </button>
+              ) : (
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:inline-flex items-center gap-2 bg-[#2C241D] hover:bg-[#1A1512] active:scale-95 text-white border border-[#D4AF37]/30 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-[transform,background-color] duration-150 shadow-xs cursor-pointer select-none group"
+                >
+                  <MessageCircle className="w-4 h-4 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+                  <span>Order on WhatsApp</span>
+                </a>
+              )}
 
               {/* Mobile Menu Toggle */}
               <button
@@ -151,15 +162,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin }) => {
               Trade & Wholesale Enquiries
             </a>
             <div className="pt-2 flex flex-col gap-2">
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full min-h-[44px] flex items-center justify-center gap-2 bg-[#2C241D] text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-xs border border-[#D4AF37]/30"
-              >
-                <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
-                <span>Order via WhatsApp</span>
-              </a>
+              {onOpenCheckout ? (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenCheckout();
+                  }}
+                  className="w-full min-h-[44px] flex items-center justify-center gap-2 bg-[#2C241D] text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-xs border border-[#D4AF37]/30 cursor-pointer"
+                >
+                  <ShoppingBag className="w-4 h-4 text-[#D4AF37]" />
+                  <span>Order & Checkout</span>
+                </button>
+              ) : (
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full min-h-[44px] flex items-center justify-center gap-2 bg-[#2C241D] text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-xs border border-[#D4AF37]/30"
+                >
+                  <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
+                  <span>Order via WhatsApp</span>
+                </a>
+              )}
 
               {onOpenAdmin && (
                 <button

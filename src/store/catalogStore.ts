@@ -29,7 +29,7 @@ export const DEFAULT_CATALOG: CatalogProduct[] = [
     name: 'Agmark Chekku Gingelly Oil',
     shortMobileName: 'Chekku Gingelly Oil',
     tamilName: 'அக்மார்க் செக்கு நல்லெண்ணெய்',
-    image: '/gingelly-oil.jpg',
+    image: '/gingelly-oil-nobg.png',
     capColor: 'yellow',
     capLabel: 'Yellow Seal',
     badgeBg: '#FEF3C7',
@@ -46,7 +46,7 @@ export const DEFAULT_CATALOG: CatalogProduct[] = [
     name: 'Agmark Chekku Coconut Oil',
     shortMobileName: 'Chekku Coconut Oil',
     tamilName: 'அக்மார்க் செக்கு தேங்காய் எண்ணெய்',
-    image: '/coconut-oil.jpg',
+    image: '/coconut-oil-nobg.png',
     capColor: 'blue',
     capLabel: 'Blue Seal',
     badgeBg: '#DBEAFE',
@@ -63,7 +63,7 @@ export const DEFAULT_CATALOG: CatalogProduct[] = [
     name: 'Agmark Chekku Groundnut Oil',
     shortMobileName: 'Chekku Groundnut Oil',
     tamilName: 'அக்மார்க் செக்கு கடலை எண்ணெய்',
-    image: '/groundnut-oil.jpg',
+    image: '/groundnut-oil-nobg.png',
     capColor: 'red',
     capLabel: 'Red Seal',
     badgeBg: '#FEE2E2',
@@ -80,7 +80,7 @@ export const DEFAULT_CATALOG: CatalogProduct[] = [
     name: 'The Malabar Grand Trio Box',
     shortMobileName: 'Grand Trio Box',
     tamilName: 'செக்கு எண்ணெய் முக்கூட்டு பேக்',
-    image: '/hero-bottles.jpg',
+    image: '/hero-bottles-nobg.png',
     capColor: 'green',
     capLabel: 'Heritage Trio',
     badgeBg: '#F5ECE1',
@@ -95,7 +95,7 @@ export const DEFAULT_CATALOG: CatalogProduct[] = [
   }
 ];
 
-const STORAGE_CATALOG_KEY = 'malabar_catalog_v2';
+const STORAGE_CATALOG_KEY = 'malabar_catalog_v3';
 const STORAGE_PHONE_KEY = 'malabar_whatsapp_phone_v2';
 
 const listeners: Array<() => void> = [];
@@ -182,3 +182,4 @@ export function useCatalog() {
     resetCatalogToDefaults
   };
 }
+
