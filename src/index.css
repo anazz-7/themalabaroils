@@ -168,3 +168,18 @@
 .animate-glow-pulse {
   animation: glow-pulse 3.5s ease-in-out infinite;
 }
+
+@keyframes roadMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-road-move {
+  animation: roadMove 0.75s linear infinite;
+  will-change: transform;
+}
+

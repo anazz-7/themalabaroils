@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Sparkles, ShieldCheck } from 'lucide-react';
 
 interface BenefitPoster {
   id: string;
   category: string;
   title: string;
+  fullName: string;
   subtitle: string;
   tamilTitle: string;
   bgColor: string;
@@ -22,13 +23,14 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
   {
     id: 'gingelly',
     category: 'TRADITIONAL COLD-PRESSED',
-    title: 'Gingelly Oil',
+    title: 'Gingelly',
+    fullName: 'Gingelly Oil',
     tamilTitle: 'நல்லெண்ணெய் நன்மைகள்',
     subtitle: 'NATIVE BLACK SESAME & PALM JAGGERY',
     bgColor: '#E5A536',
     textColor: '#241A12',
     accentColor: '#1A120B',
-    centerImage: '/gingelly-oil.jpg',
+    centerImage: '/sesame-ingredient.jpg',
     benefits: [
       { text: 'rich in sesamol & calcium', position: 'top-left' },
       { text: 'natural body cooling', position: 'top-right' },
@@ -40,13 +42,14 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
   {
     id: 'coconut',
     category: '100% EDIBLE RAW EXTRACTION',
-    title: 'Coconut Oil',
+    title: 'Coconut',
+    fullName: 'Coconut Oil',
     tamilTitle: 'தேங்காய் எண்ணெய் நன்மைகள்',
     subtitle: 'SUN-DRIED 100% SULFUR-FREE COPRA',
     bgColor: '#E0B574',
     textColor: '#241A12',
     accentColor: '#1C150E',
-    centerImage: '/coconut-oil.jpg',
+    centerImage: '/coconut-ingredient.jpg',
     benefits: [
       { text: 'rich in lauric acid (MCFA)', position: 'top-left' },
       { text: 'natural metabolism booster', position: 'top-right' },
@@ -58,13 +61,14 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
   {
     id: 'groundnut',
     category: 'EVERYDAY HEALTHY COOKING',
-    title: 'Groundnut Oil',
+    title: 'Groundnut',
+    fullName: 'Groundnut Oil',
     tamilTitle: 'கடலை எண்ணெய் நன்மைகள்',
     subtitle: 'HAND-SORTED NATIVE PEANUTS',
     bgColor: '#DC9633',
     textColor: '#241A12',
     accentColor: '#1C150E',
-    centerImage: '/groundnut-oil.jpg',
+    centerImage: '/groundnut-ingredient.jpg',
     benefits: [
       { text: 'heart-friendly MUFA fats', position: 'top-left' },
       { text: 'high natural vitamin E', position: 'top-right' },
@@ -72,32 +76,12 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
       { text: 'zero trans fats or soak', position: 'bottom-right' },
       { text: 'unrefined nutty aroma', position: 'bottom' }
     ]
-  },
-  {
-    id: 'chekku',
-    category: 'HERITAGE CHEKKU EXTRACTION',
-    title: 'Chekku Press',
-    tamilTitle: 'பாரம்பரிய செக்கு முறை',
-    subtitle: 'HEAT STRICTLY BELOW 38°C',
-    bgColor: '#CDA44C',
-    textColor: '#241A12',
-    accentColor: '#1C150E',
-    centerImage: '/hero-bottles.jpg',
-    benefits: [
-      { text: 'zero petroleum solvents', position: 'top-left' },
-      { text: 'preserves live micro-nutrients', position: 'top-right' },
-      { text: 'no bleaching or chemicals', position: 'bottom-left' },
-      { text: 'AGMARK Grade-1 certified', position: 'bottom-right' },
-      { text: 'fresh weekly batch pressing', position: 'bottom' }
-    ]
   }
 ];
 
 export const BenefitsPosterCarousel: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
   const total = BENEFIT_POSTERS.length;
 
   const nextSlide = () => {
@@ -108,12 +92,21 @@ export const BenefitsPosterCarousel: React.FC = () => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
   };
 
-  // Auto-play interval
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
+    const threshold = 40;
+    if (info.offset.x < -threshold || info.velocity.x < -350) {
+      nextSlide();
+    } else if (info.offset.x > threshold || info.velocity.x > 350) {
+      prevSlide();
+    }
+  };
+
+  // Auto-play interval (smooth, pauses when user interacts)
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % total);
-    }, 4500);
+    }, 5000);
     return () => clearInterval(interval);
   }, [isPaused, total]);
 
@@ -123,6 +116,8 @@ export const BenefitsPosterCarousel: React.FC = () => {
       className="py-12 sm:py-20 bg-[#FBF9F5] border-t border-[#E8DFD3] relative overflow-hidden select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header with Motion Graphics */}
@@ -130,8 +125,8 @@ export const BenefitsPosterCarousel: React.FC = () => {
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
-          className="text-center max-w-2xl mx-auto mb-8 sm:mb-14"
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-2xl mx-auto mb-8 sm:mb-12"
         >
           <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-cinzel tracking-[0.25em] uppercase text-[#7A6E61] font-bold mb-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
@@ -145,11 +140,8 @@ export const BenefitsPosterCarousel: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* 3D Coverflow Poster Stage */}
-        <div
-          ref={containerRef}
-          className="relative h-[480px] sm:h-[560px] flex items-center justify-center perspective-[1200px]"
-        >
+        {/* 60FPS Coverflow Poster Carousel Stage */}
+        <div className="relative h-[490px] sm:h-[560px] flex items-center justify-center touch-pan-y">
           {BENEFIT_POSTERS.map((poster, index) => {
             // Determine relative position in circular carousel
             let offset = index - activeIndex;
@@ -157,8 +149,6 @@ export const BenefitsPosterCarousel: React.FC = () => {
             if (offset > Math.floor(total / 2)) offset -= total;
 
             const isCenter = offset === 0;
-            const isLeft = offset === -1 || (offset < 0 && Math.abs(offset) === 1);
-            const isRight = offset === 1 || (offset > 0 && Math.abs(offset) === 1);
             const isVisible = Math.abs(offset) <= 1;
 
             if (!isVisible) return null;
@@ -166,93 +156,104 @@ export const BenefitsPosterCarousel: React.FC = () => {
             return (
               <motion.div
                 key={poster.id}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => {
+                  if (!isCenter) setActiveIndex(index);
+                }}
+                drag={isCenter ? 'x' : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.25}
+                onDragEnd={isCenter ? handleDragEnd : undefined}
                 initial={false}
                 animate={{
-                  x: offset * (window.innerWidth < 640 ? 210 : 340),
-                  scale: isCenter ? 1 : 0.82,
-                  rotateY: offset * -18,
-                  opacity: isCenter ? 1 : 0.55,
-                  zIndex: isCenter ? 30 : 10,
-                  filter: isCenter ? 'blur(0px)' : 'blur(1.5px)'
+                  x: offset * (typeof window !== 'undefined' && window.innerWidth < 640 ? 230 : 330),
+                  scale: isCenter ? 1 : 0.84,
+                  opacity: isCenter ? 1 : 0.6,
+                  zIndex: isCenter ? 30 : 10
                 }}
                 transition={{
                   type: 'spring',
-                  stiffness: 280,
-                  damping: 26,
-                  mass: 0.9
+                  stiffness: 350,
+                  damping: 32,
+                  mass: 0.75
                 }}
-                className={`absolute w-[290px] sm:w-[350px] h-[430px] sm:h-[500px] rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col justify-between cursor-pointer border border-white/20 select-none overflow-hidden transition-shadow duration-300 ${
-                  isCenter ? 'ring-2 ring-[#2C241D]/20 shadow-[0_25px_50px_-12px_rgba(44,36,29,0.35)]' : ''
+                className={`absolute w-[290px] sm:w-[350px] h-[450px] sm:h-[520px] rounded-[28px] sm:rounded-[36px] p-5 sm:p-7 shadow-2xl flex flex-col justify-between cursor-pointer border border-white/20 select-none overflow-hidden ${
+                  isCenter ? 'ring-2 ring-[#2C241D]/20 shadow-[0_25px_50px_-12px_rgba(44,36,29,0.35)]' : 'shadow-md'
                 }`}
                 style={{
                   backgroundColor: poster.bgColor,
-                  color: poster.textColor
+                  color: poster.textColor,
+                  willChange: 'transform, opacity'
                 }}
               >
-                {/* Poster Header */}
-                <div className="text-center z-10">
-                  <span className="text-[9px] sm:text-[10px] font-bold tracking-[0.22em] uppercase opacity-85 block mb-1">
+                {/* Poster Header (Matching tsfarm.in reference) */}
+                <div className="text-center z-10 pt-1">
+                  <span className="text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.22em] uppercase opacity-85 block mb-1">
                     {poster.category}
                   </span>
-                  <h3 className="font-serif-display text-2xl sm:text-3xl font-black leading-tight tracking-tight">
-                    <span className="font-serif italic font-normal text-xl sm:text-2xl block mb-0.5">benefits of</span>
+                  <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-[#241A12]">
+                    <span className="font-serif italic font-normal text-xl sm:text-2xl block mb-0.5 opacity-90">
+                      benefits of
+                    </span>
                     {poster.title}
                   </h3>
                   <span className="text-[10px] sm:text-xs font-serif italic text-black/75 block mt-0.5">
                     {poster.tamilTitle}
                   </span>
-                  <div className="text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.18em] uppercase opacity-75 mt-1.5">
+                  <div className="text-[8px] sm:text-[9px] font-bold tracking-[0.2em] uppercase opacity-75 mt-1.5">
                     {poster.subtitle}
                   </div>
                 </div>
 
-                {/* Center Visual Graphic with Floating Motion Graphics */}
+                {/* Center Visual Graphic: Raw Natural Ingredient Photography */}
                 <div className="relative my-auto flex items-center justify-center h-48 sm:h-56">
-                  {/* Pulsing Aura */}
-                  <div className="absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-white/25 blur-xl pointer-events-none animate-pulse" />
+                  {/* Subtle Warm Backdrop Aura */}
+                  <div className="absolute w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-white/25 blur-xl pointer-events-none" />
 
-                  {/* Center Bottle Graphic */}
+                  {/* Center Ingredient Showcase with Multiply Blend Mode for seamless poster integration */}
                   <motion.div
-                    animate={isCenter ? { y: [0, -5, 0] } : {}}
-                    transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                    className="relative z-10 w-28 sm:w-36 h-40 sm:h-48 rounded-2xl overflow-hidden shadow-xl border border-black/10 bg-white"
+                    animate={isCenter ? { y: [0, -4, 0] } : {}}
+                    transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
+                    className="relative z-10 w-36 sm:w-44 h-36 sm:h-44 flex items-center justify-center"
                   >
                     <img
                       src={poster.centerImage}
-                      alt={poster.title}
-                      className="w-full h-full object-cover object-center select-none"
+                      alt={poster.fullName}
+                      className="w-full h-full object-contain select-none drop-shadow-[0_12px_24px_rgba(40,25,10,0.22)]"
+                      style={{
+                        mixBlendMode: 'multiply',
+                        filter: 'contrast(1.08) saturate(1.04)'
+                      }}
                     />
                   </motion.div>
 
-                  {/* 5 Infographic Benefit Callouts with Hand-drawn Curved Arrows */}
+                  {/* 4 Hand-drawn Curved Infographic Arrows pointing to Benefits (like reference) */}
                   {/* 1. Top Left */}
-                  <div className="absolute -top-1 left-0 max-w-[95px] sm:max-w-[110px] text-left z-20">
+                  <div className="absolute top-0 left-0 max-w-[95px] sm:max-w-[110px] text-left z-20">
                     <span className="text-[9px] sm:text-[10.5px] font-bold leading-tight block text-[#241A12]">
                       {poster.benefits[0].text}
                     </span>
-                    <svg className="w-8 h-6 text-[#241A12] mt-0.5" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-                      <path d="M4 4 Q 16 2, 28 18" />
-                      <path d="M22 18 L 28 18 L 26 12" />
+                    <svg className="w-8 h-6 text-[#241A12] mt-0.5" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M4 4 Q 14 2, 26 16" />
+                      <path d="M20 16 L 26 16 L 24 10" />
                     </svg>
                   </div>
 
                   {/* 2. Top Right */}
-                  <div className="absolute -top-1 right-0 max-w-[95px] sm:max-w-[110px] text-right z-20">
+                  <div className="absolute top-0 right-0 max-w-[95px] sm:max-w-[110px] text-right z-20">
                     <span className="text-[9px] sm:text-[10.5px] font-bold leading-tight block text-[#241A12]">
                       {poster.benefits[1].text}
                     </span>
-                    <svg className="w-8 h-6 text-[#241A12] mt-0.5 ml-auto scale-x-[-1]" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-                      <path d="M4 4 Q 16 2, 28 18" />
-                      <path d="M22 18 L 28 18 L 26 12" />
+                    <svg className="w-8 h-6 text-[#241A12] mt-0.5 ml-auto scale-x-[-1]" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M4 4 Q 14 2, 26 16" />
+                      <path d="M20 16 L 26 16 L 24 10" />
                     </svg>
                   </div>
 
                   {/* 3. Bottom Left */}
-                  <div className="absolute bottom-2 left-0 max-w-[95px] sm:max-w-[110px] text-left z-20">
-                    <svg className="w-8 h-6 text-[#241A12] mb-0.5" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-                      <path d="M28 4 Q 16 20, 6 20" />
-                      <path d="M12 16 L 6 20 L 12 24" />
+                  <div className="absolute bottom-1 left-0 max-w-[95px] sm:max-w-[110px] text-left z-20">
+                    <svg className="w-8 h-6 text-[#241A12] mb-0.5" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M26 4 Q 14 18, 6 18" />
+                      <path d="M12 14 L 6 18 L 12 22" />
                     </svg>
                     <span className="text-[9px] sm:text-[10.5px] font-bold leading-tight block text-[#241A12]">
                       {poster.benefits[2].text}
@@ -260,10 +261,10 @@ export const BenefitsPosterCarousel: React.FC = () => {
                   </div>
 
                   {/* 4. Bottom Right */}
-                  <div className="absolute bottom-2 right-0 max-w-[95px] sm:max-w-[110px] text-right z-20">
-                    <svg className="w-8 h-6 text-[#241A12] mb-0.5 ml-auto scale-x-[-1]" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
-                      <path d="M28 4 Q 16 20, 6 20" />
-                      <path d="M12 16 L 6 20 L 12 24" />
+                  <div className="absolute bottom-1 right-0 max-w-[95px] sm:max-w-[110px] text-right z-20">
+                    <svg className="w-8 h-6 text-[#241A12] mb-0.5 ml-auto scale-x-[-1]" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M26 4 Q 14 18, 6 18" />
+                      <path d="M12 14 L 6 18 L 12 22" />
                     </svg>
                     <span className="text-[9px] sm:text-[10.5px] font-bold leading-tight block text-[#241A12]">
                       {poster.benefits[3].text}
@@ -273,7 +274,7 @@ export const BenefitsPosterCarousel: React.FC = () => {
 
                 {/* Poster Footer: 5th Benefit Stamp */}
                 <div className="z-10 text-center border-t border-black/15 pt-2 sm:pt-3">
-                  <div className="inline-flex items-center gap-1.5 bg-black/15 backdrop-blur-xs px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#1C150E]">
+                  <div className="inline-flex items-center gap-1.5 bg-black/15 px-3 py-1 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#1C150E]">
                     <ShieldCheck className="w-3 h-3 text-[#1C150E]" />
                     <span>{poster.benefits[4].text}</span>
                   </div>
@@ -318,4 +319,3 @@ export const BenefitsPosterCarousel: React.FC = () => {
     </section>
   );
 };
-

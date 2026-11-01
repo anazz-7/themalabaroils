@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 interface SpotlightCardProps {
   children: React.ReactNode;
@@ -12,21 +12,22 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
   spotlightColor = 'rgba(212, 175, 55, 0.12)'
 }) => {
   const divRef = useRef<HTMLDivElement | null>(null);
-  const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
+  const spotlightRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
+    if (!divRef.current || !spotlightRef.current) return;
     const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    spotlightRef.current.style.background = `radial-gradient(450px circle at ${x}px ${y}px, ${spotlightColor}, transparent 80%)`;
   };
 
   const handleMouseEnter = () => {
-    setOpacity(1);
+    if (spotlightRef.current) spotlightRef.current.style.opacity = '1';
   };
 
   const handleMouseLeave = () => {
-    setOpacity(0);
+    if (spotlightRef.current) spotlightRef.current.style.opacity = '0';
   };
 
   return (
@@ -39,14 +40,10 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
     >
       {/* Spotlight highlight */}
       <div
-        className="pointer-events-none absolute -inset-px transition-opacity duration-300 ease-out"
-        style={{
-          opacity,
-          background: `radial-gradient(450px circle at ${position.x}px ${position.y}px, ${spotlightColor}, transparent 80%)`
-        }}
+        ref={spotlightRef}
+        className="pointer-events-none absolute -inset-px opacity-0 transition-opacity duration-300 ease-out"
       />
       {children}
     </div>
   );
 };
-
