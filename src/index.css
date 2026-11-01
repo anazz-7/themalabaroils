@@ -29,7 +29,8 @@
 
 .font-bebas {
   font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.015em;
+  line-height: 0.9;
 }
 
 :root {

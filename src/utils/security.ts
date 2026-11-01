@@ -115,3 +115,4 @@ export async function authenticatePasskey(passkey: string): Promise<AuthResult> 
     }
   }
 }
+

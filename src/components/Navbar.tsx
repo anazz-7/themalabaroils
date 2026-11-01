@@ -26,9 +26,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20place%20an%20order.`;
 
   return (
-    <>
-      {/* Top Utility Announcement Bar */}
-      <div className="bg-[#1C1814] text-[#E7DFD5] text-[9.5px] sm:text-[11px] py-1 sm:py-1.5 px-3 sm:px-4 border-b border-[#2D2620] relative z-50">
+    <div className="sticky top-0 z-40 w-full">
+      {/* Top Utility Announcement Bar - Sticky with Header */}
+      <div className="bg-[#1C1814] text-[#E7DFD5] text-[9.5px] sm:text-[11px] py-1 sm:py-1.5 px-3 sm:px-4 border-b border-[#2D2620]">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 text-left">
           <div className="flex items-center gap-1.5 sm:gap-2 truncate">
             <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse shrink-0"></span>
@@ -46,26 +46,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
 
       {/* Main Navbar */}
       <header
-        className={`sticky top-0 z-40 transition-[background-color,border-color,padding,box-shadow] duration-200 ${
+        className={`w-full transition-[background-color,border-color,padding,box-shadow] duration-200 ${
           isScrolled
-            ? 'bg-white/92 backdrop-blur-md shadow-xs border-b border-[#E8E1D8] py-2 sm:py-3'
-            : 'bg-[#FBF9F5]/92 backdrop-blur-md py-2.5 sm:py-4 border-b border-[#EDE6DC]'
+            ? 'bg-white/95 backdrop-blur-md shadow-xs border-b border-[#E8E1D8] py-2 sm:py-2.5'
+            : 'bg-[#FBF9F5]/95 backdrop-blur-md py-2 sm:py-3 border-b border-[#EDE6DC]'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Brand Logo & Wordmark - Perfectly aligned with tight letter spacing */}
-            <a href="#" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-full bg-[#2C241D] border border-[#D4AF37]/50 flex items-center justify-center text-[#D4AF37] shadow-xs transition-transform duration-200 group-hover:scale-105 shrink-0">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            {/* Brand Logo & Wordmark - Less height, tight letter spacing */}
+            <a href="#" className="flex items-center gap-2 group">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#2C241D] border border-[#D4AF37]/50 flex items-center justify-center text-[#D4AF37] shadow-xs transition-transform duration-200 group-hover:scale-105 shrink-0">
+                <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
                 </svg>
               </div>
               <div className="flex flex-col justify-center">
-                <span className="font-bebas text-2xl sm:text-3xl tracking-[0.04em] text-[#2C241D] leading-none">
+                <span className="font-bebas text-lg sm:text-2xl tracking-[0.01em] text-[#2C241D] leading-[0.88] group-hover:text-[#8C6D3B] transition-colors">
                   THE MALABAR OILS
                 </span>
-                <span className="text-[9px] tracking-[0.16em] uppercase text-[#736555] font-semibold mt-0.5">
+                <span className="text-[7.5px] sm:text-[9px] tracking-[0.06em] uppercase text-[#736555] font-bold mt-0.5 leading-none">
                   Natural Oils & Farm Foods
                 </span>
               </div>
@@ -235,6 +235,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
           </div>
         )}
       </header>
-    </>
+    </div>
   );
 };

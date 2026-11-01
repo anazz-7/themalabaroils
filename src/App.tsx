@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { BenefitsPosterCarousel } from './components/BenefitsPosterCarousel';
+import { OfferProductBlock } from './components/OfferProductBlock';
 import { ProductShowcase } from './components/ProductShowcase';
 import { BrandTradition } from './components/BrandTradition';
 import { TradeEnquiries } from './components/TradeEnquiries';
 import { Footer } from './components/Footer';
-import { StickyMobileBar } from './components/StickyMobileBar';
+import { FloatingCartButton } from './components/FloatingCartButton';
 import { AmbientBackgroundVFX } from './components/AmbientBackgroundVFX';
 import { AdminPanel } from './components/AdminPanel';
 import { CheckoutModal, CheckoutItemInitial } from './components/CheckoutModal';
@@ -32,7 +33,7 @@ export const App: React.FC = () => {
       {/* Ambient background particles VFX */}
       <AmbientBackgroundVFX />
 
-      {/* Minimal Navigation with Admin Portal Access, Cart Drawer & Direct Checkout */}
+      {/* Sticky Announcement Bar + Navigation with Admin Portal Access & Cart */}
       <Navbar
         onOpenAdmin={() => setAdminOpen(true)}
         onOpenCheckout={() => handleOpenCheckout()}
@@ -45,7 +46,13 @@ export const App: React.FC = () => {
       {/* 3D Coverflow Benefits Poster Carousel (Seamless Cutout, Warm Card Match) */}
       <BenefitsPosterCarousel />
 
-      {/* Minimal Product Showcase (2x2 / 4x2 Grid, Add to Cart & Buy Now Dual Action) */}
+      {/* High-Converting Special Offer Product Block (Kitchen Trio Combo) */}
+      <OfferProductBlock
+        onOpenCheckout={(item) => handleOpenCheckout(item)}
+        onOpenCart={handleOpenCart}
+      />
+
+      {/* Product Showcase (Swipeable Carousel on Mobile, 4x2 Grid on Desktop) */}
       <ProductShowcase
         onOpenCheckout={(item) => handleOpenCheckout(item)}
         onOpenCart={handleOpenCart}
@@ -60,11 +67,8 @@ export const App: React.FC = () => {
       {/* Clean Footer with Admin Link */}
       <Footer onOpenAdmin={() => setAdminOpen(true)} />
 
-      {/* Mobile-First Sticky Bottom Action Bar with Quick Cart & Checkout */}
-      <StickyMobileBar
-        onOpenCheckout={() => handleOpenCheckout()}
-        onOpenCart={handleOpenCart}
-      />
+      {/* Minimal Floating Cart Button on Mobile (Replaces Bulky Bottom Menu Bar) */}
+      <FloatingCartButton onOpenCart={handleOpenCart} />
 
       {/* Slide-over Shopping Cart Drawer */}
       <CartDrawer
