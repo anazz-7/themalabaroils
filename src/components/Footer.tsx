@@ -3,7 +3,7 @@ import { ShieldCheck, MapPin, MessageCircle, Clock, Award, CheckCircle2, ArrowRi
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#14110E] text-[#D8CFBF] pt-14 pb-28 md:pb-12 border-t border-[#2A231C] relative z-10">
+    <footer className="bg-[#14110E] text-[#D8CFBF] pt-14 pb-20 md:pb-12 border-t border-[#2A231C] relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Purity Assurance Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pb-10 border-b border-[#2C241D] text-xs">

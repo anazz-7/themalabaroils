@@ -16,16 +16,18 @@ export const Navbar: React.FC = () => {
   return (
     <>
       {/* Top Utility Announcement Bar */}
-      <div className="bg-[#1C1814] text-[#E7DFD5] text-[11px] py-2 px-4 border-b border-[#2D2620] relative z-50">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 text-center sm:text-left">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"></span>
-            <span className="tracking-wide">AGMARK Grade-1 Certified Pure Cold-Pressed Oils</span>
+      <div className="bg-[#1C1814] text-[#E7DFD5] text-[9.5px] sm:text-[11px] py-1 sm:py-1.5 px-3 sm:px-4 border-b border-[#2D2620] relative z-50">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 text-left">
+          <div className="flex items-center gap-1.5 sm:gap-2 truncate">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse shrink-0"></span>
+            <span className="tracking-wide font-medium truncate sm:hidden">AGMARK Grade-1 Cold-Pressed Oils</span>
+            <span className="tracking-wide hidden sm:inline">AGMARK Grade-1 Certified Pure Cold-Pressed Oils</span>
             <span className="text-[#6D6357] hidden md:inline">•</span>
             <span className="text-[#A3998D] hidden md:inline">Traditional Chekku Cold-Pressed (&lt; 38°C)</span>
           </div>
-          <div className="text-[10px] uppercase tracking-wider text-[#A3998D]">
-            Barakkath Marketing • Periyakulam, Theni District, Tamil Nadu
+          <div className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#A3998D] shrink-0 font-medium">
+            <span className="sm:hidden">Theni Dist, TN</span>
+            <span className="hidden sm:inline">Barakkath Marketing • Periyakulam, Theni District, Tamil Nadu</span>
           </div>
         </div>
       </div>
@@ -34,8 +36,8 @@ export const Navbar: React.FC = () => {
       <header
         className={`sticky top-0 z-40 transition-[background-color,border-color,padding,box-shadow] duration-200 ${
           isScrolled
-            ? 'bg-white/90 backdrop-blur-md shadow-xs border-b border-[#E8E1D8] py-3'
-            : 'bg-[#FBF9F5]/90 backdrop-blur-md py-4 border-b border-[#EDE6DC]'
+            ? 'bg-white/90 backdrop-blur-md shadow-xs border-b border-[#E8E1D8] py-2 sm:py-3'
+            : 'bg-[#FBF9F5]/90 backdrop-blur-md py-2.5 sm:py-4 border-b border-[#EDE6DC]'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
