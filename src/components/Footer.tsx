@@ -40,10 +40,10 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 py-10 sm:py-12 border-b border-[#2C241D]">
-          {/* Column 1: Brand & Heritage (4 cols) */}
-          <div className="sm:col-span-2 lg:col-span-4 space-y-3.5">
+        {/* Main Content Grid: 3 Clean Columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 py-10 sm:py-12 border-b border-[#2C241D]">
+          {/* Column 1: Brand & Barakkath Marketing (5 cols) */}
+          <div className="sm:col-span-2 lg:col-span-5 space-y-3.5">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-full bg-[#2D5A27] flex items-center justify-center text-[#D4AF37] shadow-sm">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -55,13 +55,13 @@ export const Footer: React.FC = () => {
                   THE MALABAR OILS
                 </span>
                 <span className="text-[9px] tracking-[0.28em] uppercase text-[#A39788] font-semibold">
-                  Natural Oils & Farm Foods
+                  Traditional Cold-Pressed Oils
                 </span>
               </div>
             </div>
 
             <p className="text-xs text-[#AAA090] leading-relaxed">
-              Rooted In Tradition. Dedicated to producing unadulterated cold-pressed edible oils using slow traditional extraction. Pure, unrefined, and certified to the highest statutory purity benchmarks.
+              Rooted In Tradition. Dedicated to producing unadulterated cold-pressed edible oils using slow traditional extraction. Pure, unrefined, and certified with statutory AGMARK Grade-1 assurance.
             </p>
 
             <div className="pt-1">
@@ -90,68 +90,38 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Column 2: Cold-Pressed Oils (2 cols) */}
-          <div className="lg:col-span-2 space-y-3">
+          {/* Column 2: Cold-Pressed Oils (3 cols) */}
+          <div className="lg:col-span-3 space-y-3">
             <h4 className="font-cinzel text-xs font-bold tracking-[0.2em] text-[#FAF7F2] uppercase border-b border-white/10 pb-2">
-              Cold-Pressed Oils
+              Our Products
             </h4>
             <ul className="space-y-2 text-xs text-[#B5ABA0]">
               <li>
                 <a href="#oils" className="hover:text-white transition-colors block">
-                  Agmark Gingelly Oil <br />
-                  <span className="text-[10px] text-[#7A6E61]">செக்கு நல்லெண்ணெய்</span>
+                  Agmark Chekku Gingelly Oil <br />
+                  <span className="text-[10px] text-[#7A6E61]">அக்மார்க் செக்கு நல்லெண்ணெய்</span>
                 </a>
               </li>
               <li>
                 <a href="#oils" className="hover:text-white transition-colors block">
-                  Agmark Coconut Oil <br />
-                  <span className="text-[10px] text-[#7A6E61]">செக்கு தேங்காய் எண்ணெய்</span>
+                  Agmark Chekku Coconut Oil <br />
+                  <span className="text-[10px] text-[#7A6E61]">அக்மார்க் செக்கு தேங்காய் எண்ணெய்</span>
                 </a>
               </li>
               <li>
                 <a href="#oils" className="hover:text-white transition-colors block">
-                  Agmark Groundnut Oil <br />
-                  <span className="text-[10px] text-[#7A6E61]">செக்கு கடலை எண்ணெய்</span>
+                  Agmark Chekku Groundnut Oil <br />
+                  <span className="text-[10px] text-[#7A6E61]">அக்மார்க் செக்கு கடலை எண்ணெய்</span>
                 </a>
               </li>
               <li className="pt-1 text-[11px] text-[#D4AF37] font-semibold">
-                Sizes: 500ml • 1L • 5L • 15L
+                Packaging: 500ml • 1L • 5L • Bulk
               </li>
             </ul>
           </div>
 
-          {/* Column 3: The Malabar Farm Foods (3 cols) */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="font-cinzel text-xs font-bold tracking-[0.2em] text-[#FAF7F2] uppercase border-b border-white/10 pb-2">
-              The Malabar Farm Foods
-            </h4>
-            <ul className="space-y-2 text-xs text-[#B5ABA0]">
-              <li>
-                <a href="#oils" className="hover:text-white transition-colors block">
-                  Pure Castor Oil <br />
-                  <span className="text-[10px] text-[#7A6E61]">விளக்கெண்ணெய்</span>
-                </a>
-              </li>
-              <li>
-                <a href="#oils" className="hover:text-white transition-colors block">
-                  Organic Naatu Sakkarai <br />
-                  <span className="text-[10px] text-[#7A6E61]">நாட்டு சர்க்கரை (Country Sugar)</span>
-                </a>
-              </li>
-              <li className="text-[#8C8072]">
-                Western Ghats Wild Honey
-              </li>
-              <li className="text-[#8C8072]">
-                Traditional Stone-Ground Spices
-              </li>
-              <li className="text-[#8C8072]">
-                Heritage Theni Millets
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Trade & Wholesale Info (3 cols) */}
-          <div className="lg:col-span-3 space-y-3">
+          {/* Column 3: Trade & Wholesale Info (4 cols) */}
+          <div className="lg:col-span-4 space-y-3">
             <h4 className="font-cinzel text-xs font-bold tracking-[0.2em] text-[#FAF7F2] uppercase border-b border-white/10 pb-2">
               Trade & Dealerships
             </h4>
@@ -170,17 +140,11 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a href="#trade" className="hover:text-white transition-colors flex items-center justify-between">
-                  <span>HoReCa Bulk (15L / Barrels)</span>
+                  <span>HoReCa Bulk Supply (15L / Barrels)</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
                 </a>
               </li>
-              <li>
-                <a href="#trade" className="hover:text-white transition-colors flex items-center justify-between">
-                  <span>Contract Packaging Enquiries</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
-                </a>
-              </li>
-              <li className="pt-1 text-[11px] text-[#A39788] flex items-center gap-1.5">
+              <li className="pt-2 text-[11px] text-[#A39788] flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-[#D4AF37]" />
                 <span>Mon – Sat: 9:00 AM – 7:30 PM IST</span>
               </li>

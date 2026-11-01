@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Check, Sparkles, Droplets, Package, ShieldCheck } from 'lucide-react';
+import { MessageCircle, Sparkles, ShieldCheck } from 'lucide-react';
 import { SpotlightCard } from './SpotlightCard';
 
 interface OilItem {
@@ -14,13 +14,10 @@ interface OilItem {
   badgeBg: string;
   badgeText: string;
   glowColor: string;
-  shortDesc: string;
-  features: string[];
   sizes: {
     label: string;
     price: number;
     originalPrice: number;
-    fillPercent: number;
   }[];
   isCombo?: boolean;
 }
@@ -45,12 +42,10 @@ const CORE_OILS: OilItem[] = [
     badgeBg: '#FEF3C7',
     badgeText: '#92400E',
     glowColor: 'rgba(217, 119, 6, 0.25)',
-    shortDesc: 'Slow-pressed from premium native black sesame seeds with palm jaggery in traditional chekku.',
-    features: ['Native Black Sesame', 'Sesamol Antioxidants', 'Body Cooling', 'AGMARK Grade 1'],
     sizes: [
-      { label: '500 ml', price: 220, originalPrice: 250, fillPercent: 45 },
-      { label: '1 Litre', price: 420, originalPrice: 470, fillPercent: 75 },
-      { label: '5 Litres', price: 2050, originalPrice: 2350, fillPercent: 100 }
+      { label: '500 ml', price: 220, originalPrice: 250 },
+      { label: '1 Litre', price: 420, originalPrice: 470 },
+      { label: '5 Litres', price: 2050, originalPrice: 2350 }
     ]
   },
   {
@@ -64,12 +59,10 @@ const CORE_OILS: OilItem[] = [
     badgeBg: '#DBEAFE',
     badgeText: '#1E40AF',
     glowColor: 'rgba(37, 99, 235, 0.25)',
-    shortDesc: 'Cold-pressed from sun-dried, 100% sulfur-free copra. Crystal-clear edible coconut aroma.',
-    features: ['100% Sulfur-Free', 'High Lauric Acid', 'Water-White Pure', 'Culinary & Hair Care'],
     sizes: [
-      { label: '500 ml', price: 220, originalPrice: 250, fillPercent: 45 },
-      { label: '1 Litre', price: 420, originalPrice: 475, fillPercent: 75 },
-      { label: '5 Litres', price: 2000, originalPrice: 2250, fillPercent: 100 }
+      { label: '500 ml', price: 220, originalPrice: 250 },
+      { label: '1 Litre', price: 420, originalPrice: 475 },
+      { label: '5 Litres', price: 2000, originalPrice: 2250 }
     ]
   },
   {
@@ -83,12 +76,10 @@ const CORE_OILS: OilItem[] = [
     badgeBg: '#FEE2E2',
     badgeText: '#991B1B',
     glowColor: 'rgba(220, 38, 38, 0.25)',
-    shortDesc: 'Cold-pressed from hand-sorted native peanuts. Perfect for everyday cooking & crispy golden frying.',
-    features: ['Native Peanuts', 'Heart-Friendly MUFA', 'Crisp Deep Frying', 'Zero Additives'],
     sizes: [
-      { label: '500 ml', price: 220, originalPrice: 250, fillPercent: 45 },
-      { label: '1 Litre', price: 420, originalPrice: 460, fillPercent: 75 },
-      { label: '5 Litres', price: 2000, originalPrice: 2200, fillPercent: 100 }
+      { label: '500 ml', price: 220, originalPrice: 250 },
+      { label: '1 Litre', price: 420, originalPrice: 460 },
+      { label: '5 Litres', price: 2000, originalPrice: 2200 }
     ]
   },
   {
@@ -102,12 +93,10 @@ const CORE_OILS: OilItem[] = [
     badgeBg: '#DCFCE7',
     badgeText: '#166534',
     glowColor: 'rgba(45, 90, 39, 0.25)',
-    shortDesc: 'All 3 signature oils: Gingelly + Coconut + Groundnut. Complete pantry health upgrade.',
-    features: ['All 3 Oils Included', 'Save ₹185 on Combo', 'Free Priority Delivery', 'Castor Oil Sample'],
     sizes: [
-      { label: '3 x 500 ml', price: 625, originalPrice: 770, fillPercent: 50 },
-      { label: '3 x 1 Litre', price: 1199, originalPrice: 1445, fillPercent: 85 },
-      { label: '3 x 5 Litres', price: 5799, originalPrice: 6900, fillPercent: 100 }
+      { label: '3 x 500 ml', price: 625, originalPrice: 770 },
+      { label: '3 x 1 Litre', price: 1199, originalPrice: 1445 },
+      { label: '3 x 5 Litres', price: 5799, originalPrice: 6900 }
     ],
     isCombo: true
   }
@@ -227,87 +216,15 @@ export const ProductShowcase: React.FC = () => {
                       <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.6s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
                     </div>
 
-                    {/* Animated Bottle Volume & Droplet Visualizer Bar */}
-                    <div className="my-1.5 sm:my-3 p-1.5 sm:p-3 rounded-xl sm:rounded-2xl bg-[#FAF7F2] border border-[#EAE2D7] flex items-center justify-between select-none">
-                      <div className="flex items-center gap-1.5 sm:gap-2.5">
-                        <motion.div 
-                          key={`icon-${oil.id}-${currentSizeIdx}`}
-                          animate={{ 
-                            scale: [0.9, 1.08, 1],
-                            rotate: [0, -4, 4, 0]
-                          }}
-                          transition={{ duration: 0.35, ease: 'easeOut' }}
-                          className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl flex items-center justify-center text-white shadow-xs"
-                          style={{
-                            backgroundColor: 
-                              oil.capColor === 'red' ? '#DC2626' :
-                              oil.capColor === 'blue' ? '#2563EB' :
-                              oil.capColor === 'yellow' ? '#D97706' : '#16A34A'
-                          }}
-                        >
-                          {oil.isCombo ? <Package className="w-4 h-4 sm:w-5 sm:h-5" /> : <Droplets className="w-4 h-4 sm:w-5 sm:h-5" />}
-                        </motion.div>
-                        <div>
-                          <div className="text-[10px] sm:text-xs font-bold text-[#2C241D]">
-                            {currentSize.label}
-                          </div>
-                          <div className="hidden sm:block text-[10px] text-[#7E7163]">
-                            Cold-pressed weekly
-                          </div>
-                        </div>
+                    {/* Title & Tamil Name */}
+                    <div className="mb-2 sm:mb-3">
+                      <h3 className="font-serif-display text-sm sm:text-lg lg:text-xl font-bold text-[#2C241D] leading-tight line-clamp-1">
+                        <span className="sm:hidden">{oil.shortMobileName}</span>
+                        <span className="hidden sm:inline">{oil.name}</span>
+                      </h3>
+                      <div className="text-[9.5px] sm:text-xs text-[#7A6D5E] font-serif italic mt-0.5 select-none truncate">
+                        {oil.tamilName}
                       </div>
-
-                      {/* Animated Liquid Meter */}
-                      <div className="flex items-center gap-1">
-                        <div className="w-10 sm:w-16 h-1.5 sm:h-2 rounded-full bg-[#E5DCD0] overflow-hidden relative">
-                          <motion.div
-                            className="h-full rounded-full relative overflow-hidden"
-                            style={{
-                              backgroundColor: 
-                                oil.capColor === 'red' ? '#DC2626' :
-                                oil.capColor === 'blue' ? '#2563EB' :
-                                oil.capColor === 'yellow' ? '#D97706' : '#16A34A'
-                            }}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${currentSize.fillPercent}%` }}
-                            transition={{ type: 'spring', stiffness: 220, damping: 20 }}
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/35 to-transparent animate-[shimmer_2s_infinite]" />
-                          </motion.div>
-                        </div>
-                        <span className="text-[8px] sm:text-[10px] font-mono font-bold text-[#7A6E61]">
-                          {currentSize.fillPercent}%
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="font-serif-display text-base sm:text-2xl font-bold text-[#2C241D] leading-tight line-clamp-2">
-                      <span className="sm:hidden">{oil.shortMobileName}</span>
-                      <span className="hidden sm:inline">{oil.name}</span>
-                    </h3>
-                    <div className="text-[10px] sm:text-xs text-[#7A6D5E] font-serif italic mt-0.5 mb-1.5 sm:mb-2 select-none truncate">
-                      {oil.tamilName}
-                    </div>
-
-                    <p className="text-[10px] sm:text-xs text-[#554A3E] leading-relaxed line-clamp-2 mb-2 sm:mb-3">
-                      {oil.shortDesc}
-                    </p>
-
-                    {/* Key Benefits List: 2 items on mobile, 4 on desktop */}
-                    <div className="space-y-1 sm:space-y-1.5 mb-3 sm:mb-5">
-                      {oil.features.slice(0, 2).map((feat, i) => (
-                        <div key={i} className="flex items-center gap-1.5 text-[9px] sm:text-xs text-[#4A3E32]">
-                          <Check className="w-3 h-3 text-[#2D5A27] shrink-0" />
-                          <span className="truncate">{feat}</span>
-                        </div>
-                      ))}
-                      {oil.features.slice(2, 4).map((feat, i) => (
-                        <div key={i + 2} className="hidden sm:flex items-center gap-1.5 text-xs text-[#4A3E32]">
-                          <Check className="w-3 h-3 text-[#2D5A27] shrink-0" />
-                          <span className="truncate">{feat}</span>
-                        </div>
-                      ))}
                     </div>
                   </div>
 
@@ -400,36 +317,6 @@ export const ProductShowcase: React.FC = () => {
             );
           })}
         </div>
-
-        {/* The Malabar Farm Foods Expansion Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-30px' }}
-          transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
-          className="mt-6 sm:mt-12 rounded-2xl sm:rounded-3xl bg-[#F4EEE5] border border-[#DDD3C5] p-4 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6"
-        >
-          <div className="max-w-xl text-center sm:text-left">
-            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#2D5A27] bg-[#DCFCE7] px-2 py-0.5 rounded-full inline-block mb-1">
-              Brand Family
-            </span>
-            <h4 className="font-serif-display text-base sm:text-xl font-bold text-[#2C241D]">
-              The Malabar Farm Foods
-            </h4>
-            <p className="text-[10px] sm:text-xs text-[#5D5043] mt-0.5 leading-relaxed">
-              Also offering pure cold-pressed castor oil, organic Naatu Sakkarai (country sugar), and traditional farm staples grown without synthetic chemicals.
-            </p>
-          </div>
-
-          <a
-            href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20enquire%20about%20The%20Malabar%20Farm%20Foods%20products."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto min-h-[40px] sm:min-h-[44px] shrink-0 bg-[#2C241D] hover:bg-[#1A1512] active:scale-95 text-white px-4 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider flex items-center justify-center transition-[transform,background-color] duration-150 cursor-pointer select-none"
-          >
-            Enquire Farm Foods
-          </a>
-        </motion.div>
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { InfiniteMarquee } from './components/InfiniteMarquee';
 import { ProductShowcase } from './components/ProductShowcase';
 import { BrandTradition } from './components/BrandTradition';
 import { TradeEnquiries } from './components/TradeEnquiries';
@@ -18,13 +17,10 @@ export const App: React.FC = () => {
       {/* Minimal Navigation */}
       <Navbar />
 
-      {/* Hero with Brand Poster, 3 Emblems & WhatsApp CTA */}
+      {/* Clean Brand Poster Hero & Direct CTAs */}
       <Hero />
 
-      {/* Infinite Horizontal Running Ribbon */}
-      <InfiniteMarquee />
-
-      {/* Minimal Product Showcase with Interactive Size Springs */}
+      {/* Minimal Product Showcase with Direct WhatsApp Springs */}
       <ProductShowcase />
 
       {/* Brand Tradition & Barakkath Marketing Association */}
@@ -33,10 +29,10 @@ export const App: React.FC = () => {
       {/* Trade & Bulk Enquiries for Retailers / Wholesale */}
       <TradeEnquiries />
 
-      {/* Comprehensive Extra Content Footer */}
+      {/* Clean Footer */}
       <Footer />
 
-      {/* Mobile-First Sticky Bottom Action Bar (One-Tap WhatsApp & Trade) */}
+      {/* Mobile-First Sticky Bottom Action Bar */}
       <StickyMobileBar />
     </div>
   );
