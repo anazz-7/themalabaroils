@@ -19,7 +19,7 @@ export const TradeEnquiries: React.FC = () => {
     if (name) msg += `• Business/Name: ${name}\n`;
     if (cityVal) msg += `• Location: ${cityVal}\n`;
     msg += `\nPlease share your wholesale price list, minimum order quantity (MOQ), and dealership terms.`;
-    return `https://wa.me/919876543210?text=${encodeURIComponent(msg)}`;
+    return `https://wa.me/916374848947?text=${encodeURIComponent(msg)}`;
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {

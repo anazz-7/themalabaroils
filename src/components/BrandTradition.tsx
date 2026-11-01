@@ -77,7 +77,7 @@ export const BrandTradition: React.FC = () => {
               </h3>
 
               <p className="text-xs text-[#D3C9BD] leading-relaxed mb-4">
-                Hygienically packed and marketed directly from Periyakulam, nestled in Theni District, Tamil Nadu. Fast delivery across India.
+                Hygienically packed and marketed directly from 44, Palliyasal Street, Vadagarai, Periyakulam, Theni District, Tamil Nadu (FSSAI: 22426472000074). Fast delivery across India.
               </p>
 
               <div className="space-y-2 pt-3 border-t border-white/10 text-xs text-[#EDE5DB] mb-4">
@@ -92,7 +92,7 @@ export const BrandTradition: React.FC = () => {
               </div>
 
               <a
-                href="https://wa.me/919876543210?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order."
+                href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full min-h-[44px] bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.98] text-white py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-[transform,background-color] duration-150 cursor-pointer select-none"

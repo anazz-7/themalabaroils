@@ -76,7 +76,7 @@ export const Navbar: React.FC = () => {
             {/* Right Action: WhatsApp CTA */}
             <div className="flex items-center gap-3">
               <a
-                href="https://wa.me/919876543210?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20place%20an%20order."
+                href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20place%20an%20order."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden sm:inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] active:scale-95 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-[transform,background-color] duration-150 shadow-xs cursor-pointer select-none"
@@ -123,7 +123,7 @@ export const Navbar: React.FC = () => {
             </a>
             <div className="pt-2">
               <a
-                href="https://wa.me/919876543210?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20place%20an%20order."
+                href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20place%20an%20order."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full min-h-[44px] flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-xs"

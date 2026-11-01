@@ -167,7 +167,7 @@ export const Hero: React.FC = () => {
           {/* Action CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6 sm:mt-8 select-none">
             <a
-              href="https://wa.me/919876543210?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order%20cold-pressed%20oils."
+              href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order%20cold-pressed%20oils."
               target="_blank"
               rel="noopener noreferrer"
               className="relative overflow-hidden w-full sm:w-auto min-h-[48px] bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.98] text-white px-7 py-3 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer"

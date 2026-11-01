@@ -8,6 +8,7 @@ interface OilItem {
   name: string;
   shortMobileName: string;
   tamilName: string;
+  image: string;
   capColor: 'red' | 'blue' | 'yellow' | 'green';
   capLabel: string;
   badgeBg: string;
@@ -37,25 +38,27 @@ const CORE_OILS: OilItem[] = [
     id: 'gingelly',
     name: 'Agmark Chekku Gingelly Oil',
     shortMobileName: 'Chekku Gingelly Oil',
-    tamilName: 'அக்மார்க் நல்லெண்ணெய்',
-    capColor: 'red',
-    capLabel: 'Red Seal',
-    badgeBg: '#FEE2E2',
-    badgeText: '#991B1B',
-    glowColor: 'rgba(220, 38, 38, 0.25)',
+    tamilName: 'அக்மார்க் செக்கு நல்லெண்ணெய்',
+    image: '/gingelly-oil.jpg',
+    capColor: 'yellow',
+    capLabel: 'Yellow Seal',
+    badgeBg: '#FEF3C7',
+    badgeText: '#92400E',
+    glowColor: 'rgba(217, 119, 6, 0.25)',
     shortDesc: 'Slow-pressed from premium native black sesame seeds with palm jaggery in traditional chekku.',
     features: ['Native Black Sesame', 'Sesamol Antioxidants', 'Body Cooling', 'AGMARK Grade 1'],
     sizes: [
-      { label: '500 ml', price: 245, originalPrice: 280, fillPercent: 45 },
-      { label: '1 Litre', price: 470, originalPrice: 530, fillPercent: 75 },
-      { label: '5 Litres', price: 2250, originalPrice: 2550, fillPercent: 100 }
+      { label: '500 ml', price: 220, originalPrice: 250, fillPercent: 45 },
+      { label: '1 Litre', price: 420, originalPrice: 470, fillPercent: 75 },
+      { label: '5 Litres', price: 2050, originalPrice: 2350, fillPercent: 100 }
     ]
   },
   {
     id: 'coconut',
     name: 'Agmark Chekku Coconut Oil',
     shortMobileName: 'Chekku Coconut Oil',
-    tamilName: 'அக்மார்க் தேங்காய் எண்ணெய்',
+    tamilName: 'அக்மார்க் செக்கு தேங்காய் எண்ணெய்',
+    image: '/coconut-oil.jpg',
     capColor: 'blue',
     capLabel: 'Blue Seal',
     badgeBg: '#DBEAFE',
@@ -73,25 +76,27 @@ const CORE_OILS: OilItem[] = [
     id: 'groundnut',
     name: 'Agmark Chekku Groundnut Oil',
     shortMobileName: 'Chekku Groundnut Oil',
-    tamilName: 'அக்மார்க் கடலை எண்ணெய்',
-    capColor: 'yellow',
-    capLabel: 'Yellow Seal',
-    badgeBg: '#FEF3C7',
-    badgeText: '#92400E',
-    glowColor: 'rgba(217, 119, 6, 0.25)',
+    tamilName: 'அக்மார்க் செக்கு கடலை எண்ணெய்',
+    image: '/groundnut-oil.jpg',
+    capColor: 'red',
+    capLabel: 'Red Seal',
+    badgeBg: '#FEE2E2',
+    badgeText: '#991B1B',
+    glowColor: 'rgba(220, 38, 38, 0.25)',
     shortDesc: 'Cold-pressed from hand-sorted native peanuts. Perfect for everyday cooking & crispy golden frying.',
     features: ['Native Peanuts', 'Heart-Friendly MUFA', 'Crisp Deep Frying', 'Zero Additives'],
     sizes: [
-      { label: '500 ml', price: 210, originalPrice: 240, fillPercent: 45 },
-      { label: '1 Litre', price: 395, originalPrice: 440, fillPercent: 75 },
-      { label: '5 Litres', price: 1880, originalPrice: 2100, fillPercent: 100 }
+      { label: '500 ml', price: 220, originalPrice: 250, fillPercent: 45 },
+      { label: '1 Litre', price: 420, originalPrice: 460, fillPercent: 75 },
+      { label: '5 Litres', price: 2000, originalPrice: 2200, fillPercent: 100 }
     ]
   },
   {
     id: 'trio-bundle',
     name: 'The Malabar Grand Trio Box',
     shortMobileName: 'Grand Trio Box',
-    tamilName: 'செக்கு எண்ணெய் முக்கூட்டு',
+    tamilName: 'செக்கு எண்ணெய் முக்கூட்டு பேக்',
+    image: '/hero-bottles.jpg',
     capColor: 'green',
     capLabel: 'Heritage Trio',
     badgeBg: '#DCFCE7',
@@ -125,7 +130,7 @@ export const ProductShowcase: React.FC = () => {
     const text = encodeURIComponent(
       `Hello The Malabar Oils / Barakkath Marketing,\nI would like to order:\n• *${oilName}* (${sizeLabel}) - ₹${price}\nPlease confirm home delivery to my address.`
     );
-    return `https://wa.me/919876543210?text=${text}`;
+    return `https://wa.me/916374848947?text=${text}`;
   };
 
   return (
@@ -183,30 +188,43 @@ export const ProductShowcase: React.FC = () => {
                   />
 
                   <div>
-                    {/* Header Tag & AGMARK Badge */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-2 mb-2 sm:mb-4 select-none">
-                      <span
-                        className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 sm:px-3 sm:py-1 rounded-full flex items-center gap-1 shadow-2xs"
-                        style={{ backgroundColor: oil.badgeBg, color: oil.badgeText }}
-                      >
-                        <span 
-                          className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full relative flex items-center justify-center"
-                          style={{
-                            backgroundColor: 
-                              oil.capColor === 'red' ? '#DC2626' :
-                              oil.capColor === 'blue' ? '#2563EB' :
-                              oil.capColor === 'yellow' ? '#D97706' : '#16A34A'
-                          }}
+                    {/* Real Product Bottle Image Showcase */}
+                    <div className="relative w-full aspect-square sm:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-[#F7F4EE] mb-2 sm:mb-3.5 border border-[#EBE4DA] group-hover:border-[#D4C8B8] transition-colors shadow-2xs">
+                      <img
+                        src={oil.image}
+                        alt={oil.name}
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                      />
+                      {/* Floating Cap Seal Badge on top of image */}
+                      <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-10">
+                        <span
+                          className="text-[8px] sm:text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full flex items-center gap-1 shadow-xs backdrop-blur-md"
+                          style={{ backgroundColor: oil.badgeBg, color: oil.badgeText }}
                         >
-                          <span className="w-full h-full rounded-full animate-ping absolute opacity-60" style={{ backgroundColor: 'inherit' }} />
+                          <span 
+                            className="w-1.5 h-1.5 rounded-full relative flex items-center justify-center"
+                            style={{
+                              backgroundColor: 
+                                oil.capColor === 'red' ? '#DC2626' :
+                                oil.capColor === 'blue' ? '#2563EB' :
+                                oil.capColor === 'yellow' ? '#D97706' : '#16A34A'
+                            }}
+                          >
+                            <span className="w-full h-full rounded-full animate-ping absolute opacity-60" style={{ backgroundColor: 'inherit' }} />
+                          </span>
+                          <span>{oil.capLabel}</span>
                         </span>
-                        <span>{oil.capLabel}</span>
-                      </span>
+                      </div>
 
-                      <span className="text-[8px] sm:text-[10px] font-mono font-bold text-[#8C8072] uppercase flex items-center gap-1">
-                        <ShieldCheck className="w-3 h-3 text-[#D4AF37]" />
+                      {/* AGMARK Grade 1 overlay badge */}
+                      <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 z-10 bg-black/60 backdrop-blur-md text-white px-1.5 py-0.5 rounded-md text-[7.5px] sm:text-[9px] font-mono font-bold flex items-center gap-0.5">
+                        <ShieldCheck className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#D4AF37]" />
                         <span>AGMARK</span>
-                      </span>
+                      </div>
+
+                      {/* Light sweep glint across image on card hover */}
+                      <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.6s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
                     </div>
 
                     {/* Animated Bottle Volume & Droplet Visualizer Bar */}
@@ -404,7 +422,7 @@ export const ProductShowcase: React.FC = () => {
           </div>
 
           <a
-            href="https://wa.me/919876543210?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20enquire%20about%20The%20Malabar%20Farm%20Foods%20products."
+            href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20enquire%20about%20The%20Malabar%20Farm%20Foods%20products."
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto min-h-[40px] sm:min-h-[44px] shrink-0 bg-[#2C241D] hover:bg-[#1A1512] active:scale-95 text-white px-4 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider flex items-center justify-center transition-[transform,background-color] duration-150 cursor-pointer select-none"

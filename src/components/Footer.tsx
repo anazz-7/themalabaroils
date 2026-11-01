@@ -71,20 +71,21 @@ export const Footer: React.FC = () => {
               </div>
               <p className="text-xs text-[#C5B9A8] leading-relaxed">
                 <strong>Barakkath Marketing</strong><br />
-                Periyakulam, Theni District,<br />
-                Tamil Nadu – 625601, India
+                44, Palliyasal Street, Vadagarai,<br />
+                Periyakulam, Theni DT – 625601, Tamil Nadu<br />
+                <span className="text-[11px] text-[#A89C8C]">FSSAI Lic: 22426472000074</span>
               </p>
             </div>
 
             <div className="pt-1">
               <a
-                href="https://wa.me/919876543210?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order."
+                href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20BD5A] active:scale-95 text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>WhatsApp Desk: +91 98765 43210</span>
+                <span>WhatsApp Desk: +91 63748 48947</span>
               </a>
             </div>
           </div>

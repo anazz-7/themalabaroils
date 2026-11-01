@@ -16,7 +16,7 @@ export const StickyMobileBar: React.FC = () => {
 
         {/* WhatsApp Order Button */}
         <a
-          href="https://wa.me/919876543210?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order%20cold-pressed%20oils."
+          href="https://wa.me/916374848947?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order%20cold-pressed%20oils."
           target="_blank"
           rel="noopener noreferrer"
           className="relative overflow-hidden flex-[2.2] min-h-[30px] h-[30px] bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.97] text-white rounded-md text-[10px] font-bold uppercase tracking-wide flex items-center justify-center gap-1.5 shadow-2xs transition-[transform,background-color] duration-150 group/btn"
