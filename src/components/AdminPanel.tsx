@@ -503,6 +503,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                                   </div>
                                 ))}
 
+                                {ord.deliveryType && (
+                                  <div className="flex justify-between items-center text-[11px] text-[#7A6E61]">
+                                    <span>Delivery Zone:</span>
+                                    <span className="font-semibold text-[#2C241D]">{ord.deliveryType}</span>
+                                  </div>
+                                )}
+
                                 <div className="flex justify-between items-center pt-1.5 border-t border-[#E7DFD5] text-xs font-bold text-[#2C241D]">
                                   <span>Total Payable ({ord.paymentMethod}):</span>
                                   <span className="text-sm font-black font-mono">₹{ord.totalAmount}</span>

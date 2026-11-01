@@ -21,6 +21,8 @@ export interface CustomerOrder {
   items: OrderItem[];
   totalAmount: number;
   paymentMethod: 'Cash on Delivery' | 'UPI / WhatsApp';
+  deliveryType?: string;
+  deliveryFee?: number;
   notes?: string;
   status: OrderStatus;
 }

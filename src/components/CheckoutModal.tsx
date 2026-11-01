@@ -34,6 +34,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [selectedSizeLabel, setSelectedSizeLabel] = useState<string>('1 Litre');
   const [quantity, setQuantity] = useState<number>(1);
 
+  // Delivery Zone: local (free) vs outside (₹50 to ₹250)
+  const [deliveryType, setDeliveryType] = useState<'local' | 'outside'>('local');
+
   // Form Fields
   const [customerName, setCustomerName] = useState('');
   const [phone, setPhone] = useState('');
@@ -72,7 +75,15 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const activeSize = currentProduct.sizes.find((s) => s.label === selectedSizeLabel) || currentProduct.sizes[1] || currentProduct.sizes[0];
   const unitPrice = activeSize.price;
   const singleTotal = unitPrice * quantity;
-  const finalTotal = isCartCheckout ? cartTotal : singleTotal;
+  const subtotal = isCartCheckout ? cartTotal : singleTotal;
+
+  // Delivery Fee calculation:
+  // - Local Delivery (Theni / Periyakulam): FREE (₹0)
+  // - Outside Delivery (All India Courier): ₹50 to ₹250 (starts at ₹60, +₹30 per extra bottle, capped at ₹250)
+  const totalItemCount = isCartCheckout ? cart.reduce((sum, c) => sum + c.quantity, 0) : quantity;
+  const outsideDeliveryFee = Math.min(250, Math.max(50, 60 + (totalItemCount - 1) * 30));
+  const deliveryFee = deliveryType === 'local' ? 0 : outsideDeliveryFee;
+  const finalPayable = subtotal + deliveryFee;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,8 +120,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       pincode: pincode.trim(),
       notes: notes.trim(),
       paymentMethod,
-      totalAmount: finalTotal,
-      items: orderItems
+      totalAmount: finalPayable,
+      items: orderItems,
+      deliveryType: deliveryType === 'local' ? 'Local Delivery (Free)' : `Outside Delivery (Courier: ₹${deliveryFee})`,
+      deliveryFee
     });
 
     if (isCartCheckout) {
@@ -125,6 +138,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       ? cart.map((c) => `• ${c.name} (${c.sizeLabel}) x ${c.quantity} = ₹${c.price * c.quantity}`).join('\n')
       : `• ${currentProduct.name} (${activeSize.label}) x ${quantity} = ₹${singleTotal}`;
 
+    const deliveryZoneText = deliveryType === 'local'
+      ? 'Local Delivery (Periyakulam / Theni) - FREE'
+      : `Outside Delivery (Courier Fee: ₹${deliveryFee}, Range ₹50-₹250)`;
+
     const whatsappMsg = `🛍️ *NEW ORDER PLACED - ${newOrder.id}*\n\n` +
       `Hello The Malabar Oils / Barakkath Marketing,\n` +
       `I have placed an order on your website:\n\n` +
@@ -132,7 +149,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       `• *Customer*: ${newOrder.customerName}\n` +
       `• *Phone*: ${newOrder.phone}\n` +
       `*Items Ordered*:\n${itemsDescription}\n\n` +
-      `• *Total Payable*: ₹${finalTotal}\n` +
+      `• *Subtotal*: ₹${subtotal}\n` +
+      `• *Delivery Option*: ${deliveryZoneText}\n` +
+      `• *Total Payable*: ₹${finalPayable}\n` +
       `• *Payment Option*: ${paymentMethod}\n` +
       `• *Delivery Address*: ${address.trim()}, ${city.trim()} - ${pincode.trim()}\n` +
       (notes.trim() ? `• *Note*: ${notes.trim()}\n` : '') +
@@ -220,8 +239,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <strong className="text-[#2C241D]">{isCartCheckout ? `${cart.length || 'Multiple'} item(s)` : `${currentProduct.name} (${activeSize.label}) x ${quantity}`}</strong>
                   </div>
                   <div className="flex justify-between border-b border-[#F2ECE3] pb-2">
+                    <span className="text-[#7A6E61]">Delivery Option:</span>
+                    <strong className="text-[#2C241D]">
+                      {deliveryType === 'local' ? 'Local Delivery (FREE)' : `Outside Delivery (+₹${outsideDeliveryFee})`}
+                    </strong>
+                  </div>
+                  <div className="flex justify-between border-b border-[#F2ECE3] pb-2">
                     <span className="text-[#7A6E61]">Total Amount:</span>
-                    <strong className="text-[#2C241D] text-sm">₹{finalTotal}</strong>
+                    <strong className="text-[#2C241D] text-sm">₹{finalPayable}</strong>
                   </div>
                   <div className="flex justify-between border-b border-[#F2ECE3] pb-2">
                     <span className="text-[#7A6E61]">Payment:</span>
@@ -236,7 +261,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <div className="pt-2 max-w-md mx-auto space-y-2.5">
                   <a
                     href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                      `🛍️ Order #${placedOrderId} Confirmation:\nCustomer: ${customerName}\nTotal: ₹${finalTotal}\nAddress: ${address}, ${city} - ${pincode}`
+                      `🛍️ Order #${placedOrderId} Confirmation:\nCustomer: ${customerName}\nDelivery: ${deliveryType === 'local' ? 'Local (FREE)' : `Outside (+₹${outsideDeliveryFee})`}\nTotal: ₹${finalPayable}\nAddress: ${address}, ${city} - ${pincode}`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -265,7 +290,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                         <Package className="w-3.5 h-3.5 text-[#D4AF37]" />
                         <span>Cart Order Summary ({cart.length} items)</span>
                       </div>
-                      <span className="text-xs font-black font-mono text-[#2C241D]">Total: ₹{finalTotal}</span>
+                      <span className="text-xs font-black font-mono text-[#2C241D]">Subtotal: ₹{subtotal}</span>
                     </div>
                     <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1">
                       {cart.map((item) => (
@@ -311,7 +336,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                           </select>
 
                           <span className="text-sm sm:text-base font-black text-[#2C241D]">
-                            ₹{finalTotal}
+                            ₹{singleTotal}
                           </span>
                         </div>
 
@@ -457,50 +482,123 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   </div>
                 </div>
 
-                {/* 3. Payment Method */}
-                <div className="space-y-2 pt-2 border-t border-[#E8DFD3]">
-                  <label className="text-[10px] uppercase font-bold text-[#8C7E70] block mb-1">
-                    Payment Option
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod('Cash on Delivery')}
-                      className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
-                        paymentMethod === 'Cash on Delivery'
-                          ? 'border-[#2C241D] bg-[#F5ECE1] shadow-xs'
-                          : 'border-[#DDD3C5] bg-white hover:bg-[#FAF7F2]'
-                      }`}
-                    >
-                      <div className="font-bold text-xs text-[#2C241D]">Cash on Delivery</div>
-                      <div className="text-[10px] text-[#7A6E61] mt-0.5">Pay in cash upon doorstep delivery</div>
-                    </button>
+                {/* 3. Delivery Option & Payment Method */}
+                <div className="space-y-3 pt-2 border-t border-[#E8DFD3]">
+                  {/* Delivery Location Selector */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-[10px] uppercase font-bold text-[#8C7E70] block">
+                        Delivery Option
+                      </label>
+                      <span className="text-[10px] font-semibold text-[#8C6D3B]">
+                        {deliveryType === 'local' ? 'Local: FREE Delivery' : 'Outside Courier: ₹50 – ₹250'}
+                      </span>
+                    </div>
 
-                    <button
-                      type="button"
-                      onClick={() => setPaymentMethod('UPI / WhatsApp')}
-                      className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${
-                        paymentMethod === 'UPI / WhatsApp'
-                          ? 'border-[#2C241D] bg-[#F5ECE1] shadow-xs'
-                          : 'border-[#DDD3C5] bg-white hover:bg-[#FAF7F2]'
-                      }`}
-                    >
-                      <div className="font-bold text-xs text-[#2C241D]">UPI / WhatsApp Pay</div>
-                      <div className="text-[10px] text-[#7A6E61] mt-0.5">GPay / PhonePe / Paytm / QR</div>
-                    </button>
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() => setDeliveryType('local')}
+                        className={`p-2.5 sm:p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                          deliveryType === 'local'
+                            ? 'border-[#2C241D] bg-[#F5ECE1] shadow-xs ring-1 ring-[#2C241D]'
+                            : 'border-[#DDD3C5] bg-white hover:bg-[#FAF7F2]'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="font-bold text-xs text-[#2C241D]">Local Delivery</span>
+                          <span className="text-[8.5px] font-black uppercase text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-300 shrink-0">
+                            FREE
+                          </span>
+                        </div>
+                        <div className="text-[9.5px] text-[#7A6E61] mt-0.5 leading-tight">
+                          Periyakulam, Theni &amp; local areas
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setDeliveryType('outside')}
+                        className={`p-2.5 sm:p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                          deliveryType === 'outside'
+                            ? 'border-[#2C241D] bg-[#F5ECE1] shadow-xs ring-1 ring-[#2C241D]'
+                            : 'border-[#DDD3C5] bg-white hover:bg-[#FAF7F2]'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="font-bold text-xs text-[#2C241D]">Outside Delivery</span>
+                          <span className="text-[8.5px] font-bold text-[#8C6D3B] bg-[#FAF3EA] px-1.5 py-0.2 rounded border border-[#E7DFD5] shrink-0 font-mono">
+                            +₹{outsideDeliveryFee}
+                          </span>
+                        </div>
+                        <div className="text-[9.5px] text-[#7A6E61] mt-0.5 leading-tight">
+                          Courier (₹50 to ₹250 fee based on wt/dist)
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Payment Method */}
+                  <div>
+                    <label className="text-[10px] uppercase font-bold text-[#8C7E70] block mb-1.5">
+                      Payment Option
+                    </label>
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('Cash on Delivery')}
+                        className={`p-2.5 sm:p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                          paymentMethod === 'Cash on Delivery'
+                            ? 'border-[#2C241D] bg-[#F5ECE1] shadow-xs ring-1 ring-[#2C241D]'
+                            : 'border-[#DDD3C5] bg-white hover:bg-[#FAF7F2]'
+                        }`}
+                      >
+                        <div className="font-bold text-xs text-[#2C241D]">Cash on Delivery (COD)</div>
+                        <div className="text-[9.5px] text-[#7A6E61] mt-0.5 leading-tight">
+                          {deliveryType === 'local' ? 'Pay upon doorstep delivery' : 'Pay cash to courier on arrival'}
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('UPI / WhatsApp')}
+                        className={`p-2.5 sm:p-3 rounded-xl border text-left cursor-pointer transition-all ${
+                          paymentMethod === 'UPI / WhatsApp'
+                            ? 'border-[#2C241D] bg-[#F5ECE1] shadow-xs ring-1 ring-[#2C241D]'
+                            : 'border-[#DDD3C5] bg-white hover:bg-[#FAF7F2]'
+                        }`}
+                      >
+                        <div className="font-bold text-xs text-[#2C241D]">UPI / WhatsApp Pay</div>
+                        <div className="text-[9.5px] text-[#7A6E61] mt-0.5 leading-tight">GPay / PhonePe / Paytm / QR</div>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
                 {/* Order Summary & Submit Button */}
-                <div className="pt-3 border-t border-[#E8DFD3] space-y-3">
+                <div className="pt-3 border-t border-[#E8DFD3] space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-[#7A6E61]">Delivery Fee:</span>
-                    <span className="font-bold text-[#2D5A27] text-green-700">FREE Dispatch</span>
+                    <span className="text-[#7A6E61]">Subtotal:</span>
+                    <span className="font-bold font-mono text-[#2C241D]">₹{subtotal}</span>
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-[#7A6E61]">Delivery Fee:</span>
+                    {deliveryType === 'local' ? (
+                      <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        FREE Local Delivery
+                      </span>
+                    ) : (
+                      <span className="font-bold font-mono text-[#2C241D]">
+                        ₹{outsideDeliveryFee}{' '}
+                        <span className="text-[10px] text-[#7A6E61] font-normal">(Courier Fee: ₹50–₹250)</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 border-t border-dashed border-[#E8DFD3]">
                     <span className="font-bold text-sm text-[#2C241D]">Total Payable:</span>
-                    <span className="font-black text-xl text-[#2C241D]">₹{finalTotal}</span>
+                    <span className="font-black text-xl text-[#2C241D] font-mono">₹{finalPayable}</span>
                   </div>
 
                   <button
@@ -509,7 +607,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     className="w-full min-h-[48px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white border border-[#D4AF37]/50 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
-                    <span>{isSubmitting ? 'Recording Order...' : `Confirm Order (₹${finalTotal})`}</span>
+                    <span>{isSubmitting ? 'Recording Order...' : `Confirm Order (₹${finalPayable})`}</span>
                     <ArrowRight className="w-4 h-4 text-[#D4AF37]" />
                   </button>
 
