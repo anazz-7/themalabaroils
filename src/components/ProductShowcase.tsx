@@ -74,13 +74,20 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
     }
   };
 
+  const scrollRafRef = useRef<number | null>(null);
+
   const handleScrollCarousel = (e: React.UIEvent<HTMLDivElement>) => {
     const el = e.currentTarget;
-    const cardWidth = 210;
-    const newIdx = Math.round(el.scrollLeft / cardWidth);
-    if (newIdx !== activeMobileIdx && newIdx >= 0 && newIdx < catalog.length) {
-      setActiveMobileIdx(newIdx);
+    if (scrollRafRef.current) {
+      window.cancelAnimationFrame(scrollRafRef.current);
     }
+    scrollRafRef.current = window.requestAnimationFrame(() => {
+      const cardWidth = 210;
+      const newIdx = Math.round(el.scrollLeft / cardWidth);
+      if (newIdx !== activeMobileIdx && newIdx >= 0 && newIdx < catalog.length) {
+        setActiveMobileIdx(newIdx);
+      }
+    });
   };
 
   const scrollCarousel = (direction: 'prev' | 'next') => {
@@ -99,27 +106,29 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
     return (
       <motion.div
         key={oil.id}
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-20px' }}
-        transition={{ duration: 0.35, delay: index * 0.04, ease: [0.32, 0.72, 0, 1] }}
-        whileHover={!isMobile ? { y: -4, transition: { duration: 0.2, ease: 'easeOut' } } : undefined}
+        initial={isMobile ? false : { opacity: 0, y: 12 }}
+        whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+        viewport={isMobile ? undefined : { once: true, margin: '-20px' }}
+        transition={{ duration: 0.28, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
+        whileHover={!isMobile ? { y: -3, transition: { duration: 0.15, ease: 'easeOut' } } : undefined}
         className={isMobile ? 'w-[56vw] max-w-[215px] shrink-0 snap-start h-full' : 'h-full'}
       >
         <SpotlightCard
           spotlightColor={oil.glowColor || 'rgba(212, 175, 55, 0.2)'}
-          className={`bg-white border transition-all duration-300 ${
+          className={`bg-white border transition-colors duration-200 ${
             isMobile ? 'p-2.5 rounded-xl' : 'p-4 sm:p-5 rounded-2xl sm:rounded-3xl'
-          } flex flex-col justify-between h-full shadow-2xs hover:shadow-lg relative group ${
+          } flex flex-col justify-between h-full shadow-2xs hover:shadow-md relative group ${
             oil.isCombo
               ? 'border-[#D4AF37]/50 bg-gradient-to-br from-white via-[#FAF6F0] to-white'
               : 'border-[#E7DFD5] hover:border-[#C5B7A6]'
           }`}
         >
-          {/* Subtle Ambient Cap Light Bloom */}
+          {/* Subtle Ambient Cap Light Bloom - Pure CSS Radial Gradient (Zero GPU Blur Cost) */}
           <div
-            className="absolute -top-10 -right-10 w-24 h-24 sm:w-36 sm:h-36 rounded-full blur-2xl pointer-events-none opacity-40 group-hover:opacity-75 transition-opacity duration-500"
-            style={{ backgroundColor: oil.glowColor || 'rgba(212, 175, 55, 0.2)' }}
+            className="absolute -top-6 -right-6 w-24 h-24 sm:w-32 sm:h-32 rounded-full pointer-events-none opacity-40 group-hover:opacity-70 transition-opacity duration-300"
+            style={{
+              background: `radial-gradient(circle, ${oil.glowColor || 'rgba(212, 175, 55, 0.22)'} 0%, transparent 70%)`
+            }}
           />
 
           <div>
@@ -314,12 +323,13 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
           </p>
         </motion.div>
 
-        {/* MOBILE VIEW: Compact Horizontal Carousel */}
+        {/* MOBILE VIEW: Compact Horizontal Carousel with Native Hardware Accelerated Momentum */}
         <div className="lg:hidden relative">
           <div
             ref={carouselRef}
             onScroll={handleScrollCarousel}
-            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-2 -mx-2 scrollbar-none touch-pan-x scroll-smooth"
+            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-2 -mx-2 scrollbar-none touch-pan-x"
+            style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {catalog.map((oil, index) => renderProductCard(oil, index, true))}
           </div>

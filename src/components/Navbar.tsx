@@ -76,8 +76,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
               <a href="#oils" className="hover:text-[#2C241D] transition-colors py-1 relative hover:after:w-full after:w-0 after:h-[2px] after:bg-[#D4AF37] after:absolute after:bottom-0 after:left-0 after:transition-all duration-150">
                 The Oils
               </a>
-              <a href="#benefits" className="hover:text-[#2C241D] transition-colors py-1 relative hover:after:w-full after:w-0 after:h-[2px] after:bg-[#D4AF37] after:absolute after:bottom-0 after:left-0 after:transition-all duration-150">
-                Benefits
+              <a href="#offer" className="hover:text-[#2C241D] transition-colors py-1 relative hover:after:w-full after:w-0 after:h-[2px] after:bg-[#D4AF37] after:absolute after:bottom-0 after:left-0 after:transition-all duration-150">
+                Special Offer
               </a>
               <a href="#tradition" className="hover:text-[#2C241D] transition-colors py-1 relative hover:after:w-full after:w-0 after:h-[2px] after:bg-[#D4AF37] after:absolute after:bottom-0 after:left-0 after:transition-all duration-150">
                 Purity Standards
@@ -111,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
               {onOpenAdmin && (
                 <button
                   onClick={onOpenAdmin}
-                  title="Store Admin Panel (Password Protected: 1977)"
+                  title="Store Admin Panel"
                   className="w-8 h-8 rounded-lg bg-[#FAF7F2] hover:bg-[#EDE5DB] active:scale-95 text-[#736555] hover:text-[#2C241D] border border-[#DDD3C6] flex items-center justify-center transition-all cursor-pointer shadow-xs"
                   aria-label="Admin Settings"
                 >
@@ -162,11 +162,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
               The Cold-Pressed Oils
             </a>
             <a
-              href="#benefits"
+              href="#offer"
               onClick={() => setMobileMenuOpen(false)}
               className="block py-2 text-xs font-bold tracking-wider uppercase text-[#2C241D] border-b border-[#EFEAE2]"
             >
-              Nutritional Benefits
+              Special Mill Offer (Save ₹95)
             </a>
             <a
               href="#tradition"
@@ -228,7 +228,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
                   className="w-full py-2 text-center text-[11px] font-bold uppercase tracking-wider text-[#736555] hover:text-[#2C241D] flex items-center justify-center gap-1.5"
                 >
                   <Lock className="w-3.5 h-3.5 text-[#D4AF37]" />
-                  <span>Store Admin Portal (Passkey: 1977)</span>
+                  <span>Store Admin Portal</span>
                 </button>
               )}
             </div>

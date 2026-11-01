@@ -85,7 +85,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
         sessionStorage.removeItem('malabar_sec_ratelimit_v1');
       } catch {}
     } else {
-      setAuthError('Incorrect passkey. Please enter 1977');
+      setAuthError('Incorrect passkey. Access denied.');
     }
   };
 

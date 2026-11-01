@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { BenefitsPosterCarousel } from './components/BenefitsPosterCarousel';
 import { OfferProductBlock } from './components/OfferProductBlock';
 import { ProductShowcase } from './components/ProductShowcase';
 import { BrandTradition } from './components/BrandTradition';
@@ -43,10 +42,7 @@ export const App: React.FC = () => {
       {/* Clean Brand Poster Hero & Direct CTAs with Kinetic Motion Typography */}
       <Hero onOpenCheckout={() => handleOpenCheckout()} />
 
-      {/* 3D Coverflow Benefits Poster Carousel (Seamless Cutout, Warm Card Match) */}
-      <BenefitsPosterCarousel />
-
-      {/* High-Converting Special Offer Product Block (Kitchen Trio Combo) */}
+      {/* High-Converting Special Offer Product Block (₹380 Worth Coconut Oil 1L Now Just ₹285) */}
       <OfferProductBlock
         onOpenCheckout={(item) => handleOpenCheckout(item)}
         onOpenCart={handleOpenCart}
@@ -95,3 +91,4 @@ export const App: React.FC = () => {
 };
 
 export default App;
+

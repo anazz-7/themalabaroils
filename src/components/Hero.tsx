@@ -97,60 +97,42 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCheckout }) => {
           </motion.p>
         </div>
 
-        {/* 3 Circular Guarantee Badges with Fluid Sinusoidal Floating */}
+        {/* 3 Circular Guarantee Badges with Fluid GPU Composite Floating */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.45, delay: 0.25, ease: [0.23, 1, 0.32, 1] }}
+          transition={{ duration: 0.35, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           className="grid grid-cols-3 gap-2 sm:gap-6 max-w-xs sm:max-w-md mx-auto mb-8 sm:mb-10 select-none"
         >
           {/* Badge 1: No Adulteration */}
-          <motion.div
-            whileHover={{ y: -3, scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{ y: [0, -3.5, 0] }}
-            transition={{ y: { repeat: Infinity, duration: 3.8, ease: 'easeInOut' } }}
-            className="flex flex-col items-center cursor-pointer"
-          >
+          <div className="flex flex-col items-center cursor-pointer animate-float-slow">
             <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs hover:shadow-md transition-shadow">
               <Leaf className="w-6 h-6 sm:w-8 sm:h-8 text-[#2C241D] stroke-[1.5]" />
             </div>
             <span className="mt-2 text-[11px] sm:text-xs font-semibold tracking-wide text-[#2C241D] text-center leading-tight">
               No <br /> Adulteration
             </span>
-          </motion.div>
+          </div>
 
           {/* Badge 2: No Preservatives */}
-          <motion.div
-            whileHover={{ y: -3, scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{ y: [0, -3.5, 0] }}
-            transition={{ y: { repeat: Infinity, duration: 4.2, delay: 0.4, ease: 'easeInOut' } }}
-            className="flex flex-col items-center cursor-pointer"
-          >
+          <div className="flex flex-col items-center cursor-pointer animate-float-reverse">
             <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs hover:shadow-md transition-shadow">
               <FlaskConical className="w-6 h-6 sm:w-8 sm:h-8 text-[#2C241D] stroke-[1.5]" />
             </div>
             <span className="mt-2 text-[11px] sm:text-xs font-semibold tracking-wide text-[#2C241D] text-center leading-tight">
               No <br /> Preservatives
             </span>
-          </motion.div>
+          </div>
 
           {/* Badge 3: No Chemicals */}
-          <motion.div
-            whileHover={{ y: -3, scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            animate={{ y: [0, -3.5, 0] }}
-            transition={{ y: { repeat: Infinity, duration: 4.0, delay: 0.8, ease: 'easeInOut' } }}
-            className="flex flex-col items-center cursor-pointer"
-          >
+          <div className="flex flex-col items-center cursor-pointer animate-float-slow">
             <div className="w-14 h-14 sm:w-18 sm:h-18 rounded-full border border-[#3E342B] flex items-center justify-center bg-white/90 shadow-xs hover:shadow-md transition-shadow">
               <Droplet className="w-6 h-6 sm:w-8 sm:h-8 text-[#2C241D] stroke-[1.5]" />
             </div>
             <span className="mt-2 text-[11px] sm:text-xs font-semibold tracking-wide text-[#2C241D] text-center leading-tight">
               No <br /> Chemicals
             </span>
-          </motion.div>
+          </div>
         </motion.div>
 
         {/* Action CTAs in Dark Brown Luxury Palette */}

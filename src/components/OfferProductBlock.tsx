@@ -16,12 +16,12 @@ export const OfferProductBlock: React.FC<OfferProductBlockProps> = ({ onOpenChec
   const [isAdded, setIsAdded] = useState(false);
 
   const offerItem = {
-    productId: 'trio-bundle',
-    name: 'Traditional Kitchen Trio (1L Gingelly + 1L Coconut + 1L Groundnut)',
-    sizeLabel: '3 x 1 Litre',
-    price: 1199,
-    originalPrice: 1320,
-    image: '/trio-bundle.jpg'
+    productId: 'coconut',
+    name: 'Cold-Pressed Coconut Oil (100% Sulfur-Free Copra)',
+    sizeLabel: '1 Litre',
+    price: 285,
+    originalPrice: 380,
+    image: '/coconut-oil.jpg'
   };
 
   const handleAddToCart = () => {
@@ -50,41 +50,41 @@ export const OfferProductBlock: React.FC<OfferProductBlockProps> = ({ onOpenChec
       });
     } else {
       const msg = encodeURIComponent(
-        `Hello The Malabar Oils / Barakkath Marketing,\nI want to claim the Trio Offer (1L Gingelly + 1L Coconut + 1L Groundnut) for ₹1,199.\nPlease confirm delivery!`
+        `Hello The Malabar Oils / Barakkath Marketing,\nI would like to claim the Special Offer: 1L Pure Cold-Pressed Coconut Oil (₹380 worth) for just ₹285.\nPlease confirm my order!`
       );
       window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, '_blank');
     }
   };
 
   return (
-    <section className="py-4 sm:py-6 px-3 sm:px-6 relative select-none">
-      <div className="max-w-4xl mx-auto">
+    <section id="offer" className="py-4 sm:py-6 px-3 sm:px-6 relative select-none">
+      <div className="max-w-3xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-          className="rounded-2xl sm:rounded-3xl bg-[#FAF7F2] border border-[#D4AF37]/40 p-4 sm:p-6 text-center shadow-xs"
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-2xl sm:rounded-3xl bg-[#FAF7F2] border border-[#D4AF37]/45 p-4 sm:p-6 text-center shadow-xs"
         >
           {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#2C241D] text-[#D4AF37] text-[10px] font-bold uppercase tracking-wider mb-2.5">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#2C241D] text-[#D4AF37] text-[10px] font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-3 h-3 text-[#D4AF37]" />
-            <span>Special Factory Offer</span>
+            <span>Special Mill Offer • 25% Off</span>
           </div>
 
-          {/* Pure Typography Offer Statement */}
+          {/* Clean Typography Offer Statement */}
           <h3 className="font-serif-display text-lg sm:text-2xl lg:text-3xl font-bold text-[#2C241D] tracking-tight leading-snug max-w-2xl mx-auto">
-            Get The Complete Kitchen Trio for{' '}
+            ₹380 Worth Coconut Oil 1L Now Just{' '}
             <span className="font-mono font-black text-[#1C1814] underline decoration-[#D4AF37] decoration-2 underline-offset-4">
-              ₹1,199
+              ₹285
             </span>
             <span className="text-xs sm:text-sm font-normal text-[#8C7E70] line-through ml-2 font-mono">
-              ₹1,320
+              ₹380
             </span>
           </h3>
 
           <p className="text-xs sm:text-sm text-[#6C5F51] mt-1.5 max-w-xl mx-auto leading-relaxed">
-            1L Gingelly + 1L Coconut + 1L Groundnut cold-pressed oils. Includes <strong className="text-[#2C241D]">Free Delivery</strong> &amp; <strong className="text-[#2C241D]">Save ₹121</strong>.
+            100% Edible Raw Sulfur-Free Copra Extraction. <strong className="text-[#2C241D]">Save ₹95</strong> direct from our Periyakulam mill.
           </p>
 
           {/* Minimal Inline Actions */}
@@ -94,7 +94,7 @@ export const OfferProductBlock: React.FC<OfferProductBlockProps> = ({ onOpenChec
               onClick={handleClaimOffer}
               className="relative overflow-hidden min-h-[38px] sm:min-h-[42px] px-5 bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer border border-[#D4AF37]/35"
             >
-              <span>Claim Offer Now</span>
+              <span>Claim Offer (₹285)</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
             </button>
 
