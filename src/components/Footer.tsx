@@ -64,10 +64,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin }) => {
                 </svg>
               </div>
               <div className="flex flex-col">
-                <span className="font-serif-display text-xl font-bold tracking-[0.16em] text-white">
+                <span className="font-bebas text-2xl font-normal tracking-[0.15em] text-white leading-none">
                   THE MALABAR OILS
                 </span>
-                <span className="text-[9px] tracking-[0.28em] uppercase text-[#A39788] font-semibold">
+                <span className="text-[9px] tracking-[0.28em] uppercase text-[#A39788] font-semibold mt-1">
                   Traditional Cold-Pressed Oils
                 </span>
               </div>

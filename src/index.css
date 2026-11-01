@@ -27,6 +27,11 @@
   }
 }
 
+.font-bebas {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.12em;
+}
+
 .font-serif-display {
   font-family: 'Playfair Display', Georgia, serif;
 }

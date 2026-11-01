@@ -62,8 +62,8 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
           </p>
         </motion.div>
 
-        {/* EXACT 2x2 GRID ON BOTH MOBILE AND DESKTOP */}
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-6 lg:gap-8">
+        {/* Responsive Grid: 2 columns on Mobile (2x2), 4 columns x 2 rows on Desktop (8x2 product view) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
           {catalog.map((oil, index) => {
             const currentSizeIdx = selectedSizes[oil.id] ?? 1;
             const currentSize = oil.sizes[currentSizeIdx] || oil.sizes[0] || { label: '1L', price: 420, originalPrice: 480 };
@@ -81,7 +81,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
               >
                 <SpotlightCard
                   spotlightColor={oil.glowColor || 'rgba(212, 175, 55, 0.2)'}
-                  className={`bg-white border transition-all duration-300 p-3 sm:p-7 flex flex-col justify-between h-full shadow-xs hover:shadow-xl relative group rounded-2xl sm:rounded-3xl ${
+                  className={`bg-white border transition-all duration-300 p-3 sm:p-5 flex flex-col justify-between h-full shadow-xs hover:shadow-xl relative group rounded-2xl sm:rounded-3xl ${
                     oil.isCombo
                       ? 'border-[#D4AF37]/50 bg-gradient-to-br from-white via-[#FAF6F0] to-white'
                       : 'border-[#E7DFD5] hover:border-[#C5B7A6]'
@@ -94,13 +94,13 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
                   />
 
                   <div>
-                    {/* Real Product Bottle Image Showcase with Transparent Cutout & Warm Card Match */}
-                    <div className="relative w-full aspect-square sm:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-gradient-to-b from-[#F7F3EC] to-[#EFE7DC] mb-2 sm:mb-3.5 border border-[#EBE4DA] group-hover:border-[#D4C8B8] transition-colors shadow-2xs flex items-center justify-center p-2 sm:p-3">
+                    {/* Real Authentic Product Bottle Image Showcase */}
+                    <div className="relative w-full aspect-square sm:aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-[#F7F4EE] mb-2 sm:mb-3.5 border border-[#EBE4DA] group-hover:border-[#D4C8B8] transition-colors shadow-2xs">
                       <img
                         src={oil.image}
                         alt={oil.name}
                         loading="lazy"
-                        className="w-full h-full object-contain filter drop-shadow-[0_10px_14px_rgba(0,0,0,0.18)] group-hover:scale-105 transition-transform duration-500 ease-out"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                       />
                       {/* Floating Cap Seal Badge on top of image */}
                       <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-10">

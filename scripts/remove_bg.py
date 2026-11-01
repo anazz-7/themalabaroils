@@ -23,3 +23,4 @@ for src, dst in images:
         print(f"Not found: {src}")
 
 print("All background removals complete!")
+

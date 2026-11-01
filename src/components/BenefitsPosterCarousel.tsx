@@ -28,7 +28,7 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
     bgColor: '#E5A536',
     textColor: '#241A12',
     accentColor: '#1A120B',
-    centerImage: '/gingelly-oil-nobg.png',
+    centerImage: '/gingelly-oil.jpg',
     benefits: [
       { text: 'rich in sesamol & calcium', position: 'top-left' },
       { text: 'natural body cooling', position: 'top-right' },
@@ -46,7 +46,7 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
     bgColor: '#E0B574',
     textColor: '#241A12',
     accentColor: '#1C150E',
-    centerImage: '/coconut-oil-nobg.png',
+    centerImage: '/coconut-oil.jpg',
     benefits: [
       { text: 'rich in lauric acid (MCFA)', position: 'top-left' },
       { text: 'natural metabolism booster', position: 'top-right' },
@@ -64,7 +64,7 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
     bgColor: '#DC9633',
     textColor: '#241A12',
     accentColor: '#1C150E',
-    centerImage: '/groundnut-oil-nobg.png',
+    centerImage: '/groundnut-oil.jpg',
     benefits: [
       { text: 'heart-friendly MUFA fats', position: 'top-left' },
       { text: 'high natural vitamin E', position: 'top-right' },
@@ -82,7 +82,7 @@ const BENEFIT_POSTERS: BenefitPoster[] = [
     bgColor: '#CDA44C',
     textColor: '#241A12',
     accentColor: '#1C150E',
-    centerImage: '/hero-bottles-nobg.png',
+    centerImage: '/hero-bottles.jpg',
     benefits: [
       { text: 'zero petroleum solvents', position: 'top-left' },
       { text: 'preserves live micro-nutrients', position: 'top-right' },
@@ -212,16 +212,16 @@ export const BenefitsPosterCarousel: React.FC = () => {
                   {/* Pulsing Aura */}
                   <div className="absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-white/25 blur-xl pointer-events-none animate-pulse" />
 
-                  {/* Center Bottle Graphic with Seamless Cutout & Natural Ambient Shadow */}
+                  {/* Center Bottle Graphic */}
                   <motion.div
-                    animate={isCenter ? { y: [0, -6, 0] } : {}}
+                    animate={isCenter ? { y: [0, -5, 0] } : {}}
                     transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                    className="relative z-10 w-36 sm:w-44 h-44 sm:h-52 flex items-center justify-center filter drop-shadow-[0_14px_18px_rgba(0,0,0,0.28)]"
+                    className="relative z-10 w-28 sm:w-36 h-40 sm:h-48 rounded-2xl overflow-hidden shadow-xl border border-black/10 bg-white"
                   >
                     <img
                       src={poster.centerImage}
                       alt={poster.title}
-                      className="w-full h-full object-contain pointer-events-none select-none"
+                      className="w-full h-full object-cover object-center select-none"
                     />
                   </motion.div>
 

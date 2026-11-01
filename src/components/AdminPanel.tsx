@@ -32,9 +32,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   const { catalog, whatsappNumber, saveCatalog, saveWhatsAppNumber, resetCatalogToDefaults } = useCatalog();
   const { orders, updateOrderStatus, deleteOrder, clearAllOrders } = useOrders();
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    return sessionStorage.getItem('malabar_admin_auth') === 'true';
-  });
+  // Always require the 4-digit passkey '1977' every time the Admin Panel is opened
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState('');
   const [activeTab, setActiveTab] = useState<'orders' | 'prices' | 'content' | 'settings'>('orders');
@@ -45,6 +44,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   const [editablePhone, setEditablePhone] = useState<string>(whatsappNumber);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
+  // Clear authentication whenever modal closes so passkey is always prompted on re-open
+  useEffect(() => {
+    if (!isOpen) {
+      setIsAuthenticated(false);
+      setPasswordInput('');
+      setAuthError('');
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     setEditableCatalog(catalog);
     setEditablePhone(whatsappNumber);
@@ -54,6 +62,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
+        setIsAuthenticated(false);
         onClose();
       }
     };
@@ -65,11 +74,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
     if (passwordInput.trim() === '1977') {
       setIsAuthenticated(true);
-      sessionStorage.setItem('malabar_admin_auth', 'true');
       setAuthError('');
       setPasswordInput('');
     } else {
-      setAuthError('Incorrect admin passkey. Enter 1977');
+      setAuthError('Incorrect passkey. Please enter 1977');
     }
   };
 
@@ -169,13 +177,28 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            <button
-              onClick={onClose}
-              className="w-8 h-8 rounded-lg hover:bg-white/10 active:scale-95 text-[#D8CFBF] flex items-center justify-center transition-colors cursor-pointer"
-              aria-label="Close Admin Modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-2">
+              {isAuthenticated && (
+                <button
+                  onClick={() => setIsAuthenticated(false)}
+                  className="px-2.5 py-1 text-[11px] font-bold uppercase rounded-lg bg-white/10 hover:bg-white/20 text-[#D8CFBF] flex items-center gap-1 cursor-pointer border border-white/15"
+                  title="Lock Admin Session"
+                >
+                  <Lock className="w-3 h-3 text-[#D4AF37]" />
+                  <span>Lock</span>
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  setIsAuthenticated(false);
+                  onClose();
+                }}
+                className="w-8 h-8 rounded-lg hover:bg-white/10 active:scale-95 text-[#D8CFBF] flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close Admin Modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           {!isAuthenticated ? (
@@ -687,10 +710,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
               <div className="bg-[#FAF7F2] border-t border-[#E8DFD3] p-4 sm:px-6 sm:py-3.5 flex items-center justify-between">
                 <button
                   type="button"
-                  onClick={onClose}
+                  onClick={() => {
+                    setIsAuthenticated(false);
+                    onClose();
+                  }}
                   className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#7A6E61] hover:text-[#2C241D] cursor-pointer"
                 >
-                  Close
+                  Close & Lock
                 </button>
 
                 {activeTab !== 'orders' && (

@@ -59,7 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout }) =
                 </svg>
               </div>
               <div className="flex flex-col">
-                <span className="font-serif-display text-xl sm:text-2xl font-bold tracking-[0.16em] text-[#2C241D] leading-none">
+                <span className="font-bebas text-2xl sm:text-3xl tracking-[0.14em] text-[#2C241D] leading-none">
                   THE MALABAR OILS
                 </span>
                 <span className="text-[9px] tracking-[0.28em] uppercase text-[#736555] font-semibold mt-1">
