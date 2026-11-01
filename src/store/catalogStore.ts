@@ -198,6 +198,12 @@ export function saveCatalog(newCatalog: CatalogProduct[]) {
   try {
     localStorage.setItem(STORAGE_CATALOG_KEY, JSON.stringify(newCatalog));
     emitChange();
+    // Sync with serverless API if deployed
+    fetch('/api/catalog', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ catalog: newCatalog })
+    }).catch(() => {});
   } catch (err) {
     console.error('Failed to save catalog to localStorage', err);
   }
@@ -245,6 +251,17 @@ export function useCatalog() {
 
     listeners.push(handleUpdate);
     window.addEventListener('storage', handleUpdate);
+
+    // Background cloud sync check if available
+    fetch('/api/catalog')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.catalog && Array.isArray(data.catalog) && data.catalog.length > 0) {
+          localStorage.setItem(STORAGE_CATALOG_KEY, JSON.stringify(data.catalog));
+          emitChange();
+        }
+      })
+      .catch(() => {});
 
     return () => {
       const idx = listeners.indexOf(handleUpdate);

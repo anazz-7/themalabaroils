@@ -120,6 +120,11 @@ export function createOrder(
   try {
     localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(updatedOrders));
     emitChange();
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newOrder)
+    }).catch(() => {});
   } catch (err) {
     console.error('Failed to save order to localStorage', err);
   }
@@ -170,6 +175,18 @@ export function useOrders() {
 
     listeners.push(handleUpdate);
     window.addEventListener('storage', handleUpdate);
+
+    fetch('/api/orders')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && Array.isArray(data.orders) && data.orders.length > 0) {
+          const current = getStoredOrders();
+          const merged = [...data.orders, ...current.filter((c) => !data.orders.some((o: CustomerOrder) => o.id === c.id))];
+          localStorage.setItem(STORAGE_ORDERS_KEY, JSON.stringify(merged));
+          emitChange();
+        }
+      })
+      .catch(() => {});
 
     return () => {
       const idx = listeners.indexOf(handleUpdate);

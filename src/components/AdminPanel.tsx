@@ -18,7 +18,9 @@ import {
   Copy,
   ExternalLink,
   MessageCircle,
-  Filter
+  Filter,
+  Cloud,
+  Download
 } from 'lucide-react';
 import { useCatalog, CatalogProduct, DEFAULT_WHATSAPP_NUMBER } from '../store/catalogStore';
 import { useOrders, CustomerOrder, OrderStatus } from '../store/orderStore';
@@ -721,6 +723,49 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                       <span className="text-[10px] text-[#A89C8C] mt-1 block">
                         Current: +{editablePhone}
                       </span>
+                    </div>
+
+                    {/* Live Production Deployment Sync & Export */}
+                    <div className="pt-4 border-t border-[#F2ECE3] space-y-2.5">
+                      <div>
+                        <span className="text-xs font-bold text-[#2C241D] flex items-center gap-1.5">
+                          <Cloud className="w-3.5 h-3.5 text-[#D4AF37]" />
+                          <span>Live Store Global Deployment</span>
+                        </span>
+                        <p className="text-[11px] text-[#7A6E61] mt-0.5 leading-relaxed">
+                          Edits in this panel take effect immediately in this browser. To deploy your updated prices & products permanently across all customer phones and computers worldwide on Vercel, copy the updated catalog JSON below and ask your AI assistant to commit it to production.
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(JSON.stringify(editableCatalog, null, 2));
+                            alert('Updated store catalog JSON copied to clipboard! You can share this to deploy permanently to Vercel.');
+                          }}
+                          className="px-3.5 py-2 bg-[#FAF7F2] hover:bg-[#EDE5DB] border border-[#DDD3C5] rounded-xl text-xs font-bold text-[#2C241D] flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        >
+                          <Copy className="w-3.5 h-3.5 text-[#D4AF37]" />
+                          <span>Copy Updated Catalog JSON</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const blob = new Blob([JSON.stringify(editableCatalog, null, 2)], { type: 'application/json' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `malabar-catalog-${new Date().toISOString().slice(0, 10)}.json`;
+                            a.click();
+                          }}
+                          className="px-3.5 py-2 bg-[#FAF7F2] hover:bg-[#EDE5DB] border border-[#DDD3C5] rounded-xl text-xs font-bold text-[#2C241D] flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        >
+                          <Download className="w-3.5 h-3.5 text-[#D4AF37]" />
+                          <span>Download Backup</span>
+                        </button>
+                      </div>
                     </div>
 
                     <div className="pt-4 border-t border-[#F2ECE3] flex items-center justify-between">
