@@ -212,6 +212,17 @@ export function saveWhatsAppNumber(newPhone: string) {
   }
 }
 
+export function deleteProduct(productId: string) {
+  const current = getStoredCatalog();
+  const updated = current.filter((p) => p.id !== productId);
+  saveCatalog(updated);
+}
+
+export function addProduct(product: CatalogProduct) {
+  const current = getStoredCatalog();
+  saveCatalog([...current, product]);
+}
+
 export function resetCatalogToDefaults() {
   try {
     localStorage.removeItem(STORAGE_CATALOG_KEY);
@@ -247,6 +258,8 @@ export function useCatalog() {
     whatsappNumber,
     saveCatalog,
     saveWhatsAppNumber,
+    deleteProduct,
+    addProduct,
     resetCatalogToDefaults
   };
 }

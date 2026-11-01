@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, ShieldCheck, Truck, MessageCircle, MapPin, Phone, User, Package, ArrowRight, Sparkles } from 'lucide-react';
 import { useCatalog, CatalogProduct } from '../store/catalogStore';
 import { useOrders } from '../store/orderStore';
+import { useCart } from '../store/cartStore';
 
 export interface CheckoutItemInitial {
   id: string;
@@ -25,6 +26,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 }) => {
   const { catalog, whatsappNumber } = useCatalog();
   const { createOrder } = useOrders();
+  const { cart, totalAmount: cartTotal, clearCart: emptyCart } = useCart();
+  const isCartCheckout = !initialItem && cart.length > 0;
 
   // Selected product & size
   const [selectedProductId, setSelectedProductId] = useState<string>('gingelly');
@@ -68,7 +71,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const currentProduct = catalog.find((p) => p.id === selectedProductId) || catalog[0];
   const activeSize = currentProduct.sizes.find((s) => s.label === selectedSizeLabel) || currentProduct.sizes[1] || currentProduct.sizes[0];
   const unitPrice = activeSize.price;
-  const totalPrice = unitPrice * quantity;
+  const singleTotal = unitPrice * quantity;
+  const finalTotal = isCartCheckout ? cartTotal : singleTotal;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,6 +83,24 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
     setIsSubmitting(true);
 
+    const orderItems = isCartCheckout
+      ? cart.map((c) => ({
+          productId: c.productId,
+          productName: c.name,
+          sizeLabel: c.sizeLabel,
+          price: c.price,
+          quantity: c.quantity
+        }))
+      : [
+          {
+            productId: currentProduct.id,
+            productName: currentProduct.name,
+            sizeLabel: activeSize.label,
+            price: unitPrice,
+            quantity
+          }
+        ];
+
     const newOrder = createOrder({
       customerName: customerName.trim(),
       phone: phone.trim(),
@@ -87,38 +109,37 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       pincode: pincode.trim(),
       notes: notes.trim(),
       paymentMethod,
-      totalAmount: totalPrice,
-      items: [
-        {
-          productId: currentProduct.id,
-          productName: currentProduct.name,
-          sizeLabel: activeSize.label,
-          price: unitPrice,
-          quantity
-        }
-      ]
+      totalAmount: finalTotal,
+      items: orderItems
     });
+
+    if (isCartCheckout) {
+      emptyCart();
+    }
 
     setPlacedOrderId(newOrder.id);
     setIsSubmitting(false);
 
     // Prepare WhatsApp Message
+    const itemsDescription = isCartCheckout
+      ? cart.map((c) => `• ${c.name} (${c.sizeLabel}) x ${c.quantity} = ₹${c.price * c.quantity}`).join('\n')
+      : `• ${currentProduct.name} (${activeSize.label}) x ${quantity} = ₹${singleTotal}`;
+
     const whatsappMsg = `🛍️ *NEW ORDER PLACED - ${newOrder.id}*\n\n` +
       `Hello The Malabar Oils / Barakkath Marketing,\n` +
       `I have placed an order on your website:\n\n` +
       `• *Order ID*: ${newOrder.id}\n` +
       `• *Customer*: ${newOrder.customerName}\n` +
       `• *Phone*: ${newOrder.phone}\n` +
-      `• *Product*: ${currentProduct.name} (${activeSize.label}) x ${quantity}\n` +
-      `• *Total*: ₹${totalPrice}\n` +
-      `• *Payment*: ${paymentMethod}\n` +
+      `*Items Ordered*:\n${itemsDescription}\n\n` +
+      `• *Total Payable*: ₹${finalTotal}\n` +
+      `• *Payment Option*: ${paymentMethod}\n` +
       `• *Delivery Address*: ${address.trim()}, ${city.trim()} - ${pincode.trim()}\n` +
       (notes.trim() ? `• *Note*: ${notes.trim()}\n` : '') +
       `\nPlease confirm order dispatch and delivery date!`;
 
     const redirectUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMsg)}`;
 
-    // Optional quick redirect after delay or user click
     setTimeout(() => {
       window.open(redirectUrl, '_blank');
     }, 1200);
@@ -195,16 +216,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
                 <div className="p-4 rounded-2xl bg-white border border-[#E7DFD5] max-w-md mx-auto text-left text-xs space-y-2 shadow-xs">
                   <div className="flex justify-between border-b border-[#F2ECE3] pb-2">
-                    <span className="text-[#7A6E61]">Product:</span>
-                    <strong className="text-[#2C241D]">{currentProduct.name} ({activeSize.label})</strong>
-                  </div>
-                  <div className="flex justify-between border-b border-[#F2ECE3] pb-2">
-                    <span className="text-[#7A6E61]">Quantity:</span>
-                    <strong className="text-[#2C241D]">{quantity} bottle{quantity > 1 ? 's' : ''}</strong>
+                    <span className="text-[#7A6E61]">Items:</span>
+                    <strong className="text-[#2C241D]">{isCartCheckout ? `${cart.length || 'Multiple'} item(s)` : `${currentProduct.name} (${activeSize.label}) x ${quantity}`}</strong>
                   </div>
                   <div className="flex justify-between border-b border-[#F2ECE3] pb-2">
                     <span className="text-[#7A6E61]">Total Amount:</span>
-                    <strong className="text-[#2C241D] text-sm">₹{totalPrice}</strong>
+                    <strong className="text-[#2C241D] text-sm">₹{finalTotal}</strong>
                   </div>
                   <div className="flex justify-between border-b border-[#F2ECE3] pb-2">
                     <span className="text-[#7A6E61]">Payment:</span>
@@ -219,7 +236,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <div className="pt-2 max-w-md mx-auto space-y-2.5">
                   <a
                     href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                      `🛍️ Order #${placedOrderId} Confirmation:\nCustomer: ${customerName}\nProduct: ${currentProduct.name} (${activeSize.label}) x ${quantity}\nTotal: ₹${totalPrice}\nAddress: ${address}, ${city} - ${pincode}`
+                      `🛍️ Order #${placedOrderId} Confirmation:\nCustomer: ${customerName}\nTotal: ₹${finalTotal}\nAddress: ${address}, ${city} - ${pincode}`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -240,85 +257,110 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             ) : (
               /* Checkout Form */
               <form onSubmit={handleSubmit} className="space-y-5">
-                {/* 1. Item Selection Banner */}
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-[#E7DFD5] shadow-xs">
-                  <div className="flex items-center gap-3.5">
-                    <img
-                      src={currentProduct.image}
-                      alt={currentProduct.name}
-                      className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-xl border border-[#DDD3C5]"
-                    />
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <select
-                          value={selectedProductId}
-                          onChange={(e) => {
-                            setSelectedProductId(e.target.value);
-                            const prod = catalog.find((p) => p.id === e.target.value);
-                            if (prod && prod.sizes.length > 0) {
-                              setSelectedSizeLabel(prod.sizes[0].label);
-                            }
-                          }}
-                          className="font-bold text-xs sm:text-sm text-[#2C241D] bg-transparent border-b border-[#DDD3C5] focus:outline-none cursor-pointer truncate max-w-[220px]"
-                        >
-                          {catalog.map((p) => (
-                            <option key={p.id} value={p.id}>
-                              {p.name}
-                            </option>
-                          ))}
-                        </select>
-
-                        <span className="text-sm sm:text-base font-black text-[#2C241D]">
-                          ₹{totalPrice}
-                        </span>
+                {/* 1. Item Selection Banner / Cart Order Summary */}
+                {isCartCheckout ? (
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-[#E7DFD5] shadow-xs space-y-2">
+                    <div className="flex items-center justify-between pb-1.5 border-b border-[#F4EFEA]">
+                      <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#2C241D]">
+                        <Package className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        <span>Cart Order Summary ({cart.length} items)</span>
                       </div>
+                      <span className="text-xs font-black font-mono text-[#2C241D]">Total: ₹{finalTotal}</span>
+                    </div>
+                    <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1">
+                      {cart.map((item) => (
+                        <div key={item.id} className="flex items-center justify-between text-xs py-1 border-b border-[#FAF7F2]">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <img src={item.image} alt={item.name} className="w-8 h-8 object-cover rounded-md border border-[#DDD3C5] shrink-0" />
+                            <span className="truncate text-[#2C241D] font-medium">
+                              {item.name} ({item.sizeLabel}) × <strong className="font-bold">{item.quantity}</strong>
+                            </span>
+                          </div>
+                          <span className="font-mono font-bold text-[#2C241D] ml-2 shrink-0">₹{item.price * item.quantity}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-[#E7DFD5] shadow-xs">
+                    <div className="flex items-center gap-3.5">
+                      <img
+                        src={currentProduct.image}
+                        alt={currentProduct.name}
+                        className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-xl border border-[#DDD3C5]"
+                      />
 
-                      {/* Size picker & Quantity Stepper */}
-                      <div className="flex flex-wrap items-center justify-between gap-2 mt-2 pt-2 border-t border-[#F4EFEA]">
-                        {/* Size select */}
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] uppercase font-bold text-[#8C7E70]">Size:</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
                           <select
-                            value={selectedSizeLabel}
-                            onChange={(e) => setSelectedSizeLabel(e.target.value)}
-                            className="text-xs font-semibold bg-[#FAF7F2] border border-[#DDD3C5] rounded-md px-2 py-0.5 text-[#2C241D]"
+                            value={selectedProductId}
+                            onChange={(e) => {
+                              setSelectedProductId(e.target.value);
+                              const prod = catalog.find((p) => p.id === e.target.value);
+                              if (prod && prod.sizes.length > 0) {
+                                setSelectedSizeLabel(prod.sizes[0].label);
+                              }
+                            }}
+                            className="font-bold text-xs sm:text-sm text-[#2C241D] bg-transparent border-b border-[#DDD3C5] focus:outline-none cursor-pointer truncate max-w-[220px]"
                           >
-                            {currentProduct.sizes.map((s) => (
-                              <option key={s.label} value={s.label}>
-                                {s.label} (₹{s.price})
+                            {catalog.map((p) => (
+                              <option key={p.id} value={p.id}>
+                                {p.name}
                               </option>
                             ))}
                           </select>
+
+                          <span className="text-sm sm:text-base font-black text-[#2C241D]">
+                            ₹{finalTotal}
+                          </span>
                         </div>
 
-                        {/* Qty Stepper */}
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] uppercase font-bold text-[#8C7E70]">Qty:</span>
-                          <div className="inline-flex items-center border border-[#DDD3C5] rounded-lg overflow-hidden bg-[#FAF7F2]">
-                            <button
-                              type="button"
-                              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                              className="px-2 py-0.5 hover:bg-[#EAE2D5] active:scale-95 font-bold text-xs cursor-pointer"
+                        {/* Size picker & Quantity Stepper */}
+                        <div className="flex flex-wrap items-center justify-between gap-2 mt-2 pt-2 border-t border-[#F4EFEA]">
+                          {/* Size select */}
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] uppercase font-bold text-[#8C7E70]">Size:</span>
+                            <select
+                              value={selectedSizeLabel}
+                              onChange={(e) => setSelectedSizeLabel(e.target.value)}
+                              className="text-xs font-semibold bg-[#FAF7F2] border border-[#DDD3C5] rounded-md px-2 py-0.5 text-[#2C241D]"
                             >
-                              -
-                            </button>
-                            <span className="px-2.5 py-0.5 text-xs font-bold text-[#2C241D] bg-white">
-                              {quantity}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => setQuantity((q) => q + 1)}
-                              className="px-2 py-0.5 hover:bg-[#EAE2D5] active:scale-95 font-bold text-xs cursor-pointer"
-                            >
-                              +
-                            </button>
+                              {currentProduct.sizes.map((s) => (
+                                <option key={s.label} value={s.label}>
+                                  {s.label} (₹{s.price})
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          {/* Qty Stepper */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] uppercase font-bold text-[#8C7E70]">Qty:</span>
+                            <div className="inline-flex items-center border border-[#DDD3C5] rounded-lg overflow-hidden bg-[#FAF7F2]">
+                              <button
+                                type="button"
+                                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                                className="px-2 py-0.5 hover:bg-[#EAE2D5] active:scale-95 font-bold text-xs cursor-pointer"
+                              >
+                                -
+                              </button>
+                              <span className="px-2.5 py-0.5 text-xs font-bold text-[#2C241D] bg-white">
+                                {quantity}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => setQuantity((q) => q + 1)}
+                                className="px-2 py-0.5 hover:bg-[#EAE2D5] active:scale-95 font-bold text-xs cursor-pointer"
+                              >
+                                +
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* 2. Customer & Delivery Address Form */}
                 <div className="space-y-3">
@@ -458,7 +500,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-sm text-[#2C241D]">Total Payable:</span>
-                    <span className="font-black text-xl text-[#2C241D]">₹{totalPrice}</span>
+                    <span className="font-black text-xl text-[#2C241D]">₹{finalTotal}</span>
                   </div>
 
                   <button
@@ -467,7 +509,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     className="w-full min-h-[48px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white border border-[#D4AF37]/50 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4 text-[#D4AF37]" />
-                    <span>{isSubmitting ? 'Recording Order...' : `Confirm Order (₹${totalPrice})`}</span>
+                    <span>{isSubmitting ? 'Recording Order...' : `Confirm Order (₹${finalTotal})`}</span>
                     <ArrowRight className="w-4 h-4 text-[#D4AF37]" />
                   </button>
 

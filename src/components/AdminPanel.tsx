@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useCatalog, CatalogProduct, DEFAULT_WHATSAPP_NUMBER } from '../store/catalogStore';
 import { useOrders, CustomerOrder, OrderStatus } from '../store/orderStore';
+import { authenticatePasskey } from '../utils/security';
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -29,13 +30,14 @@ interface AdminPanelProps {
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
-  const { catalog, whatsappNumber, saveCatalog, saveWhatsAppNumber, resetCatalogToDefaults } = useCatalog();
+  const { catalog, whatsappNumber, saveCatalog, saveWhatsAppNumber, deleteProduct, resetCatalogToDefaults } = useCatalog();
   const { orders, updateOrderStatus, deleteOrder, clearAllOrders } = useOrders();
 
   // Always require the 4-digit passkey '1977' every time the Admin Panel is opened
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState('');
+  const [isCheckingAuth, setIsCheckingAuth] = useState(false);
   const [activeTab, setActiveTab] = useState<'orders' | 'prices' | 'content' | 'settings'>('orders');
   const [orderFilter, setOrderFilter] = useState<string>('all');
   const [copiedOrderId, setCopiedOrderId] = useState<string | null>(null);
@@ -70,14 +72,26 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput.trim() === '1977') {
+    setIsCheckingAuth(true);
+    const result = await authenticatePasskey(passwordInput);
+    setIsCheckingAuth(false);
+    if (result.success) {
       setIsAuthenticated(true);
       setAuthError('');
       setPasswordInput('');
     } else {
-      setAuthError('Incorrect passkey. Please enter 1977');
+      setAuthError(result.message);
+    }
+  };
+
+  const handleDeleteProduct = (productId: string, productName: string) => {
+    if (window.confirm(`Are you sure you want to delete "${productName}" from the store catalog?`)) {
+      deleteProduct(productId);
+      setEditableCatalog((prev) => prev.filter((p) => p.id !== productId));
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 2000);
     }
   };
 
@@ -232,9 +246,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
                 <button
                   type="submit"
-                  className="w-full min-h-[42px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer border border-[#D4AF37]/40"
+                  disabled={isCheckingAuth}
+                  className="w-full min-h-[42px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.98] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer border border-[#D4AF37]/40 disabled:opacity-60"
                 >
-                  Unlock Admin Portal
+                  {isCheckingAuth ? 'Verifying...' : 'Unlock Admin Portal'}
                 </button>
               </form>
             </div>
@@ -527,18 +542,29 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                         key={product.id}
                         className="p-4 rounded-2xl bg-white border border-[#E8E0D4] shadow-xs"
                       >
-                        <div className="flex items-center gap-3 mb-3 border-b border-[#F4EFEA] pb-2">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="w-10 h-10 object-cover rounded-lg border border-[#DDD3C5]"
-                          />
-                          <div>
-                            <h5 className="font-bold text-sm text-[#2C241D]">{product.name}</h5>
-                            <span className="text-[11px] font-serif italic text-[#7A6E61]">
-                              {product.tamilName}
-                            </span>
+                        <div className="flex items-center justify-between gap-3 mb-3 border-b border-[#F4EFEA] pb-2">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="w-10 h-10 object-cover rounded-lg border border-[#DDD3C5]"
+                            />
+                            <div>
+                              <h5 className="font-bold text-sm text-[#2C241D]">{product.name}</h5>
+                              <span className="text-[11px] font-serif italic text-[#7A6E61]">
+                                {product.tamilName}
+                              </span>
+                            </div>
                           </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteProduct(product.id, product.name)}
+                            className="px-2.5 py-1 text-[11px] font-bold text-red-600 hover:text-white hover:bg-red-600 border border-red-200 hover:border-red-600 rounded-lg transition-colors flex items-center gap-1 cursor-pointer shrink-0"
+                            title={`Delete ${product.name}`}
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete</span>
+                          </button>
                         </div>
 
                         {/* Size Pricing Grid */}
@@ -597,23 +623,34 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                         key={product.id}
                         className="p-4 rounded-2xl bg-white border border-[#E8E0D4] space-y-3 shadow-xs"
                       >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="w-2.5 h-2.5 rounded-full"
-                            style={{
-                              backgroundColor:
-                                product.capColor === 'red'
-                                  ? '#DC2626'
-                                  : product.capColor === 'blue'
-                                  ? '#2563EB'
-                                  : product.capColor === 'yellow'
-                                  ? '#D97706'
-                                  : '#4A3B2C'
-                            }}
-                          />
-                          <h5 className="font-bold text-xs uppercase tracking-wider text-[#2C241D]">
-                            {product.id}
-                          </h5>
+                        <div className="flex items-center justify-between pb-1 border-b border-[#F4EFEA]">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="w-2.5 h-2.5 rounded-full"
+                              style={{
+                                backgroundColor:
+                                  product.capColor === 'red'
+                                    ? '#DC2626'
+                                    : product.capColor === 'blue'
+                                    ? '#2563EB'
+                                    : product.capColor === 'yellow'
+                                    ? '#D97706'
+                                    : '#4A3B2C'
+                              }}
+                            />
+                            <h5 className="font-bold text-xs uppercase tracking-wider text-[#2C241D]">
+                              {product.name} ({product.id})
+                            </h5>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteProduct(product.id, product.name)}
+                            className="px-2.5 py-1 text-[11px] font-bold text-red-600 hover:text-white hover:bg-red-600 border border-red-200 hover:border-red-600 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                            title={`Delete ${product.name}`}
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Delete</span>
+                          </button>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

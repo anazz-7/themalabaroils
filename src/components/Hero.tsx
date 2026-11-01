@@ -1,11 +1,34 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Leaf, FlaskConical, Droplet, MessageCircle, Building2, ShieldCheck, Award, Sparkles, ShoppingBag } from 'lucide-react';
+import { motion, Variants } from 'framer-motion';
+import { Leaf, FlaskConical, Droplet, MessageCircle, Building2, ShieldCheck, ShoppingBag } from 'lucide-react';
 import { useCatalog } from '../store/catalogStore';
 
 interface HeroProps {
   onOpenCheckout?: () => void;
 }
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05
+    }
+  }
+};
+
+const wordRevealVariants: Variants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.55,
+      ease: [0.23, 1, 0.32, 1]
+    }
+  }
+};
 
 export const Hero: React.FC<HeroProps> = ({ onOpenCheckout }) => {
   const { whatsappNumber } = useCatalog();
@@ -16,11 +39,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCheckout }) => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] sm:w-[600px] h-[250px] bg-gradient-to-r from-[#D4AF37]/15 via-[#8C6D3B]/10 to-[#D4AF37]/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        {/* Top Brand Tag with Kinetic Reveal */}
+        {/* Top Brand Tag with Smooth Kinetic Reveal */}
         <motion.div
-          initial={{ opacity: 0, y: -8 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
           className="mb-4 sm:mb-6"
         >
           <div className="inline-flex items-center gap-2.5 sm:gap-3">
@@ -35,29 +58,50 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCheckout }) => {
           </div>
         </motion.div>
 
-        {/* Hero Title & Subtitle with Kinetic Motion Graphics */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.05, ease: [0.32, 0.72, 0, 1] }}
-          className="max-w-3xl mx-auto mb-6 sm:mb-8 px-2"
-        >
-          <h1 className="font-serif-display text-3xl sm:text-5xl lg:text-7xl font-bold text-[#2C241D] tracking-tight leading-[1.12] mb-3">
-            Pure Oils, <br className="hidden sm:inline" />
-            <span className="italic font-serif bg-gradient-to-r from-[#2C241D] via-[#634832] to-[#2C241D] bg-clip-text text-transparent">
-              Healthier Families
-            </span>
-          </h1>
-          <p className="font-serif-display text-base sm:text-2xl text-[#5F5345] italic font-normal tracking-wide">
+        {/* Hero Title with Kinetic Staggered Word Reveal */}
+        <div className="max-w-3xl mx-auto mb-6 sm:mb-8 px-2 overflow-hidden">
+          <motion.h1
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="font-serif-display text-3xl sm:text-5xl lg:text-7xl font-bold text-[#2C241D] tracking-tight leading-[1.12] mb-3 flex flex-wrap items-center justify-center gap-x-2.5 sm:gap-x-4"
+          >
+            <motion.span variants={wordRevealVariants} className="inline-block">
+              Pure
+            </motion.span>
+            <motion.span variants={wordRevealVariants} className="inline-block">
+              Oils,
+            </motion.span>
+            <br className="w-full hidden sm:block" />
+            <motion.span
+              variants={wordRevealVariants}
+              className="italic font-serif bg-gradient-to-r from-[#2C241D] via-[#634832] to-[#2C241D] bg-clip-text text-transparent inline-block"
+            >
+              Healthier
+            </motion.span>
+            <motion.span
+              variants={wordRevealVariants}
+              className="italic font-serif bg-gradient-to-r from-[#2C241D] via-[#634832] to-[#2C241D] bg-clip-text text-transparent inline-block"
+            >
+              Families
+            </motion.span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35, ease: [0.23, 1, 0.32, 1] }}
+            className="font-serif-display text-base sm:text-2xl text-[#5F5345] italic font-normal tracking-wide"
+          >
             Traditional Cold Pressed Oils — Just as Nature Intended
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         {/* 3 Circular Guarantee Badges with Fluid Sinusoidal Floating */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.1, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.45, delay: 0.25, ease: [0.23, 1, 0.32, 1] }}
           className="grid grid-cols-3 gap-2 sm:gap-6 max-w-xs sm:max-w-md mx-auto mb-8 sm:mb-10 select-none"
         >
           {/* Badge 1: No Adulteration */}
@@ -111,9 +155,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCheckout }) => {
 
         {/* Action CTAs in Dark Brown Luxury Palette */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.15, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.45, delay: 0.35, ease: [0.23, 1, 0.32, 1] }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 select-none"
         >
           {onOpenCheckout ? (
@@ -153,7 +197,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCheckout }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
+          transition={{ duration: 0.45, delay: 0.45 }}
           className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-[#7A6E61]"
         >
           <span className="flex items-center gap-1 font-semibold text-[#4A3B2C]">

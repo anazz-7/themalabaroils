@@ -10,10 +10,12 @@ import { StickyMobileBar } from './components/StickyMobileBar';
 import { AmbientBackgroundVFX } from './components/AmbientBackgroundVFX';
 import { AdminPanel } from './components/AdminPanel';
 import { CheckoutModal, CheckoutItemInitial } from './components/CheckoutModal';
+import { CartDrawer } from './components/CartDrawer';
 
 export const App: React.FC = () => {
   const [adminOpen, setAdminOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<CheckoutItemInitial | null>(null);
 
   const handleOpenCheckout = (item?: CheckoutItemInitial) => {
@@ -21,25 +23,33 @@ export const App: React.FC = () => {
     setCheckoutOpen(true);
   };
 
+  const handleOpenCart = () => {
+    setCartOpen(true);
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col font-sans-modern text-[#2C241D] bg-[#FBF9F5] selection:bg-[#2C241D] selection:text-white overflow-x-hidden">
       {/* Ambient background particles VFX */}
       <AmbientBackgroundVFX />
 
-      {/* Minimal Navigation with Admin Portal Access & Checkout */}
+      {/* Minimal Navigation with Admin Portal Access, Cart Drawer & Direct Checkout */}
       <Navbar
         onOpenAdmin={() => setAdminOpen(true)}
         onOpenCheckout={() => handleOpenCheckout()}
+        onOpenCart={handleOpenCart}
       />
 
-      {/* Clean Brand Poster Hero & Direct CTAs */}
+      {/* Clean Brand Poster Hero & Direct CTAs with Kinetic Motion Typography */}
       <Hero onOpenCheckout={() => handleOpenCheckout()} />
 
       {/* 3D Coverflow Benefits Poster Carousel (Seamless Cutout, Warm Card Match) */}
       <BenefitsPosterCarousel />
 
-      {/* Minimal Product Showcase (2x2 Grid, Transparent Bottle Cutouts, Live Checkout) */}
-      <ProductShowcase onOpenCheckout={(item) => handleOpenCheckout(item)} />
+      {/* Minimal Product Showcase (2x2 / 4x2 Grid, Add to Cart & Buy Now Dual Action) */}
+      <ProductShowcase
+        onOpenCheckout={(item) => handleOpenCheckout(item)}
+        onOpenCart={handleOpenCart}
+      />
 
       {/* Brand Tradition & Barakkath Marketing Association */}
       <BrandTradition />
@@ -50,13 +60,27 @@ export const App: React.FC = () => {
       {/* Clean Footer with Admin Link */}
       <Footer onOpenAdmin={() => setAdminOpen(true)} />
 
-      {/* Mobile-First Sticky Bottom Action Bar with Checkout */}
-      <StickyMobileBar onOpenCheckout={() => handleOpenCheckout()} />
+      {/* Mobile-First Sticky Bottom Action Bar with Quick Cart & Checkout */}
+      <StickyMobileBar
+        onOpenCheckout={() => handleOpenCheckout()}
+        onOpenCart={handleOpenCart}
+      />
 
-      {/* Store Owner Admin Panel Modal (Passkey: 1977, Orders Dashboard, Price Manager) */}
+      {/* Slide-over Shopping Cart Drawer */}
+      <CartDrawer
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        onProceedToCheckout={() => {
+          setCartOpen(false);
+          setCheckoutItem(null); // Full cart checkout
+          setCheckoutOpen(true);
+        }}
+      />
+
+      {/* Store Owner Admin Panel Modal (Passkey: 1977, Orders Dashboard, Product Delete & Price Manager) */}
       <AdminPanel isOpen={adminOpen} onClose={() => setAdminOpen(false)} />
 
-      {/* Direct Factory Order Checkout Modal (Collects Orders & Routes to WhatsApp) */}
+      {/* Direct Factory Order Checkout Modal (Supports Single Items & Full Cart Orders) */}
       <CheckoutModal
         isOpen={checkoutOpen}
         onClose={() => setCheckoutOpen(false)}

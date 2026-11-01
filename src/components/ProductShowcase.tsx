@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Sparkles, ShieldCheck, ShoppingBag } from 'lucide-react';
+import { Sparkles, ShieldCheck, ShoppingBag, Plus, Check } from 'lucide-react';
 import { SpotlightCard } from './SpotlightCard';
-import { useCatalog } from '../store/catalogStore';
+import { useCatalog, CatalogProduct } from '../store/catalogStore';
+import { useCart } from '../store/cartStore';
 import { CheckoutItemInitial } from './CheckoutModal';
 
 interface ProductShowcaseProps {
   onOpenCheckout?: (item: CheckoutItemInitial) => void;
+  onOpenCart?: () => void;
 }
 
 const formatSizeLabel = (label: string) => {
@@ -17,8 +19,9 @@ const formatSizeLabel = (label: string) => {
     .replace(' ml', 'ml');
 };
 
-export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout }) => {
+export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout, onOpenCart }) => {
   const { catalog, whatsappNumber } = useCatalog();
+  const { addToCart } = useCart();
 
   // Size selection states per card
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: number }>({
@@ -28,15 +31,45 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
     'trio-bundle': 1
   });
 
+  const [addedKey, setAddedKey] = useState<string | null>(null);
+
   const handleSelectSize = (oilId: string, sizeIdx: number) => {
     setSelectedSizes((prev) => ({ ...prev, [oilId]: sizeIdx }));
   };
 
-  const getWhatsAppOrderUrl = (oilName: string, sizeLabel: string, price: number) => {
-    const text = encodeURIComponent(
-      `Hello The Malabar Oils / Barakkath Marketing,\nI would like to order:\n• *${oilName}* (${sizeLabel}) - ₹${price}\nPlease confirm home delivery to my address.`
-    );
-    return `https://wa.me/${whatsappNumber}?text=${text}`;
+  const handleAddToCart = (product: CatalogProduct, size: { label: string; price: number; originalPrice?: number }) => {
+    addToCart({
+      productId: product.id,
+      name: product.name,
+      sizeLabel: size.label,
+      price: size.price,
+      originalPrice: size.originalPrice,
+      image: product.image,
+      quantity: 1
+    });
+
+    const key = `${product.id}-${size.label}`;
+    setAddedKey(key);
+    setTimeout(() => {
+      setAddedKey(null);
+    }, 1800);
+  };
+
+  const handleBuyNow = (product: CatalogProduct, size: { label: string; price: number }) => {
+    if (onOpenCheckout) {
+      onOpenCheckout({
+        id: product.id,
+        name: product.name,
+        sizeLabel: size.label,
+        price: size.price,
+        image: product.image
+      });
+    } else {
+      const text = encodeURIComponent(
+        `Hello The Malabar Oils / Barakkath Marketing,\nI would like to order:\n• *${product.name}* (${size.label}) - ₹${size.price}\nPlease confirm home delivery to my address.`
+      );
+      window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
+    }
   };
 
   return (
@@ -58,15 +91,17 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
             Our Cold-Pressed Oils
           </h2>
           <p className="text-[11px] sm:text-sm text-[#6C5F51] leading-relaxed">
-            Traditionally extracted using slow cold-press chekku methods. Select packaging size to order via Checkout or WhatsApp.
+            Traditionally extracted using slow cold-press chekku methods. Add items to your cart or order directly.
           </p>
         </motion.div>
 
         {/* Responsive Grid: 2 columns on Mobile (2x2), 4 columns x 2 rows on Desktop (8x2 product view) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6">
           {catalog.map((oil, index) => {
-            const currentSizeIdx = selectedSizes[oil.id] ?? 1;
+            const currentSizeIdx = selectedSizes[oil.id] ?? (oil.sizes.length > 1 ? 1 : 0);
             const currentSize = oil.sizes[currentSizeIdx] || oil.sizes[0] || { label: '1L', price: 420, originalPrice: 480 };
+            const itemKey = `${oil.id}-${currentSize.label}`;
+            const isAdded = addedKey === itemKey;
 
             return (
               <motion.div
@@ -74,7 +109,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-20px' }}
-                transition={{ duration: 0.4, delay: index * 0.06, ease: [0.32, 0.72, 0, 1] }}
+                transition={{ duration: 0.4, delay: index * 0.05, ease: [0.32, 0.72, 0, 1] }}
                 whileHover={{ y: -4, transition: { duration: 0.2, ease: 'easeOut' } }}
                 whileTap={{ scale: 0.99 }}
                 className="h-full"
@@ -135,7 +170,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
 
                     {/* Title & Tamil Name */}
                     <div className="mb-2 sm:mb-3">
-                      <h3 className="font-serif-display text-sm sm:text-lg lg:text-xl font-bold text-[#2C241D] leading-tight line-clamp-1">
+                      <h3 className="font-serif-display text-sm sm:text-base lg:text-lg font-bold text-[#2C241D] leading-tight line-clamp-1">
                         <span className="sm:hidden">{oil.shortMobileName}</span>
                         <span className="hidden sm:inline">{oil.name}</span>
                       </h3>
@@ -160,7 +195,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
                           <button
                             key={sz.label}
                             onClick={() => handleSelectSize(oil.id, szIdx)}
-                            className={`relative flex-1 min-h-[32px] sm:min-h-[38px] py-0.5 text-[9px] sm:text-xs font-bold rounded-md sm:rounded-lg transition-colors cursor-pointer text-center z-10 flex items-center justify-center ${
+                            className={`relative flex-1 min-h-[30px] sm:min-h-[34px] py-0.5 text-[8.5px] sm:text-xs font-bold rounded-md sm:rounded-lg transition-colors cursor-pointer text-center z-10 flex items-center justify-center ${
                               isSelected ? 'text-white' : 'text-[#6C5F51] hover:text-[#2C241D]'
                             }`}
                           >
@@ -188,7 +223,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
                               animate={{ opacity: 1, y: 0, scale: 1 }}
                               exit={{ opacity: 0, y: 5, scale: 0.94 }}
                               transition={{ duration: 0.14, ease: [0.32, 0.72, 0, 1] }}
-                              className="text-lg sm:text-2xl font-black text-[#2C241D]"
+                              className="text-base sm:text-xl font-black text-[#2C241D]"
                             >
                               ₹{currentSize.price}
                             </motion.span>
@@ -203,7 +238,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
                           initial={{ scale: 0.85 }}
                           animate={{ scale: [0.85, 1.1, 1] }}
                           transition={{ duration: 0.25 }}
-                          className="text-[8px] sm:text-[10px] font-bold text-[#8C5E2D] mt-0.5 inline-block"
+                          className="text-[8px] sm:text-[9.5px] font-bold text-[#8C5E2D] mt-0.5 inline-block"
                         >
                           Save ₹{currentSize.originalPrice - currentSize.price}
                         </motion.div>
@@ -216,28 +251,43 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
                       </div>
                     </div>
 
-                    {/* Direct Order / Checkout CTA in Dark Brown & Gold */}
-                    <button
-                      onClick={() => {
-                        if (onOpenCheckout) {
-                          onOpenCheckout({
-                            id: oil.id,
-                            name: oil.name,
-                            sizeLabel: currentSize.label,
-                            price: currentSize.price,
-                            image: oil.image
-                          });
-                        } else {
-                          window.open(getWhatsAppOrderUrl(oil.name, currentSize.label, currentSize.price), '_blank');
-                        }
-                      }}
-                      className="relative overflow-hidden w-full min-h-[40px] sm:min-h-[46px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.97] text-white py-2 sm:py-2.5 px-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-normal sm:tracking-wider flex items-center justify-center gap-1.5 sm:gap-2 shadow-xs transition-[transform,background-color] duration-150 cursor-pointer select-none group/btn border border-[#D4AF37]/30"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
-                      <span className="truncate">Buy Now / Order</span>
-                      {/* Sweeping Champagne Light Glint */}
-                      <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-[#D4AF37]/25 to-transparent pointer-events-none" />
-                    </button>
+                    {/* Dual Action: Add to Cart + Buy Now */}
+                    <div className="grid grid-cols-2 gap-1.5 pt-1">
+                      {/* Add to Cart Button */}
+                      <button
+                        onClick={() => handleAddToCart(oil, currentSize)}
+                        className={`min-h-[38px] sm:min-h-[42px] border py-2 px-1.5 rounded-xl text-[10px] sm:text-xs font-bold uppercase flex items-center justify-center gap-1 transition-all cursor-pointer select-none ${
+                          isAdded
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                            : 'bg-[#FAF7F2] hover:bg-[#EDE5DB] text-[#2C241D] border-[#DDD3C5] active:scale-[0.96]'
+                        }`}
+                        title="Add item to cart"
+                      >
+                        {isAdded ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-700" />
+                            <span className="font-bold">Added!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-3 h-3 text-[#D4AF37]" />
+                            <span className="truncate">Add to Cart</span>
+                          </>
+                        )}
+                      </button>
+
+                      {/* Buy Now Button */}
+                      <button
+                        onClick={() => handleBuyNow(oil, currentSize)}
+                        className="relative overflow-hidden min-h-[38px] sm:min-h-[42px] bg-[#2C241D] hover:bg-[#1A1512] active:scale-[0.96] text-white py-2 px-1.5 rounded-xl text-[10px] sm:text-xs font-bold uppercase flex items-center justify-center gap-1 shadow-xs transition-all cursor-pointer select-none group/btn border border-[#D4AF37]/35"
+                        title="Order immediately"
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+                        <span className="truncate">Buy Now</span>
+                        {/* Sweeping Champagne Light Glint */}
+                        <div className="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-[#D4AF37]/25 to-transparent pointer-events-none" />
+                      </button>
+                    </div>
                   </div>
                 </SpotlightCard>
               </motion.div>
