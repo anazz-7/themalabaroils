@@ -82,7 +82,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
       window.cancelAnimationFrame(scrollRafRef.current);
     }
     scrollRafRef.current = window.requestAnimationFrame(() => {
-      const cardWidth = 210;
+      const cardWidth = 260;
       const newIdx = Math.round(el.scrollLeft / cardWidth);
       if (newIdx !== activeMobileIdx && newIdx >= 0 && newIdx < catalog.length) {
         setActiveMobileIdx(newIdx);
@@ -92,7 +92,7 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
 
   const scrollCarousel = (direction: 'prev' | 'next') => {
     if (!carouselRef.current) return;
-    const cardWidth = 210;
+    const cardWidth = 260;
     const scrollAmount = direction === 'next' ? cardWidth : -cardWidth;
     carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
@@ -111,12 +111,12 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
         viewport={isMobile ? undefined : { once: true, margin: '-20px' }}
         transition={{ duration: 0.28, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
         whileHover={!isMobile ? { y: -3, transition: { duration: 0.15, ease: 'easeOut' } } : undefined}
-        className={isMobile ? 'w-[56vw] max-w-[215px] shrink-0 snap-start h-full' : 'h-full'}
+        className={isMobile ? 'w-[72vw] max-w-[270px] shrink-0 snap-start h-full' : 'h-full'}
       >
         <SpotlightCard
           spotlightColor={oil.glowColor || 'rgba(212, 175, 55, 0.2)'}
           className={`bg-white border transition-colors duration-200 ${
-            isMobile ? 'p-2.5 rounded-xl' : 'p-4 sm:p-5 rounded-2xl sm:rounded-3xl'
+            isMobile ? 'p-3 rounded-2xl' : 'p-4 sm:p-5 rounded-2xl sm:rounded-3xl'
           } flex flex-col justify-between h-full shadow-2xs hover:shadow-md relative group ${
             oil.isCombo
               ? 'border-[#D4AF37]/50 bg-gradient-to-br from-white via-[#FAF6F0] to-white'
@@ -132,22 +132,20 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
           />
 
           <div>
-            {/* Real Authentic Product Bottle Image Showcase - Compact Aspect Ratio on Mobile */}
+            {/* Real Authentic Full-Size Product Bottle Image Showcase */}
             <div
-              className={`relative w-full ${
-                isMobile ? 'aspect-[4/3] rounded-lg mb-1.5' : 'aspect-square sm:aspect-[4/3] rounded-xl sm:rounded-2xl mb-2.5 sm:mb-3.5'
-              } overflow-hidden bg-[#F7F4EE] border border-[#EBE4DA] group-hover:border-[#D4C8B8] transition-colors shadow-2xs`}
+              className={`relative w-full aspect-[4/5] rounded-xl sm:rounded-2xl mb-2.5 sm:mb-3.5 overflow-hidden bg-[#F8F5EE] border border-[#EBE4DA] group-hover:border-[#D4C8B8] transition-colors shadow-2xs flex items-center justify-center p-2.5`}
             >
               <img
                 src={oil.image}
                 alt={oil.name}
                 loading="lazy"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300 ease-out select-none"
               />
               {/* Floating Cap Seal Badge */}
-              <div className="absolute top-1 left-1 sm:top-2 sm:left-2 z-10">
+              <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10">
                 <span
-                  className="text-[7px] sm:text-[9.5px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full flex items-center gap-0.5 sm:gap-1 shadow-2xs backdrop-blur-md"
+                  className="text-[7.5px] sm:text-[9.5px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1 shadow-2xs backdrop-blur-md"
                   style={{ backgroundColor: oil.badgeBg, color: oil.badgeText }}
                 >
                   <span
@@ -170,19 +168,19 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
               </div>
 
               {/* AGMARK Grade 1 overlay badge */}
-              <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-10 bg-[#1C1814]/85 backdrop-blur-md text-white px-1 sm:px-1.5 py-0.5 rounded text-[6.5px] sm:text-[8.5px] font-mono font-bold flex items-center gap-0.5 border border-white/10">
-                <ShieldCheck className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-[#D4AF37]" />
+              <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10 bg-[#1C1814]/85 backdrop-blur-md text-white px-1.5 py-0.5 rounded text-[7px] sm:text-[8.5px] font-mono font-bold flex items-center gap-0.5 border border-white/10">
+                <ShieldCheck className="w-2.5 h-2.5 text-[#D4AF37]" />
                 <span>AGMARK</span>
               </div>
             </div>
 
-            {/* Title & Tamil Name - Compact Typography */}
-            <div className={isMobile ? 'mb-1' : 'mb-2 sm:mb-3'}>
-              <h3 className="font-serif-display text-xs sm:text-base font-bold text-[#2C241D] leading-tight truncate">
+            {/* Title & Tamil Name - Clean Typography */}
+            <div className={isMobile ? 'mb-1.5' : 'mb-2 sm:mb-3'}>
+              <h3 className="font-serif-display text-sm sm:text-base font-bold text-[#2C241D] leading-tight truncate">
                 <span className="sm:hidden">{oil.shortMobileName}</span>
                 <span className="hidden sm:inline">{oil.name}</span>
               </h3>
-              <div className="text-[8px] sm:text-[11px] text-[#7A6D5E] font-serif italic mt-0.5 select-none truncate">
+              <div className="text-[9px] sm:text-[11px] text-[#7A6D5E] font-serif italic mt-0.5 select-none truncate">
                 {oil.tamilName}
               </div>
             </div>

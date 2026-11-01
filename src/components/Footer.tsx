@@ -4,9 +4,10 @@ import { useCatalog } from '../store/catalogStore';
 
 interface FooterProps {
   onOpenAdmin?: () => void;
+  onOpenB2B?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenAdmin }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenAdmin, onOpenB2B }) => {
   const { whatsappNumber } = useCatalog();
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hello%20The%20Malabar%20Oils,%20I%20would%20like%20to%20order.`;
 
@@ -136,26 +137,47 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin }) => {
           {/* Column 3: Trade & Wholesale Info (4 cols) */}
           <div className="lg:col-span-4 space-y-3">
             <h4 className="font-cinzel text-xs font-bold tracking-[0.2em] text-[#FAF7F2] uppercase border-b border-white/10 pb-2">
-              Trade & Dealerships
+              Trade &amp; Dealerships
             </h4>
             <ul className="space-y-2 text-xs text-[#B5ABA0]">
               <li>
-                <a href="#trade" className="hover:text-white transition-colors flex items-center justify-between">
-                  <span>Retailer / Store Stockist</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
-                </a>
+                {onOpenB2B ? (
+                  <button onClick={onOpenB2B} className="w-full hover:text-white transition-colors flex items-center justify-between cursor-pointer text-left">
+                    <span>Retailer / Store Stockist</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  </button>
+                ) : (
+                  <a href="#trade" className="hover:text-white transition-colors flex items-center justify-between">
+                    <span>Retailer / Store Stockist</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  </a>
+                )}
               </li>
               <li>
-                <a href="#trade" className="hover:text-white transition-colors flex items-center justify-between">
-                  <span>Regional Dealerships</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
-                </a>
+                {onOpenB2B ? (
+                  <button onClick={onOpenB2B} className="w-full hover:text-white transition-colors flex items-center justify-between cursor-pointer text-left">
+                    <span>Regional Dealerships</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  </button>
+                ) : (
+                  <a href="#trade" className="hover:text-white transition-colors flex items-center justify-between">
+                    <span>Regional Dealerships</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  </a>
+                )}
               </li>
               <li>
-                <a href="#trade" className="hover:text-white transition-colors flex items-center justify-between">
-                  <span>HoReCa Bulk Supply (15L / Barrels)</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
-                </a>
+                {onOpenB2B ? (
+                  <button onClick={onOpenB2B} className="w-full hover:text-white transition-colors flex items-center justify-between cursor-pointer text-left">
+                    <span>HoReCa Bulk Supply (15L / Barrels)</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  </button>
+                ) : (
+                  <a href="#trade" className="hover:text-white transition-colors flex items-center justify-between">
+                    <span>HoReCa Bulk Supply (15L / Barrels)</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  </a>
+                )}
               </li>
               <li className="pt-2 text-[11px] text-[#A39788] flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-[#D4AF37]" />

@@ -4,7 +4,8 @@ import { Hero } from './components/Hero';
 import { OfferProductBlock } from './components/OfferProductBlock';
 import { ProductShowcase } from './components/ProductShowcase';
 import { BrandTradition } from './components/BrandTradition';
-import { TradeEnquiries } from './components/TradeEnquiries';
+import { B2BTradeModal } from './components/B2BTradeModal';
+import { OfferAdPopup } from './components/OfferAdPopup';
 import { Footer } from './components/Footer';
 import { FloatingCartButton } from './components/FloatingCartButton';
 import { AmbientBackgroundVFX } from './components/AmbientBackgroundVFX';
@@ -16,6 +17,7 @@ export const App: React.FC = () => {
   const [adminOpen, setAdminOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [b2bOpen, setB2bOpen] = useState(false);
   const [checkoutItem, setCheckoutItem] = useState<CheckoutItemInitial | null>(null);
 
   const handleOpenCheckout = (item?: CheckoutItemInitial) => {
@@ -37,6 +39,7 @@ export const App: React.FC = () => {
         onOpenAdmin={() => setAdminOpen(true)}
         onOpenCheckout={() => handleOpenCheckout()}
         onOpenCart={handleOpenCart}
+        onOpenB2B={() => setB2bOpen(true)}
       />
 
       {/* Clean Brand Poster Hero & Direct CTAs with Kinetic Motion Typography */}
@@ -48,7 +51,7 @@ export const App: React.FC = () => {
         onOpenCart={handleOpenCart}
       />
 
-      {/* Product Showcase (Swipeable Carousel on Mobile, 4x2 Grid on Desktop) */}
+      {/* Product Showcase (Swipeable Full-Size Bottle Carousel on Mobile, 4x2 Grid on Desktop) */}
       <ProductShowcase
         onOpenCheckout={(item) => handleOpenCheckout(item)}
         onOpenCart={handleOpenCart}
@@ -57,14 +60,27 @@ export const App: React.FC = () => {
       {/* Brand Tradition & Barakkath Marketing Association */}
       <BrandTradition />
 
-      {/* Trade & Bulk Enquiries for Retailers / Wholesale */}
-      <TradeEnquiries />
+      {/* Clean Footer with Admin & B2B Links */}
+      <Footer
+        onOpenAdmin={() => setAdminOpen(true)}
+        onOpenB2B={() => setB2bOpen(true)}
+      />
 
-      {/* Clean Footer with Admin Link */}
-      <Footer onOpenAdmin={() => setAdminOpen(true)} />
-
-      {/* Minimal Floating Cart Button on Mobile (Replaces Bulky Bottom Menu Bar) */}
+      {/* Minimal Floating Cart Button on Mobile */}
       <FloatingCartButton onOpenCart={handleOpenCart} />
+
+      {/* Right Screen Small Button + Modal for B2B & Distribution Enquiries */}
+      <B2BTradeModal
+        isOpen={b2bOpen}
+        onOpen={() => setB2bOpen(true)}
+        onClose={() => setB2bOpen(false)}
+      />
+
+      {/* High-Converting Offer Ad Pop-up (₹380 -> ₹285 Coconut Oil 1L) */}
+      <OfferAdPopup
+        onOpenCheckout={(item) => handleOpenCheckout(item)}
+        onOpenCart={handleOpenCart}
+      />
 
       {/* Slide-over Shopping Cart Drawer */}
       <CartDrawer
@@ -91,4 +107,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

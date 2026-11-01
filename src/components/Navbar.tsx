@@ -7,9 +7,10 @@ interface NavbarProps {
   onOpenAdmin?: () => void;
   onOpenCheckout?: () => void;
   onOpenCart?: () => void;
+  onOpenB2B?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onOpenCart }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onOpenCart, onOpenB2B }) => {
   const { whatsappNumber } = useCatalog();
   const { totalItems } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -82,10 +83,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
               <a href="#tradition" className="hover:text-[#2C241D] transition-colors py-1 relative hover:after:w-full after:w-0 after:h-[2px] after:bg-[#D4AF37] after:absolute after:bottom-0 after:left-0 after:transition-all duration-150">
                 Purity Standards
               </a>
-              <a href="#trade" className="hover:text-[#2C241D] transition-colors py-1 text-[#2C241D] flex items-center gap-1.5 font-bold">
-                <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
-                Trade & Wholesale
-              </a>
+              {onOpenB2B ? (
+                <button
+                  type="button"
+                  onClick={onOpenB2B}
+                  className="hover:text-[#2C241D] transition-colors py-1 text-[#2C241D] flex items-center gap-1.5 font-bold cursor-pointer"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span>Trade &amp; Wholesale</span>
+                </button>
+              ) : (
+                <a href="#trade" className="hover:text-[#2C241D] transition-colors py-1 text-[#2C241D] flex items-center gap-1.5 font-bold">
+                  <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span>Trade &amp; Wholesale</span>
+                </a>
+              )}
             </nav>
 
             {/* Right Action: Cart, Admin Lock & WhatsApp CTA */}
@@ -175,13 +187,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAdmin, onOpenCheckout, onO
             >
               Purity & Cold-Press Standards
             </a>
-            <a
-              href="#trade"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block py-2 text-xs font-bold tracking-wider uppercase text-[#2C241D] border-b border-[#EFEAE2]"
-            >
-              Trade & Wholesale Enquiries
-            </a>
+            {onOpenB2B ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenB2B();
+                }}
+                className="w-full text-left py-2 text-xs font-bold tracking-wider uppercase text-[#2C241D] border-b border-[#EFEAE2] flex items-center justify-between cursor-pointer"
+              >
+                <span>Trade &amp; Wholesale Enquiries</span>
+                <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+              </button>
+            ) : (
+              <a
+                href="#trade"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block py-2 text-xs font-bold tracking-wider uppercase text-[#2C241D] border-b border-[#EFEAE2]"
+              >
+                Trade & Wholesale Enquiries
+              </a>
+            )}
             <div className="pt-2 flex flex-col gap-2">
               {onOpenCart && (
                 <button
