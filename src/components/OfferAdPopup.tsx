@@ -203,3 +203,4 @@ export const OfferAdPopup: React.FC<OfferAdPopupProps> = ({ onOpenCheckout }) =>
     </AnimatePresence>
   );
 };
+

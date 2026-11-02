@@ -53,17 +53,17 @@ export const B2BTradeModal: React.FC<B2BTradeModalProps> = ({ isOpen, onOpen, on
 
   return (
     <>
-      {/* Right Edge Fixed Trigger Button */}
+      {/* Right Edge Fixed Trigger Button - Compact & Positioned Slightly Lower */}
       <button
         onClick={onOpen}
         type="button"
-        title="B2B & Distribution Enquiries"
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-40 bg-[#2C241D] hover:bg-[#1A1512] active:scale-95 text-[#D4AF37] border-l border-y border-[#D4AF37]/50 rounded-l-xl py-3 px-1.5 sm:px-2 shadow-2xl flex flex-col items-center gap-2 cursor-pointer transition-transform duration-200 hover:-translate-x-1 group select-none"
+        title="B2B & Trade Enquiries"
+        className="fixed right-0 top-[62%] -translate-y-1/2 z-40 bg-[#2C241D]/95 hover:bg-[#1A1512] active:scale-95 text-[#D4AF37] border-l border-y border-[#D4AF37]/45 rounded-l-lg py-2 px-1 sm:px-1.5 shadow-lg flex flex-col items-center gap-1.5 cursor-pointer transition-all duration-200 hover:-translate-x-0.5 group select-none backdrop-blur-xs"
         aria-label="Open B2B & Wholesale Enquiries"
       >
-        <Building2 className="w-4 h-4 text-[#D4AF37] group-hover:scale-110 transition-transform" />
-        <span className="[writing-mode:vertical-rl] rotate-180 text-[9px] sm:text-[10px] font-bold tracking-[0.22em] uppercase text-white whitespace-nowrap">
-          B2B &amp; Distribution
+        <Building2 className="w-3.5 h-3.5 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+        <span className="[writing-mode:vertical-rl] rotate-180 text-[7.5px] sm:text-[8.5px] font-bold tracking-[0.16em] uppercase text-[#E7DFD5] whitespace-nowrap">
+          B2B &amp; Trade
         </span>
       </button>
 
@@ -265,3 +265,4 @@ export const B2BTradeModal: React.FC<B2BTradeModalProps> = ({ isOpen, onOpen, on
     </>
   );
 };
+
