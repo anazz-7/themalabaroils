@@ -43,7 +43,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const isCartCheckout = !initialItem && cart.length > 0;
 
   // Selected product & size
-  const [selectedProductId, setSelectedProductId] = useState<string>('gingelly');
+  const [selectedProductId, setSelectedProductId] = useState<string>('groundnut');
   const [selectedSizeLabel, setSelectedSizeLabel] = useState<string>('1 Litre');
   const [quantity, setQuantity] = useState<number>(1);
 
@@ -86,7 +86,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   }, [isOpen, onClose, isSubmitting]);
 
   // Find active product from catalog
-  const currentProduct = catalog.find((p) => p.id === selectedProductId) || catalog[0];
+  const currentProduct =
+    catalog.find((p) => p.id === selectedProductId || (p.id === 'sesame' && selectedProductId === 'gingelly')) ||
+    catalog[0];
   const activeSize = currentProduct.sizes.find((s) => s.label === selectedSizeLabel) || currentProduct.sizes[1] || currentProduct.sizes[0];
   const unitPrice = activeSize.price;
   const singleTotal = unitPrice * quantity;

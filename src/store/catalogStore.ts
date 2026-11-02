@@ -25,9 +25,26 @@ export const DEFAULT_WHATSAPP_NUMBER = '916379849947';
 
 export const DEFAULT_CATALOG: CatalogProduct[] = [
   {
-    id: 'gingelly',
-    name: 'Agmark Chekku Gingelly Oil',
-    shortMobileName: 'Chekku Gingelly Oil',
+    id: 'groundnut',
+    name: 'Agmark Chekku Groundnut Oil',
+    shortMobileName: 'Chekku Groundnut Oil',
+    tamilName: 'அக்மார்க் செக்கு கடலை எண்ணெய்',
+    image: '/groundnut-oil.jpg',
+    capColor: 'red',
+    capLabel: 'Red Seal',
+    badgeBg: '#FEE2E2',
+    badgeText: '#991B1B',
+    glowColor: 'rgba(220, 38, 38, 0.25)',
+    sizes: [
+      { label: '500 ml', price: 220, originalPrice: 250 },
+      { label: '1 Litre', price: 420, originalPrice: 460 },
+      { label: '5 Litres', price: 2000, originalPrice: 2200 }
+    ]
+  },
+  {
+    id: 'sesame',
+    name: 'Agmark Chekku Sesame Oil',
+    shortMobileName: 'Chekku Sesame Oil',
     tamilName: 'அக்மார்க் செக்கு நல்லெண்ணெய்',
     image: '/gingelly-oil.jpg',
     capColor: 'yellow',
@@ -59,27 +76,10 @@ export const DEFAULT_CATALOG: CatalogProduct[] = [
     ]
   },
   {
-    id: 'groundnut',
-    name: 'Agmark Chekku Groundnut Oil',
-    shortMobileName: 'Chekku Groundnut Oil',
-    tamilName: 'அக்மார்க் செக்கு கடலை எண்ணெய்',
-    image: '/groundnut-oil.jpg',
-    capColor: 'red',
-    capLabel: 'Red Seal',
-    badgeBg: '#FEE2E2',
-    badgeText: '#991B1B',
-    glowColor: 'rgba(220, 38, 38, 0.25)',
-    sizes: [
-      { label: '500 ml', price: 220, originalPrice: 250 },
-      { label: '1 Litre', price: 420, originalPrice: 460 },
-      { label: '5 Litres', price: 2000, originalPrice: 2200 }
-    ]
-  },
-  {
     id: 'trio-bundle',
-    name: 'The Malabar Grand Trio Box',
-    shortMobileName: 'Grand Trio Box',
-    tamilName: 'செக்கு எண்ணெய் முக்கூட்டு பேக்',
+    name: 'The Malabar Heritage Trio Pack',
+    shortMobileName: 'Heritage Trio Pack',
+    tamilName: 'பாரம்பரிய முக்கூட்டு பேக் (3 எண்ணெய்கள்)',
     image: '/hero-bottles.jpg',
     capColor: 'green',
     capLabel: 'Heritage Trio',
@@ -92,79 +92,12 @@ export const DEFAULT_CATALOG: CatalogProduct[] = [
       { label: '3 x 5 Litres', price: 5799, originalPrice: 6900 }
     ],
     isCombo: true
-  },
-  {
-    id: 'castor',
-    name: 'Agmark Pure Chekku Castor Oil',
-    shortMobileName: 'Chekku Castor Oil',
-    tamilName: 'பாரம்பரிய விளக்கெண்ணெய்',
-    image: '/gingelly-oil.jpg',
-    capColor: 'yellow',
-    capLabel: 'Pure Seed',
-    badgeBg: '#FEF3C7',
-    badgeText: '#78350F',
-    glowColor: 'rgba(217, 119, 6, 0.2)',
-    sizes: [
-      { label: '200 ml', price: 110, originalPrice: 130 },
-      { label: '500 ml', price: 240, originalPrice: 275 },
-      { label: '1 Litre', price: 460, originalPrice: 510 }
-    ]
-  },
-  {
-    id: 'deepam',
-    name: 'Pancha Deepam Sacred Pooja Oil',
-    shortMobileName: 'Pancha Deepam Oil',
-    tamilName: 'ஐந்து கூட்டு தீப எண்ணெய்',
-    image: '/hero-bottles.jpg',
-    capColor: 'green',
-    capLabel: 'Pooja Special',
-    badgeBg: '#FEF9C3',
-    badgeText: '#854D0E',
-    glowColor: 'rgba(234, 179, 8, 0.25)',
-    sizes: [
-      { label: '1 Litre', price: 290, originalPrice: 340 },
-      { label: '2 Litres', price: 560, originalPrice: 650 },
-      { label: '5 Litres', price: 1350, originalPrice: 1550 }
-    ]
-  },
-  {
-    id: 'naatu-sakkarai',
-    name: 'Organic Traditional Naatu Sakkarai',
-    shortMobileName: 'Naatu Sakkarai',
-    tamilName: 'இயற்கை நாட்டு சர்க்கரை',
-    image: '/groundnut-oil.jpg',
-    capColor: 'red',
-    capLabel: 'Unrefined',
-    badgeBg: '#FFEDD5',
-    badgeText: '#9A3412',
-    glowColor: 'rgba(234, 88, 12, 0.2)',
-    sizes: [
-      { label: '1 kg', price: 130, originalPrice: 150 },
-      { label: '2 kg', price: 250, originalPrice: 290 },
-      { label: '5 kg', price: 590, originalPrice: 700 }
-    ]
-  },
-  {
-    id: 'wild-honey',
-    name: 'Western Ghats Pure Wild Honey',
-    shortMobileName: 'Forest Wild Honey',
-    tamilName: 'மலைத்தேன் (சுத்தமான தேன்)',
-    image: '/coconut-oil.jpg',
-    capColor: 'blue',
-    capLabel: 'Raw Unheated',
-    badgeBg: '#FEF3C7',
-    badgeText: '#92400E',
-    glowColor: 'rgba(217, 119, 6, 0.25)',
-    sizes: [
-      { label: '250 g', price: 220, originalPrice: 260 },
-      { label: '500 g', price: 420, originalPrice: 490 },
-      { label: '1 kg', price: 799, originalPrice: 950 }
-    ]
   }
 ];
 
-const STORAGE_CATALOG_KEY = 'malabar_catalog_v5';
+const STORAGE_CATALOG_KEY = 'malabar_catalog_v7';
 const STORAGE_PHONE_KEY = 'malabar_whatsapp_phone_v2';
+const ALLOWED_PRODUCT_IDS = new Set(['groundnut', 'sesame', 'gingelly', 'coconut', 'trio-bundle']);
 
 const listeners: Array<() => void> = [];
 
@@ -179,7 +112,17 @@ export function getStoredCatalog(): CatalogProduct[] {
     const raw = localStorage.getItem(STORAGE_CATALOG_KEY);
     if (!raw) return DEFAULT_CATALOG;
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_CATALOG;
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      const filtered = parsed
+        .filter((p: CatalogProduct) => ALLOWED_PRODUCT_IDS.has(p.id))
+        .map((p: CatalogProduct) =>
+          p.id === 'gingelly'
+            ? { ...p, id: 'sesame', name: 'Agmark Chekku Sesame Oil', shortMobileName: 'Chekku Sesame Oil' }
+            : p
+        );
+      return filtered.length > 0 ? filtered : DEFAULT_CATALOG;
+    }
+    return DEFAULT_CATALOG;
   } catch {
     return DEFAULT_CATALOG;
   }

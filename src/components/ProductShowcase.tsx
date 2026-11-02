@@ -27,9 +27,10 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
 
   // Size selection states per card
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: number }>({
-    gingelly: 1, // default 1 Litre
+    groundnut: 1, // default 1 Litre
+    sesame: 1,
+    gingelly: 1,
     coconut: 1,
-    groundnut: 1,
     'trio-bundle': 1
   });
 
