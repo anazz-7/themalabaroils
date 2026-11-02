@@ -82,7 +82,8 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
       window.cancelAnimationFrame(scrollRafRef.current);
     }
     scrollRafRef.current = window.requestAnimationFrame(() => {
-      const cardWidth = 260;
+      const card = el.firstElementChild as HTMLElement | null;
+      const cardWidth = card ? card.offsetWidth + 10 : 270;
       const newIdx = Math.round(el.scrollLeft / cardWidth);
       if (newIdx !== activeMobileIdx && newIdx >= 0 && newIdx < catalog.length) {
         setActiveMobileIdx(newIdx);
@@ -92,8 +93,8 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
 
   const scrollCarousel = (direction: 'prev' | 'next') => {
     if (!carouselRef.current) return;
-    const cardWidth = 260;
-    const scrollAmount = direction === 'next' ? cardWidth : -cardWidth;
+    const card = carouselRef.current.firstElementChild as HTMLElement | null;
+    const scrollAmount = (card ? card.offsetWidth + 10 : 270) * (direction === 'next' ? 1 : -1);
     carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
 
@@ -321,15 +322,14 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
           </p>
         </motion.div>
 
-        {/* MOBILE VIEW: Compact Horizontal Carousel with Free Vertical Page Scroll */}
+        {/* MOBILE VIEW: Smooth Multi-Directional Touch Carousel (Both Left/Right & Up/Down Scroll) */}
         <div className="lg:hidden relative">
           <div
             ref={carouselRef}
             onScroll={handleScrollCarousel}
-            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-2 -mx-2 scrollbar-none touch-pan-y"
+            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-2 -mx-2 scrollbar-none touch-auto"
             style={{
-              WebkitOverflowScrolling: 'touch',
-              overscrollBehaviorX: 'contain'
+              WebkitOverflowScrolling: 'touch'
             }}
           >
             {catalog.map((oil, index) => renderProductCard(oil, index, true))}
