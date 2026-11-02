@@ -321,13 +321,16 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
           </p>
         </motion.div>
 
-        {/* MOBILE VIEW: Compact Horizontal Carousel with Native Hardware Accelerated Momentum */}
+        {/* MOBILE VIEW: Compact Horizontal Carousel with Free Vertical Page Scroll */}
         <div className="lg:hidden relative">
           <div
             ref={carouselRef}
             onScroll={handleScrollCarousel}
-            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-2 -mx-2 scrollbar-none touch-pan-x"
-            style={{ WebkitOverflowScrolling: 'touch' }}
+            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-2 -mx-2 scrollbar-none touch-pan-y"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehaviorX: 'contain'
+            }}
           >
             {catalog.map((oil, index) => renderProductCard(oil, index, true))}
           </div>
