@@ -141,7 +141,8 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
                 src={oil.image}
                 alt={oil.name}
                 loading="lazy"
-                className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300 ease-out select-none"
+                draggable={false}
+                className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-300 ease-out select-none pointer-events-none"
               />
               {/* Floating Cap Seal Badge */}
               <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10">
@@ -327,9 +328,11 @@ export const ProductShowcase: React.FC<ProductShowcaseProps> = ({ onOpenCheckout
           <div
             ref={carouselRef}
             onScroll={handleScrollCarousel}
-            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-2 -mx-2 scrollbar-none touch-auto"
+            className="flex gap-2.5 overflow-x-auto snap-x snap-mandatory pb-3 px-2 -mx-2 scrollbar-none"
             style={{
-              WebkitOverflowScrolling: 'touch'
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-x pan-y',
+              overscrollBehaviorX: 'contain'
             }}
           >
             {catalog.map((oil, index) => renderProductCard(oil, index, true))}
